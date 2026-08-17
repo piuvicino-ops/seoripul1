@@ -1,0 +1,14 @@
+{
+  "name": "서리풀1지구 보상수준 시뮬레이터",
+  "short_name": "서리풀1 보상",
+  "description": "서리풀1지구 토지보상 수준과 협상 시나리오를 비교하는 참고용 시뮬레이터",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#155EEF",
+  "icons": [
+    {"src":"./icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"./icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}
