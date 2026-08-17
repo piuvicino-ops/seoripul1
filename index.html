@@ -2,15 +2,7 @@
 Copyright © 2026 새정이마을주민대책위원회. All rights reserved.
 본 파일은 새정이마을주민대책위원회가 제작한 보상수준 시뮬레이터입니다.
 무단 수정·변형·재배포를 금합니다.
---><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>서리풀1지구 보상수준 시뮬레이터</title><meta name="theme-color" content="#2347d9">
-<meta name="application-name" content="서리풀1 보상">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="서리풀1 보상">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
-<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-<style>
+--><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>서리풀1지구 보상수준 시뮬레이터</title><meta name="theme-color" content="#155EEF"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="서리풀1 보상"><link rel="manifest" href="./manifest.json"><link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png"><link rel="apple-touch-icon" href="./icons/icon-192.png"><style>
 :root{
   --bg:#f5f7fb; --card:#ffffff; --text:#172033; --muted:#667085;
   --line:#e5e7eb; --accent:#2347d9; --soft:#eef2ff; --good:#087a55;
@@ -486,10 +478,20 @@ calc();
     <div class="note" style="font-size:13px;color:var(--text);">
       사업시행자가 편성한 보상금 예산에서 출발하기보다, <b>사업에서 발생할 수 있는 분양수익을 먼저 산정</b>하고
       그 수익에서 감당 가능한 사업비와 토지보상 규모를 역산하는 토지주 관점의 협상 시나리오입니다.
-      <b>토지주 1차 제안은 4.0조원</b>으로 시작하고, <b>ZOPA는 3.5~3.7조원</b>으로 설정하여 <b>3.6조원 이상에서 타결</b>하는 것을 목표로 합니다.
+      <b>토지주 1차 제안은 4.0조원, 타결 목표는 3.5조원</b>으로 설정합니다.
     </div>
   </div>
 
+  <div class="card">
+    <div class="section-title">ZOPA란?</div>
+    <div class="infoCallout" style="margin-top:0;">
+      <b>ZOPA(Zone of Possible Agreement)</b>는 협상 당사자들이 각자의 최초 요구에서 조정해 나갈 때
+      <b>서로 받아들일 수 있어 실제 합의가 성립할 가능성이 있는 범위</b>, 즉 ‘합의 가능 영역’을 뜻합니다.<br><br>
+      현재 단계에서는 사업시행자의 최종 수용한도가 공식적으로 확인되지 않았으므로, 이 앱의 ZOPA는
+      <b>토지주가 분양수익과 사업비 구조를 근거로 설정한 전략적 협상영역</b>입니다. 향후 사업시행자의 공식 제안이 나오면
+      시행자 측 상한과 토지주 측 하한이 겹치는 실제 ZOPA를 다시 설정할 수 있습니다.
+    </div>
+  </div>
 
   <div class="card">
     <div class="section-title">예상 분양수익은 어떻게 산정했나</div>
@@ -577,36 +579,22 @@ calc();
   <div class="card">
     <div class="section-title">분양수익에서 본 사업비·토지보상 기준</div>
     <div class="note">
-      토지주 측에서는 인정 분양수익의 <b>40~50% 수준을 사업비 범위</b>로 보고,
-      그 사업비 가운데 <b>약 50%를 토지보상비</b>로 보는 구조를 협상 논거로 사용합니다.
+      토지주 측 협상모델에서는 <b>협상용 인정 분양수익의 80%를 총사업비</b>로 가정하고,
+      그 총사업비 가운데 <b>50%를 토지보상금</b>으로 보는 구조를 기준 산식으로 사용합니다.
+      즉, 인정 분양수익의 <b>40%가 토지보상금</b>에 해당하는 구조입니다.
     </div>
     <div style="overflow-x:auto;margin-top:10px;">
       <table class="infoTable">
-        <thead><tr><th>인정 분양수익</th><th>사업비 비율</th><th>사업비</th><th>사업비 중 토지보상 50%</th></tr></thead>
+        <thead><tr><th>인정 분양수익</th><th>총사업비 비율</th><th>총사업비</th><th>총사업비 중 토지보상 50%</th></tr></thead>
         <tbody>
-          <tr><td>약 9.76조</td><td>40%</td><td>약 3.90조</td><td>약 1.95조</td></tr>
-          <tr><td>약 9.76조</td><td>45%</td><td>약 4.39조</td><td>약 2.20조</td></tr>
-          <tr><td>약 9.76조</td><td>50%</td><td>약 4.88조</td><td>약 2.44조</td></tr>
+          <tr><td>약 9.76조</td><td><b>80%</b></td><td><b>약 7.81조</b></td><td><b>약 3.90조</b></td></tr>
         </tbody>
       </table>
     </div>
-    <div class="hint">
-      위 표는 사업비·보상비 구조를 설명하기 위한 기준 산식입니다. 실제 협상목표는 감정평가 가능범위, 사업시행자의 추가 수익·자산가치,
-      정책적 임대공급에 따른 부담의 귀속, 사업계획 변경 가능성 등을 함께 반영하여 별도로 설정합니다.
-    </div>
-  </div>
-
-
-  <div class="card">
-    <div class="section-title">ZOPA란?</div>
-    <div class="infoCallout" style="margin-top:0;">
-      <b>ZOPA(Zone of Possible Agreement)</b>는 협상 당사자들이 각자의 최초 요구와 수용 한계를 조정해 나갈 때
-      <b>서로 받아들일 수 있어 실제 합의가 성립할 가능성이 있는 범위</b>, 즉 ‘합의 가능 영역’을 뜻합니다.<br><br>
-      이번 협상전략에서는 분양수익, 사업비 구조, 정책적 임대물량의 가치와 토지주 측 요구수준을 종합하여
-      <b>전체 토지보상금 3.5~3.7조원</b>을 전략적 ZOPA로 설정합니다.<br><br>
-      <b>토지주 1차 제안은 4.0조원</b>으로 협상을 시작하되,
-      실제 타결은 ZOPA의 중간 이상인 <b>3.6조원 이상</b>에서 이루어지는 것을 목표로 합니다.
-      3.5조원은 협상 가능 영역의 하단으로 보되, 최종 타결 목표가격으로 보지는 않습니다.
+    <div class="infoCallout">
+      기준 산식: <b>인정 분양수익 9.76조 × 80% = 총사업비 약 7.81조</b><br>
+      <b>총사업비 7.81조 × 50% = 토지보상금 약 3.90조</b><br><br>
+      이 산식은 실제 확정 사업비나 법정 보상비율을 의미하는 것이 아니라, 분양수익을 기준으로 전체 보상규모의 협상 목표를 검토하기 위한 <b>토지주 측 시뮬레이션 가정</b>입니다.
     </div>
   </div>
 
@@ -614,13 +602,13 @@ calc();
     <div class="section-title">협상 목표</div>
     <div class="infoHero">
       <div class="infoBox"><div class="k">토지주 1차 제안</div><div class="v">4.0조원</div><div class="s">협상 앵커 · 최초 요구수준</div></div>
-      <div class="infoBox"><div class="k">타결 목표</div><div class="v">3.6조원 이상</div><div class="s">ZOPA 중간 이상에서 타결</div></div>
-      <div class="infoBox"><div class="k">ZOPA</div><div class="v">3.5~3.7조</div><div class="s">합의 가능 전략구간</div></div>
+      <div class="infoBox"><div class="k">타결 목표</div><div class="v">3.5조원</div><div class="s">실질적 확보 목표</div></div>
+      <div class="infoBox"><div class="k">핵심 협상영역</div><div class="v">3.5~4.0조</div><div class="s">토지주 측 전략구간</div></div>
       <div class="infoBox"><div class="k">사업시행자 제안</div><div class="v">추후 확인</div><div class="s">공식 제안 후 실제 ZOPA 재산정</div></div>
     </div>
     <div class="compare">
       <b>4조원은 예상 보상금이 아니라 협상을 시작하기 위한 제안가격</b>이며,
-      <b>3.5~3.7조원은 ZOPA이며, 3.6조원 이상을 타결 목표</b>로 합니다. 사업시행자가 자체 보상예산만을 근거로 낮은 수준을 제시할 경우,
+      <b>3.5조원은 현재 설정한 타결 목표</b>입니다. 사업시행자가 자체 보상예산만을 근거로 낮은 수준을 제시할 경우,
       토지주는 위 분양수익 산정방식과 정책적 임대물량의 가치까지 제시하면서 전체 보상규모 자체를 협상합니다.
     </div>
   </div>
@@ -633,14 +621,14 @@ calc();
       <b>② 정책적 임대공급의 부담을 토지주에게 전가해서는 안 됩니다.</b><br>
       미리내집 장기전세 55%는 정책적 공급이므로 일반분양 가치의 30%를 최소한 반영하고, 그 외 추가 임대물량은 일반분양 기준의 수익으로 평가합니다.<br><br>
       <b>③ 협상의 우선 목표는 전체 토지보상금 규모입니다.</b><br>
-      전체 보상규모를 4조원에서 제안하고, ZOPA를 3.5~3.7조원으로 설정하여 3.6조원 이상에서 타결하는 것을 목표로 하며, 그 결과를 지목별·개별 필지의 보상단가에 연결합니다.
+      전체 보상규모를 4조원에서 제안하여 3.5조원 수준의 타결을 목표로 하고, 그 결과를 지목별·개별 필지의 보상단가에 연결합니다.
     </div>
   </div>
 
   <div class="card">
     <div class="section-title">2 Track 협상 전략</div>
     <div class="grid">
-      <div class="infoBox"><div class="k">Track 1 · 현금보상</div><div class="v" style="font-size:16px">4.0조 제안 → ZOPA 3.5~3.7조 → 3.6조 이상 타결</div><div class="s">분양수익·사업비 구조를 근거로 전체 토지보상금 규모를 먼저 협상</div></div>
+      <div class="infoBox"><div class="k">Track 1 · 현금보상</div><div class="v" style="font-size:16px">4.0조 제안 → 3.5조 타결목표</div><div class="s">분양수익·사업비 구조를 근거로 전체 토지보상금 규모를 먼저 협상</div></div>
       <div class="infoBox"><div class="k">Track 2 · 택지보상</div><div class="v" style="font-size:16px">이주·협의양도 택지 조건 협상</div><div class="s">필지당 면적, 공급 규모, 공급가격 및 공급조건에서 추가적인 보상가치를 확보</div></div>
     </div>
     <div class="hint">본 시나리오는 협상을 위한 내부 전략적 기준이며 실제 감정평가액이나 사업시행자의 공식 수용한도를 의미하지 않습니다.</div>
@@ -760,8 +748,10 @@ calc();
 
 
 <script>
-if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
 }
 </script>
 </body></html>
