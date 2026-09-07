@@ -90,6 +90,18 @@
 .checkGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:10px}.checkItem{border:1px solid var(--line);border-radius:12px;background:#fbfcfe;padding:10px}.checkItem .n{font-size:11px;font-weight:950;color:#2347d9;margin-bottom:3px}.checkItem .t{font-size:11.5px;line-height:1.55;color:#475467}
 .moveFootnote{font-size:10.8px;line-height:1.65;color:#667085;margin-top:12px;padding-top:10px;border-top:1px dashed #d7dde5}
 @media(max-width:560px){.tabs{grid-template-columns:repeat(2,minmax(0,1fr));}.moveHero h2{font-size:18px}.moveScore .score{font-size:26px}.moveCompare{grid-template-columns:1fr}.checkGrid{grid-template-columns:1fr}.moveTable{min-width:520px}}
+
+/* 이주자택지 보고서 목적·유의사항 */
+.movePurposeNotice{margin:13px 0 4px;display:grid;gap:9px}
+.movePurposeBox,.moveCautionBox{border-radius:14px;padding:13px 14px;font-size:12.2px;line-height:1.7}
+.movePurposeBox{background:#eef4ff;border:1px solid #cdddf7;color:#274b84}
+.moveCautionBox{background:#fff7e8;border:1px solid #efd89a;color:#654f16}
+.moveNoticeTitle{display:flex;align-items:center;gap:7px;margin-bottom:5px;font-size:13px;font-weight:950;color:#172033}
+.moveNoticeIcon{font-size:16px;line-height:1}
+.movePurposeBox b,.moveCautionBox b{font-weight:950}
+.moveCautionBox ul{margin:6px 0 0;padding-left:18px}
+.moveCautionBox li{margin:3px 0}
+@media(max-width:560px){.movePurposeBox,.moveCautionBox{font-size:11.8px;padding:12px}.moveNoticeTitle{font-size:12.7px}}
 </style></head><body><main class="wrap"><header class="header"><h1>새정이마을 주민대책위원회</h1></header>
 <nav aria-label="주요 메뉴" class="tabs" role="tablist">
 <button aria-controls="activityPanel" aria-selected="true" class="tabBtn active" data-tab="activityPanel" id="activityTab" role="tab" type="button">활동기록</button>
@@ -397,7 +409,24 @@
 <div class="moveHero">
 <div class="eyebrow">2026. 9. 6 기준 · 첨부 분석보고서 반영</div>
 <h2>서리풀1 이주자택지 입지·미래가치 분석</h2>
-<p>서리풀1 공공주택지구 내 <b>단독주택 요구지와 R1 상가주택·올 근생 후보지</b>를 주민 입장에서 비교한 사전 참고자료입니다. 세부 지구계획·공급유형·도로·학교·보행연결·공급가격은 확정 전 변경될 수 있으며, 아래 점수는 감정가나 투자수익률을 의미하지 않습니다.</p>
+<div class="movePurposeNotice">
+  <div class="movePurposeBox">
+    <div class="moveNoticeTitle"><span class="moveNoticeIcon">🎯</span>이 보고서를 만든 목적</div>
+    <b>이주자택지의 위치를 선택하기 전에 단독주택 요구지와 R1 상가주택·올 근생 후보지의 입지와 장래가치를 주민 입장에서 미리 비교하기 위한 자료입니다.</b><br/>
+    현재까지 발표된 서리풀1 개발계획, 주변 개발·주택공급계획, 환경영향평가서(초안), 제공된 계획도면 등을 종합해 <b>생활환경·희소성·상권·접근성·장기 가치에 영향을 줄 가능성</b>을 살펴봅니다.
+  </div>
+  <div class="moveCautionBox">
+    <div class="moveNoticeTitle"><span class="moveNoticeIcon">⚠️</span>반드시 확인해야 할 유의사항</div>
+    이 자료는 <b>지구계획 확정 전 단계의 사전 분석 참고자료</b>입니다.
+    <ul>
+      <li>세부 토지이용, 블록별 공급유형, 학교·공원·주차장·보행연결, 도로·시설 위치, 공급가격과 사업일정은 변경될 수 있습니다.</li>
+      <li>일부 공급유형과 세부 배치는 사업시행자와의 회의·협의 과정에서 제시된 내용을 <b>분석상 가정</b>으로 반영했습니다.</li>
+      <li>보고서의 점수·가치전망·상권분석·시나리오는 <b>감정평가액·분양가·임대수익률·투자수익을 보장하거나 확정적으로 예측하는 값이 아닙니다.</b></li>
+      <li>실제 위치 선택·계약 전에는 확정 고시, 사업시행자 안내, 계약조건과 현장여건을 다시 확인해야 합니다.</li>
+    </ul>
+  </div>
+</div>
+<p>아래 내용은 위 전제를 바탕으로 <b>단독주택 요구지와 R1 상가주택·올 근생 후보지</b>의 상대적 특성을 비교한 요약입니다.</p>
 
 <div class="reportDownload">
   <div class="rdText">
