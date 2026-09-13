@@ -240,6 +240,40 @@
 .memberBar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 13px;padding:10px 12px;border:1px solid #dfe5e9;border-radius:13px;background:#fff}.memberBarInfo{min-width:0}.memberBarName{font-size:11.7px;font-weight:900;color:#344054;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.memberBarSub{font-size:10px;color:#8a94a3;margin-top:2px}.memberLogout{flex:0 0 auto;border:1px solid #d0d5dd;border-radius:9px;background:#f8fafc;color:#475467;padding:7px 9px;font-size:10.5px;font-weight:850;cursor:pointer}
 @media(max-width:560px){.authShell{padding:20px 12px}.authCard{padding:17px;border-radius:17px}.authBrand h1{font-size:21px}.authTitle{font-size:18px}.authField input{font-size:16px}.memberBar{margin-bottom:11px}}
 
+
+/* 민감정보·분석자료 메뉴 확인창 */
+.noticeGateOverlay{
+  position:fixed;inset:0;z-index:10050;display:none;align-items:center;justify-content:center;
+  padding:22px;background:rgba(15,23,42,.56);backdrop-filter:blur(2px);
+}
+.noticeGateOverlay.open{display:flex}
+.noticeGateDialog{
+  width:min(92vw,460px);background:#fff;border-radius:18px;padding:22px 20px 18px;
+  box-shadow:0 24px 70px rgba(15,23,42,.28);border:1px solid rgba(15,23,42,.08);
+}
+.noticeGateIcon{
+  width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;
+  margin-bottom:13px;background:#fff4e5;color:#b54708;font-size:23px;font-weight:900;
+}
+.noticeGateTitle{margin:0 0 10px;font-size:18px;line-height:1.35;color:#101828;font-weight:950}
+.noticeGateText{margin:0;font-size:13px;line-height:1.75;color:#344054;word-break:keep-all}
+.noticeGateRemember{
+  display:flex;align-items:center;gap:8px;margin-top:18px;padding:11px 12px;border-radius:11px;
+  background:#f8fafc;color:#475467;font-size:12px;font-weight:800;cursor:pointer;user-select:none;
+}
+.noticeGateRemember input{width:17px;height:17px;accent-color:#087f6b}
+.noticeGateActions{display:flex;gap:9px;margin-top:14px}
+.noticeGateBtn{
+  flex:1;border:0;border-radius:11px;padding:12px 14px;min-height:44px;
+  font-size:13px;font-weight:900;cursor:pointer
+}
+.noticeGateBtn.cancel{background:#f2f4f7;color:#344054}
+.noticeGateBtn.confirm{background:#087f6b;color:#fff}
+@media (max-width:520px){
+  .noticeGateDialog{padding:20px 17px 16px}
+  .noticeGateText{font-size:12.5px}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -1096,6 +1130,23 @@ window.SAEJEONGI_AUTH_CONFIG={
 <div class="lightboxInner"><img alt="" id="lightboxImage"/></div>
 </div>
 <button aria-label="맨 위로" class="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" type="button">↑</button>
+
+<div aria-hidden="true" class="noticeGateOverlay" id="noticeGateOverlay">
+  <div aria-labelledby="noticeGateTitle" aria-modal="true" class="noticeGateDialog" role="dialog">
+    <div class="noticeGateIcon">!</div>
+    <h3 class="noticeGateTitle" id="noticeGateTitle">확인 안내</h3>
+    <p class="noticeGateText" id="noticeGateText"></p>
+    <label class="noticeGateRemember" for="noticeGateRemember">
+      <input id="noticeGateRemember" type="checkbox"/>
+      <span>다시 보지 않기</span>
+    </label>
+    <div class="noticeGateActions">
+      <button class="noticeGateBtn cancel" id="noticeGateCancel" type="button">취소</button>
+      <button class="noticeGateBtn confirm" id="noticeGateConfirm" type="button">확인하고 계속</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   // 회원가입 · 승인 · 로그인
@@ -1251,12 +1302,102 @@ window.SAEJEONGI_AUTH_CONFIG={
 
   const buttons=[...document.querySelectorAll('.tabBtn')];
   const panels=[...document.querySelectorAll('.tabPanel')];
-  buttons.forEach(btn=>btn.addEventListener('click',()=>{
+
+  const noticeGateOverlay=document.getElementById('noticeGateOverlay');
+  const noticeGateTitle=document.getElementById('noticeGateTitle');
+  const noticeGateText=document.getElementById('noticeGateText');
+  const noticeGateRemember=document.getElementById('noticeGateRemember');
+  const noticeGateConfirm=document.getElementById('noticeGateConfirm');
+  const noticeGateCancel=document.getElementById('noticeGateCancel');
+
+  const NOTICE_KEYS={
+    lawsuit:'saejeongi.notice.lawsuit.dismissed',
+    relocation:'saejeongi.notice.relocation.dismissed',
+    housing:'saejeongi.notice.housing.dismissed'
+  };
+  const NOTICE_CONTENT={
+    lawsuit:{
+      title:'행정소송 정보 이용 안내',
+      text:'소송관련 정보는 민감한 정보를 포함하고 있으니 절대 외부에 공유하지 않으며 이로 인한 책임은 본인이 집니다.'
+    },
+    relocation:{
+      title:'이주자택지 분석 이용 안내',
+      text:'이주자택지 분석은 예상 입지, 공급조건, 미래가치 등을 비교하기 위한 참고자료입니다. 실제 공급위치·면적·가격·자격 및 세부조건은 향후 사업시행자의 확정 내용과 다를 수 있으므로 참고자료로만 활용하고, 모든 의사결정은 본인의 판단하에 이루어짐을 확인합니다.'
+    },
+    housing:{
+      title:'이주자주택 분석 이용 안내',
+      text:'이주자주택 분석은 향후 공급될 수 있는 이주자주택의 입지, 규모, 분양조건 및 예상가치 등을 검토하기 위한 참고자료입니다. 실제 공급주택·분양가·자격·공급시기 및 세부조건은 향후 사업시행자의 확정 내용과 다를 수 있으므로 참고자료로만 활용하고, 모든 의사결정은 본인의 판단하에 이루어짐을 확인합니다.'
+    }
+  };
+
+  const openTab=(btn)=>{
     const target=btn.dataset.tab;
     buttons.forEach(b=>{const on=b===btn;b.classList.toggle('active',on);b.setAttribute('aria-selected',on?'true':'false');});
     panels.forEach(p=>{const on=p.id===target;p.classList.toggle('active',on);p.hidden=!on;});
     window.scrollTo({top:0,behavior:'smooth'});
+  };
+
+  const getNoticeType=(btn)=>{
+    const target=btn.dataset.tab;
+    if(target==='lawsuitPanel') return 'lawsuit';
+    if(target==='relocationPanel') return 'relocation';
+    if(target==='aptPanel') return 'housing';
+    return '';
+  };
+
+  const noticeDismissed=(type)=>{
+    if(!type) return true;
+    try{return localStorage.getItem(NOTICE_KEYS[type])==='1';}catch{return false;}
+  };
+
+  let pendingTabButton=null;
+  let pendingNoticeType='';
+
+  const closeNoticeGate=()=>{
+    noticeGateOverlay.classList.remove('open');
+    noticeGateOverlay.setAttribute('aria-hidden','true');
+    noticeGateRemember.checked=false;
+    pendingTabButton=null;
+    pendingNoticeType='';
+    document.body.style.overflow='';
+  };
+
+  const showNoticeGate=(btn,type)=>{
+    const info=NOTICE_CONTENT[type];
+    pendingTabButton=btn;
+    pendingNoticeType=type;
+    noticeGateTitle.textContent=info.title;
+    noticeGateText.textContent=info.text;
+    noticeGateRemember.checked=false;
+    noticeGateOverlay.classList.add('open');
+    noticeGateOverlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    setTimeout(()=>noticeGateConfirm.focus(),0);
+  };
+
+  buttons.forEach(btn=>btn.addEventListener('click',()=>{
+    const type=getNoticeType(btn);
+    if(type&&!noticeDismissed(type)){
+      showNoticeGate(btn,type);
+      return;
+    }
+    openTab(btn);
   }));
+
+  noticeGateConfirm.addEventListener('click',()=>{
+    const btn=pendingTabButton;
+    const type=pendingNoticeType;
+    if(noticeGateRemember.checked&&type){
+      try{localStorage.setItem(NOTICE_KEYS[type],'1');}catch{}
+    }
+    closeNoticeGate();
+    if(btn) openTab(btn);
+  });
+  noticeGateCancel.addEventListener('click',closeNoticeGate);
+  noticeGateOverlay.addEventListener('click',(e)=>{if(e.target===noticeGateOverlay) closeNoticeGate();});
+  document.addEventListener('keydown',(e)=>{
+    if(e.key==='Escape'&&noticeGateOverlay.classList.contains('open')) closeNoticeGate();
+  });
 
   const lightbox=document.getElementById('imageLightbox');
   const lightboxImage=document.getElementById('lightboxImage');
