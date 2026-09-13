@@ -649,6 +649,80 @@
   background-size:330px 135px !important;
 }
 
+
+/* 관리자 전용 회원관리 */
+.adminOnly[hidden]{display:none!important}
+.adminManageCard{
+  background:#fff;
+  border:1px solid var(--line,#e5e7eb);
+  border-radius:16px;
+  padding:18px;
+  box-shadow:0 6px 20px rgba(15,23,42,.05);
+}
+.adminManageHead{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px;
+}
+.adminManageTitle{font-size:20px;font-weight:700;color:#0f766e;margin:0 0 5px}
+.adminManageDesc{font-size:13px;line-height:1.6;color:#667085;margin:0}
+.adminRefreshBtn{
+  flex:0 0 auto;border:1px solid #b9d8d2;background:#f2fbf8;color:#0f766e;
+  border-radius:9px;padding:9px 12px;font-size:12px;font-weight:650;cursor:pointer
+}
+.adminRefreshBtn:disabled{opacity:.55;cursor:default}
+.adminSummary{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:16px
+}
+.adminSummaryBox{
+  border:1px solid #e5e7eb;border-radius:12px;padding:12px;background:#f8fafc
+}
+.adminSummaryBox .k{font-size:11px;color:#667085;margin-bottom:4px}
+.adminSummaryBox .v{font-size:20px;font-weight:750;color:#172033}
+.adminMemberList{display:flex;flex-direction:column;gap:10px}
+.adminMemberRow{
+  display:grid;grid-template-columns:minmax(130px,1.25fr) minmax(86px,.7fr) minmax(145px,1fr) minmax(105px,.8fr);
+  gap:10px;align-items:center;border:1px solid #e5e7eb;border-radius:12px;padding:12px;background:#fff
+}
+.adminMemberIdentity .name{font-size:14px;font-weight:700;color:#172033}
+.adminMemberIdentity .id{font-size:11px;color:#7b8494;margin-top:3px;word-break:break-all}
+.adminMemberMeta{font-size:11px;color:#667085;line-height:1.55}
+.adminMemberMeta b{display:block;color:#344054;font-size:11px;margin-bottom:2px}
+.memberRoleBadge{
+  display:inline-flex;align-items:center;justify-content:center;border-radius:999px;
+  padding:5px 9px;font-size:11px;font-weight:700;white-space:nowrap
+}
+.memberRoleBadge.admin{background:#e7f7f2;color:#08775e}
+.memberRoleBadge.member{background:#eef4ff;color:#2457a6}
+.memberRoleBadge.pending{background:#fff6dc;color:#966300}
+.adminMemberActions{display:flex;justify-content:flex-end;gap:6px;flex-wrap:wrap}
+.adminActionBtn{
+  border-radius:8px;padding:7px 9px;font-size:11px;font-weight:650;cursor:pointer;border:1px solid #d0d5dd;background:#fff;color:#344054
+}
+.adminActionBtn.approve{border-color:#9fd6c8;background:#effbf7;color:#08775e}
+.adminActionBtn.delete{border-color:#efb7b2;background:#fff6f5;color:#b42318}
+.adminActionBtn:disabled{opacity:.5;cursor:default}
+.adminStateMsg{
+  padding:18px;text-align:center;border:1px dashed #d0d5dd;border-radius:12px;
+  color:#667085;font-size:13px;line-height:1.6;background:#fafafa
+}
+.adminInlineMsg{font-size:12px;min-height:18px;margin-top:10px;color:#667085}
+.adminInlineMsg.error{color:#b42318}
+.adminInlineMsg.success{color:#08775e}
+@media(max-width:680px){
+  .adminManageCard{padding:14px}
+  .adminManageHead{align-items:center}
+  .adminSummary{grid-template-columns:repeat(3,1fr)}
+  .adminSummaryBox{padding:10px 8px}
+  .adminSummaryBox .v{font-size:18px}
+  .adminMemberRow{
+    grid-template-columns:1fr auto;
+    gap:9px 10px;
+  }
+  .adminMemberIdentity{grid-column:1/2}
+  .adminMemberRow>.memberRoleBadge{grid-column:2/3;grid-row:1}
+  .adminMemberMeta{grid-column:1/3}
+  .adminMemberActions{grid-column:1/3;justify-content:flex-start}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -849,6 +923,13 @@ window.SAEJEONGI_AUTH_CONFIG={
         <button aria-controls="aptPanel" aria-selected="false" class="tabBtn" data-tab="aptPanel" id="aptTab" role="tab" type="button">이주자 APT 분석</button>
       </nav>
     </section>
+
+    <section class="menuGroup adminOnly" id="adminMenuGroup" aria-labelledby="adminMenuTitle" hidden>
+      <h2 class="menuGroupTitle" id="adminMenuTitle">관리자</h2>
+      <nav class="menuGroupTabs" aria-label="관리자 메뉴" role="tablist">
+        <button aria-controls="memberAdminPanel" aria-selected="false" class="tabBtn adminTabBtn" data-tab="memberAdminPanel" id="memberAdminTab" role="tab" type="button">회원관리</button>
+      </nav>
+    </section>
   </div>
 </aside>
 
@@ -912,6 +993,16 @@ window.SAEJEONGI_AUTH_CONFIG={
       <span class="homeMenuBtnTitle">이주자주택 분석</span>
       <span class="homeMenuBtnDesc">이주자주택의 예상 입지, 공급규모, 분양조건과 장래가치를 참고용으로 검토합니다.</span>
     </button>
+      </div>
+    </section>
+
+    <section class="homeMenuSection adminOnly" id="adminHomeSection" hidden>
+      <h2 class="homeMenuSectionTitle">관리자</h2>
+      <div class="homeMenuButtons">
+        <button class="homeMenuBtn mainHomeBtn" data-target-tab="memberAdminPanel" type="button">
+          <span class="homeMenuBtnTitle">회원관리</span>
+          <span class="homeMenuBtnDesc">회원 등급, 최근 로그인, 가입 승인과 회원 탈퇴를 관리합니다.</span>
+        </button>
       </div>
     </section>
   </div>
@@ -1690,6 +1781,28 @@ window.SAEJEONGI_AUTH_CONFIG={
     </div>
   </div>
 </section>
+
+<section aria-labelledby="memberAdminTab" class="tabPanel" hidden id="memberAdminPanel" role="tabpanel">
+  <div class="adminManageCard">
+    <div class="adminManageHead">
+      <div>
+        <h2 class="adminManageTitle">회원관리</h2>
+        <p class="adminManageDesc">회원등급은 관리자 · 일반회원 · 승인대기로 구분됩니다. 최근 로그인 시간은 한국시간 기준입니다.</p>
+      </div>
+      <button class="adminRefreshBtn" id="adminRefreshBtn" type="button">새로고침</button>
+    </div>
+    <div class="adminSummary" aria-label="회원 현황">
+      <div class="adminSummaryBox"><div class="k">관리자</div><div class="v" id="adminCountAdmin">-</div></div>
+      <div class="adminSummaryBox"><div class="k">일반회원</div><div class="v" id="adminCountMember">-</div></div>
+      <div class="adminSummaryBox"><div class="k">승인대기</div><div class="v" id="adminCountPending">-</div></div>
+    </div>
+    <div class="adminMemberList" id="adminMemberList">
+      <div class="adminStateMsg">회원관리 메뉴를 열면 회원정보를 불러옵니다.</div>
+    </div>
+    <div class="adminInlineMsg" id="adminInlineMsg" role="status"></div>
+  </div>
+</section>
+
 <div aria-hidden="true" class="lightbox" id="imageLightbox">
 <button aria-label="이미지 닫기" class="lightboxClose" type="button">×</button>
 <div class="lightboxInner"><img alt="" id="lightboxImage"/></div>
@@ -1719,6 +1832,14 @@ window.SAEJEONGI_AUTH_CONFIG={
   const authShell=document.getElementById('authShell');
   const appMain=document.getElementById('appMain');
   const memberBarName=document.getElementById('memberBarName');
+  const adminMenuGroup=document.getElementById('adminMenuGroup');
+  const adminHomeSection=document.getElementById('adminHomeSection');
+  const adminMemberList=document.getElementById('adminMemberList');
+  const adminRefreshBtn=document.getElementById('adminRefreshBtn');
+  const adminInlineMsg=document.getElementById('adminInlineMsg');
+  const adminCountAdmin=document.getElementById('adminCountAdmin');
+  const adminCountMember=document.getElementById('adminCountMember');
+  const adminCountPending=document.getElementById('adminCountPending');
   const memberWatermark=document.getElementById('memberWatermark');
   let currentSignedInProfile=null;
   const memberWatermarkGrid=document.getElementById('memberWatermarkGrid');
@@ -1976,13 +2097,146 @@ window.SAEJEONGI_AUTH_CONFIG={
     if(!res.ok) throw new Error(data.error||'요청 처리 중 오류가 발생했습니다.');
     return data;
   };
+
+  const isCurrentAdmin=()=>currentSignedInProfile?.membership_role==='admin';
+
+  const setAdminMenuVisibility=(profile)=>{
+    const visible=profile?.membership_role==='admin';
+    if(adminMenuGroup) adminMenuGroup.hidden=!visible;
+    if(adminHomeSection) adminHomeSection.hidden=!visible;
+  };
+
+  const formatAdminDate=(iso)=>{
+    if(!iso) return '기록 없음';
+    try{
+      return new Intl.DateTimeFormat('ko-KR',{
+        timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',
+        hour:'2-digit',minute:'2-digit',hour12:false
+      }).format(new Date(iso));
+    }catch{return String(iso);}
+  };
+
+  const roleLabel=(m)=>{
+    if(m.membership_role==='admin') return {text:'관리자',cls:'admin'};
+    if(m.status==='pending'||m.membership_role==='pending') return {text:'승인대기',cls:'pending'};
+    return {text:'일반회원',cls:'member'};
+  };
+
+  const escHtml=(v)=>String(v??'')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+
+  const setAdminMsg=(text='',type='')=>{
+    if(!adminInlineMsg) return;
+    adminInlineMsg.textContent=text;
+    adminInlineMsg.className=`adminInlineMsg${type?' '+type:''}`;
+  };
+
+  const getAccessToken=async()=>{
+    if(!sb) return '';
+    const {data:{session}}=await sb.auth.getSession();
+    return session?.access_token||'';
+  };
+
+  const renderAdminMembers=(members=[])=>{
+    const count={admin:0,member:0,pending:0};
+    members.forEach(m=>{
+      if(m.membership_role==='admin') count.admin++;
+      else if(m.status==='pending'||m.membership_role==='pending') count.pending++;
+      else count.member++;
+    });
+    if(adminCountAdmin) adminCountAdmin.textContent=String(count.admin);
+    if(adminCountMember) adminCountMember.textContent=String(count.member);
+    if(adminCountPending) adminCountPending.textContent=String(count.pending);
+
+    if(!adminMemberList) return;
+    if(!members.length){
+      adminMemberList.innerHTML='<div class="adminStateMsg">등록된 회원이 없습니다.</div>';
+      return;
+    }
+
+    adminMemberList.innerHTML=members.map(m=>{
+      const role=roleLabel(m);
+      const isAdmin=m.membership_role==='admin';
+      const isPending=m.status==='pending'||m.membership_role==='pending';
+      const approveBtn=isPending
+        ? `<button class="adminActionBtn approve" type="button" data-admin-action="approve" data-user-id="${escHtml(m.user_id)}" data-member-name="${escHtml(m.full_name)}">승인</button>`
+        : '';
+      const deleteBtn=!isAdmin
+        ? `<button class="adminActionBtn delete" type="button" data-admin-action="delete" data-user-id="${escHtml(m.user_id)}" data-member-name="${escHtml(m.full_name)}">회원탈퇴</button>`
+        : '<span class="adminMemberMeta">관리자 보호</span>';
+
+      return `<div class="adminMemberRow">
+        <div class="adminMemberIdentity">
+          <div class="name">${escHtml(m.full_name)}</div>
+          <div class="id">${escHtml(m.username)}</div>
+        </div>
+        <span class="memberRoleBadge ${role.cls}">${role.text}</span>
+        <div class="adminMemberMeta"><b>최근 로그인</b>${escHtml(formatAdminDate(m.last_login_at))}</div>
+        <div class="adminMemberActions">${approveBtn}${deleteBtn}</div>
+      </div>`;
+    }).join('');
+  };
+
+  const loadAdminMembers=async()=>{
+    if(!isCurrentAdmin()){
+      setAdminMenuVisibility(currentSignedInProfile);
+      return;
+    }
+    if(adminMemberList) adminMemberList.innerHTML='<div class="adminStateMsg">회원정보를 불러오는 중입니다.</div>';
+    if(adminRefreshBtn) adminRefreshBtn.disabled=true;
+    setAdminMsg('');
+    try{
+      const token=await getAccessToken();
+      if(!token) throw new Error('관리자 로그인 세션을 확인할 수 없습니다.');
+      const result=await callPublicFunction('member-admin',{action:'list'},token);
+      renderAdminMembers(result.members||[]);
+    }catch(err){
+      if(adminMemberList) adminMemberList.innerHTML='<div class="adminStateMsg">회원정보를 불러오지 못했습니다.</div>';
+      setAdminMsg(err.message||'회원정보 조회 중 오류가 발생했습니다.','error');
+    }finally{
+      if(adminRefreshBtn) adminRefreshBtn.disabled=false;
+    }
+  };
+
+  adminRefreshBtn?.addEventListener('click',loadAdminMembers);
+
+  adminMemberList?.addEventListener('click',async(e)=>{
+    const btn=e.target.closest?.('[data-admin-action]');
+    if(!btn||!isCurrentAdmin()) return;
+    const action=btn.dataset.adminAction;
+    const userId=btn.dataset.userId||'';
+    const name=btn.dataset.memberName||'해당 회원';
+
+    if(action==='approve'){
+      if(!confirm(`${name} 님의 가입을 승인하시겠습니까?`)) return;
+    }else if(action==='delete'){
+      if(!confirm(`${name} 님을 회원탈퇴 처리하시겠습니까?\n\n계정과 회원정보가 삭제되며 되돌릴 수 없습니다.`)) return;
+    }else return;
+
+    btn.disabled=true;
+    setAdminMsg(action==='approve'?'승인 처리 중입니다.':'회원탈퇴 처리 중입니다.');
+    try{
+      const token=await getAccessToken();
+      if(!token) throw new Error('관리자 로그인 세션을 확인할 수 없습니다.');
+      await callPublicFunction('member-admin',{action,user_id:userId},token);
+      setAdminMsg(action==='approve'?`${name} 님을 일반회원으로 승인했습니다.`:`${name} 님의 회원탈퇴 처리가 완료되었습니다.`,'success');
+      await loadAdminMembers();
+    }catch(err){
+      setAdminMsg(err.message||'회원관리 처리 중 오류가 발생했습니다.','error');
+      btn.disabled=false;
+    }
+  });
+
   const setAppSignedIn=(profile)=>{
     authShell.hidden=true;
     authShell.style.display='none';
     appMain.hidden=false;
     appMain.style.display='block';
-    if(memberBarName) memberBarName.textContent=profile?.full_name?`${profile.full_name}님 · 승인회원`:'승인회원';
     currentSignedInProfile=profile||null;
+    const grade=profile?.membership_role==='admin'?'관리자':'일반회원';
+    if(memberBarName) memberBarName.textContent=profile?.full_name?`${profile.full_name}님 · ${grade}`:grade;
+    setAdminMenuVisibility(profile);
     clearActiveWatermark();
 
     // 로그인 후 첫 화면은 전체 메뉴
@@ -1992,6 +2246,7 @@ window.SAEJEONGI_AUTH_CONFIG={
   };
   const setAppSignedOut=()=>{
     hideMemberWatermark();
+    setAdminMenuVisibility(null);
     appMain.hidden=true;
     appMain.style.display='none';
     authShell.hidden=false;
@@ -2249,10 +2504,14 @@ window.SAEJEONGI_AUTH_CONFIG={
 
   const openTab=(btn)=>{
     const target=btn.dataset.tab;
+    if(target==='memberAdminPanel'&&!isCurrentAdmin()){
+      openHomePanel();
+      return;
+    }
     districtButtons.forEach(b=>b.classList.remove('active'));
     buttons.forEach(b=>{const on=b===btn;b.classList.toggle('active',on);b.setAttribute('aria-selected',on?'true':'false');});
     panels.forEach(p=>{const on=p.id===target;p.classList.toggle('active',on);p.hidden=!on;});
-    if(currentMenuParent) currentMenuParent.textContent='새정이마을';
+    if(currentMenuParent) currentMenuParent.textContent=target==='memberAdminPanel'?'관리자':'새정이마을';
     if(currentMenuSep) currentMenuSep.style.display='';
     if(currentMenuChild) currentMenuChild.textContent=(btn.textContent||'').trim();
 
@@ -2260,6 +2519,7 @@ window.SAEJEONGI_AUTH_CONFIG={
     if(watermarkTargets.includes(target)) activateMainWatermark();
     else clearActiveWatermark();
 
+    if(target==='memberAdminPanel') loadAdminMembers();
     window.scrollTo({top:0,behavior:'smooth'});
   };
 
