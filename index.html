@@ -515,6 +515,127 @@
   word-break:keep-all;
 }
 
+
+/* 로그인 이후 콘텐츠 복사·인쇄 억제 */
+#appMain,
+#appMain *{
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+}
+#appMain input,
+#appMain textarea,
+#appMain select,
+#appMain [contenteditable="true"]{
+  -webkit-user-select:text;
+  user-select:text;
+  -webkit-touch-callout:default;
+}
+#appMain img{
+  -webkit-user-drag:none;
+  user-drag:none;
+}
+@media print{
+  body *{visibility:hidden!important;}
+  body::before{
+    content:"이 페이지는 인쇄할 수 없습니다.";
+    visibility:visible!important;
+    display:block;
+    padding:40px;
+    font-size:18px;
+    color:#444;
+  }
+}
+.captureNotice{
+  position:fixed;
+  left:50%;
+  bottom:24px;
+  transform:translateX(-50%) translateY(20px);
+  z-index:2147483646;
+  max-width:min(92vw,520px);
+  padding:11px 15px;
+  border-radius:10px;
+  background:rgba(15,23,42,.94);
+  color:#fff;
+  font-size:12px;
+  line-height:1.5;
+  text-align:center;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .18s ease, transform .18s ease;
+}
+.captureNotice.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+
+/* 로그인 회원 식별용 반복 워터마크 */
+.memberWatermark{
+  position:fixed;
+  inset:0;
+  z-index:2147483000;
+  pointer-events:none;
+  overflow:hidden;
+  display:none;
+}
+.memberWatermark.show{display:block}
+.memberWatermarkGrid{
+  position:absolute;
+  inset:-18vh -18vw;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(250px,1fr));
+  grid-auto-rows:125px;
+  gap:18px 34px;
+  transform:rotate(-27deg);
+  transform-origin:center center;
+  align-content:center;
+  justify-content:center;
+}
+.memberWatermarkItem{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  white-space:nowrap;
+  font-size:16px;
+  line-height:1.4;
+  font-weight:650;
+  color:rgba(15,118,110,.20);
+  letter-spacing:.02em;
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.65),
+    0 -1px 0 rgba(255,255,255,.35);
+  -webkit-text-stroke:.15px rgba(15,118,110,.10);
+}
+@media(max-width:640px){
+  .memberWatermarkGrid{
+    inset:-20vh -55vw;
+    grid-template-columns:repeat(2,minmax(230px,1fr));
+    grid-auto-rows:110px;
+    gap:14px 20px;
+  }
+  .memberWatermarkItem{
+    font-size:14px;
+    color:rgba(15,118,110,.22);
+  }
+}
+
+
+.memberWatermarkBadge{
+  position:absolute;
+  top:max(10px,env(safe-area-inset-top));
+  right:10px;
+  padding:4px 8px;
+  border-radius:7px;
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(15,118,110,.18);
+  color:rgba(15,118,110,.55);
+  font-size:10px;
+  font-weight:600;
+  backdrop-filter:blur(2px);
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -1585,6 +1706,109 @@ window.SAEJEONGI_AUTH_CONFIG={
   const authShell=document.getElementById('authShell');
   const appMain=document.getElementById('appMain');
   const memberBarName=document.getElementById('memberBarName');
+  const memberWatermark=document.getElementById('memberWatermark');
+  let currentSignedInProfile=null;
+  const memberWatermarkGrid=document.getElementById('memberWatermarkGrid');
+  const memberWatermarkBadge=document.getElementById('memberWatermarkBadge');
+
+  const formatWatermarkDate=()=>{
+    const d=new Date();
+    const y=d.getFullYear();
+    const m=String(d.getMonth()+1).padStart(2,'0');
+    const day=String(d.getDate()).padStart(2,'0');
+    return `${y}.${m}.${day}`;
+  };
+
+  const showMemberWatermark=(profile)=>{
+    currentSignedInProfile=profile||null;
+    if(!memberWatermark||!memberWatermarkGrid) return;
+    const name=(profile?.full_name||'승인회원').trim();
+    const label=`${name}님 · 회원전용 · 외부공유금지 · ${formatWatermarkDate()}`;
+    if(memberWatermarkBadge) memberWatermarkBadge.textContent=label;
+    memberWatermarkGrid.innerHTML='';
+    for(let i=0;i<24;i++){
+      const item=document.createElement('div');
+      item.className='memberWatermarkItem';
+      item.textContent=label;
+      memberWatermarkGrid.appendChild(item);
+    }
+    memberWatermark.classList.add('show');
+    syncWatermarkIntoDistrictFrame(profile);
+  };
+
+  const hideMemberWatermark=()=>{
+    currentSignedInProfile=null;
+    memberWatermark?.classList.remove('show');
+    if(memberWatermarkGrid) memberWatermarkGrid.innerHTML='';
+    hideWatermarkInDistrictFrame();
+  };
+
+  const syncWatermarkIntoDistrictFrame=(profile)=>{
+    try{
+      if(!districtFrame?.contentDocument) return;
+      const doc=districtFrame.contentDocument;
+      let wm=doc.getElementById('embeddedMemberWatermark');
+      if(!wm){
+        const style=doc.createElement('style');
+        style.id='embeddedMemberWatermarkStyle';
+        style.textContent=`
+          #embeddedMemberWatermark{
+            position:fixed;inset:0;z-index:2147483646;pointer-events:none;overflow:hidden;
+          }
+          #embeddedMemberWatermark .wmgrid{
+            position:absolute;inset:-20vh -35vw;display:grid;
+            grid-template-columns:repeat(3,minmax(240px,1fr));
+            grid-auto-rows:120px;gap:16px 28px;
+            transform:rotate(-27deg);transform-origin:center;
+            align-content:center;justify-content:center;
+          }
+          #embeddedMemberWatermark .wmitem{
+            display:flex;align-items:center;justify-content:center;text-align:center;
+            white-space:nowrap;font-size:15px;line-height:1.4;font-weight:650;
+            color:rgba(15,118,110,.22);letter-spacing:.02em;
+            text-shadow:0 1px 0 rgba(255,255,255,.7),0 -1px 0 rgba(255,255,255,.35);
+          }
+          @media(max-width:640px){
+            #embeddedMemberWatermark .wmgrid{
+              inset:-22vh -65vw;
+              grid-template-columns:repeat(2,minmax(220px,1fr));
+              grid-auto-rows:105px;gap:12px 18px;
+            }
+            #embeddedMemberWatermark .wmitem{font-size:14px;color:rgba(15,118,110,.24)}
+          }
+        `;
+        doc.head.appendChild(style);
+
+        wm=doc.createElement('div');
+        wm.id='embeddedMemberWatermark';
+        const grid=doc.createElement('div');
+        grid.className='wmgrid';
+        wm.appendChild(grid);
+        doc.body.appendChild(wm);
+      }
+      const grid=wm.querySelector('.wmgrid');
+      if(!grid) return;
+      const name=(profile?.full_name||'승인회원').trim();
+      const label=`${name}님 · 회원전용 · 외부공유금지 · ${formatWatermarkDate()}`;
+      grid.innerHTML='';
+      for(let i=0;i<30;i++){
+        const item=doc.createElement('div');
+        item.className='wmitem';
+        item.textContent=label;
+        grid.appendChild(item);
+      }
+      wm.style.display='block';
+    }catch(e){}
+  };
+
+  const hideWatermarkInDistrictFrame=()=>{
+    try{
+      const wm=districtFrame?.contentDocument?.getElementById('embeddedMemberWatermark');
+      if(wm) wm.style.display='none';
+    }catch(e){}
+  };
+
+
   const memberHome=document.getElementById('memberHome');
   const memberLogout=document.getElementById('memberLogout');
   const authSetupNotice=document.getElementById('authSetupNotice');
@@ -1630,6 +1854,7 @@ window.SAEJEONGI_AUTH_CONFIG={
     appMain.hidden=false;
     appMain.style.display='block';
     if(memberBarName) memberBarName.textContent=profile?.full_name?`${profile.full_name}님 · 승인회원`:'승인회원';
+    showMemberWatermark(profile);
 
     // 로그인 후 첫 화면은 전체 메뉴
     try{setTimeout(()=>openHomePanel(),0);}catch{}
@@ -1637,6 +1862,7 @@ window.SAEJEONGI_AUTH_CONFIG={
     try{window.scrollTo({top:0,behavior:'auto'});}catch{}
   };
   const setAppSignedOut=()=>{
+    hideMemberWatermark();
     appMain.hidden=true;
     appMain.style.display='none';
     authShell.hidden=false;
@@ -1840,6 +2066,7 @@ window.SAEJEONGI_AUTH_CONFIG={
     districtFrame.addEventListener('load',()=>{
       try{
         selectEmbeddedTab(pendingEmbeddedTab);
+        if(currentSignedInProfile) syncWatermarkIntoDistrictFrame(currentSignedInProfile);
         const doc=districtFrame.contentDocument;
         if(doc?.body && 'ResizeObserver' in window){
           const ro=new ResizeObserver(()=>resizeDistrictFrame());
@@ -2181,4 +2408,101 @@ window.SAEJEONGI_AUTH_CONFIG={
 
 })();
 </script>
-</main></body></html>
+</main>
+<div class="captureNotice" id="captureNotice" role="status" aria-live="polite">
+  본 페이지의 내용은 개인 열람용입니다. 복사·캡처·외부 공유를 삼가 주세요.
+</div>
+
+
+<script>
+(function(){
+  const appMain=document.getElementById('appMain');
+  const notice=document.getElementById('captureNotice');
+  let noticeTimer=null;
+
+  const protectedView=()=>appMain && !appMain.hidden && appMain.style.display!=='none';
+
+  const showProtectionNotice=(msg)=>{
+    if(!notice) return;
+    notice.textContent=msg||'본 페이지의 내용은 개인 열람용입니다. 복사·캡처·외부 공유를 삼가 주세요.';
+    notice.classList.add('show');
+    clearTimeout(noticeTimer);
+    noticeTimer=setTimeout(()=>notice.classList.remove('show'),2200);
+  };
+
+  const isEditable=(el)=>{
+    if(!el) return false;
+    return !!el.closest?.('input,textarea,select,[contenteditable="true"]');
+  };
+
+  document.addEventListener('copy',(e)=>{
+    if(protectedView() && !isEditable(e.target)){
+      e.preventDefault();
+      showProtectionNotice('내용 복사가 제한되어 있습니다.');
+    }
+  },true);
+
+  document.addEventListener('cut',(e)=>{
+    if(protectedView() && !isEditable(e.target)){
+      e.preventDefault();
+      showProtectionNotice('내용 복사가 제한되어 있습니다.');
+    }
+  },true);
+
+  document.addEventListener('contextmenu',(e)=>{
+    if(protectedView() && !isEditable(e.target)){
+      e.preventDefault();
+      showProtectionNotice('우클릭 메뉴 사용이 제한되어 있습니다.');
+    }
+  },true);
+
+  document.addEventListener('dragstart',(e)=>{
+    if(protectedView() && e.target?.closest?.('#appMain img')){
+      e.preventDefault();
+      showProtectionNotice('이미지 저장이 제한되어 있습니다.');
+    }
+  },true);
+
+  document.addEventListener('selectstart',(e)=>{
+    if(protectedView() && !isEditable(e.target)){
+      e.preventDefault();
+    }
+  },true);
+
+  document.addEventListener('keydown',(e)=>{
+    if(!protectedView()) return;
+
+    const key=String(e.key||'').toLowerCase();
+    const mod=e.ctrlKey||e.metaKey;
+
+    if(mod && ['c','x','s','p','u'].includes(key) && !isEditable(e.target)){
+      e.preventDefault();
+      e.stopPropagation();
+      const msg = key==='p' ? '인쇄가 제한되어 있습니다.'
+        : key==='s' ? '페이지 저장이 제한되어 있습니다.'
+        : key==='u' ? '소스 보기 단축키가 제한되어 있습니다.'
+        : '내용 복사가 제한되어 있습니다.';
+      showProtectionNotice(msg);
+      return;
+    }
+
+    // 웹에서는 OS 스크린샷 자체를 완전히 차단할 수 없으므로 감지 가능한 경우 경고만 표시
+    if(e.key==='PrintScreen'){
+      showProtectionNotice('화면 캡처 및 외부 공유를 삼가 주세요.');
+      try{ navigator.clipboard?.writeText(''); }catch{}
+    }
+  },true);
+
+  window.addEventListener('beforeprint',()=>{
+    if(protectedView()) showProtectionNotice('인쇄가 제한되어 있습니다.');
+  });
+})();
+</script>
+
+
+<div class="memberWatermark" id="memberWatermark" aria-hidden="true">
+  <div class="memberWatermarkGrid" id="memberWatermarkGrid"></div>
+  <div class="memberWatermarkBadge" id="memberWatermarkBadge"></div>
+</div>
+
+</body></html>
