@@ -449,7 +449,7 @@
 }
 .homeMenuBtn{
   min-height:48px;
-  border:1px solid #dfe4ec;
+  border:1px solid #bfe8df;
   border-radius:11px;
   background:#f8fafc;
   color:#344054;
@@ -721,6 +721,161 @@
   .adminMemberRow>.memberRoleBadge{grid-column:2/3;grid-row:1}
   .adminMemberMeta{grid-column:1/3}
   .adminMemberActions{grid-column:1/3;justify-content:flex-start}
+}
+
+
+/* 전체 메뉴 첫 화면: 그룹별 다크민트 → 라이트민트 단계형 그라데이션 */
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuButtons .homeMenuBtn:nth-child(1){
+  background:linear-gradient(135deg,#0f766e 0%,#176f69 100%);
+  border-color:#0f766e;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuButtons .homeMenuBtn:nth-child(2){
+  background:linear-gradient(135deg,#2d8a80 0%,#3b978d 100%);
+  border-color:#65b5aa;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuButtons .homeMenuBtn:nth-child(3){
+  background:linear-gradient(135deg,#63aaa0 0%,#78b8af 100%);
+  border-color:#8bc9c0;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuButtons .homeMenuBtn:nth-child(4){
+  background:linear-gradient(135deg,#a6d4cc 0%,#bbe0d9 100%);
+  border-color:#b4ddd5;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuButtons .homeMenuBtn:nth-child(5){
+  background:linear-gradient(135deg,#d8eee9 0%,#edf7f4 100%);
+  border-color:#c9e8e1;
+}
+
+/* 새정이마을: 다시 다크민트에서 시작해 단계적으로 밝게 */
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuButtons .homeMenuBtn:nth-child(1){
+  background:linear-gradient(135deg,#4aa3df 0%,#5cb0e8 100%);
+  border-color:#4aa3df;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuButtons .homeMenuBtn:nth-child(2){
+  background:linear-gradient(135deg,#68b7e9 0%,#78c1ee 100%);
+  border-color:#86c8ef;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuButtons .homeMenuBtn:nth-child(3){
+  background:linear-gradient(135deg,#8acaf0 0%,#99d1f3 100%);
+  border-color:#a8d8f5;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuButtons .homeMenuBtn:nth-child(4){
+  background:linear-gradient(135deg,#addcf5 0%,#bae2f7 100%);
+  border-color:#c2e6f8;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuButtons .homeMenuBtn:nth-child(5){
+  background:linear-gradient(135deg,#ccebf9 0%,#d8f0fb 100%);
+  border-color:#d1edf9;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuButtons .homeMenuBtn:nth-child(6){
+  background:linear-gradient(135deg,#e0f3fc 0%,#e9f7fd 100%);
+  border-color:#dff3fb;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuButtons .homeMenuBtn:nth-child(7){
+  background:linear-gradient(135deg,#edf8fd 0%,#f7fcff 100%);
+  border-color:#e3f4fb;
+}
+
+/* 어두운 단계의 글씨는 흰색 계열 */
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn:nth-child(-n+3) .homeMenuBtnTitle,
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn:nth-child(-n+3) .homeMenuBtnTitle{
+  color:#ffffff;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn:nth-child(-n+3) .homeMenuBtnDesc,
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn:nth-child(-n+3) .homeMenuBtnDesc{
+  color:rgba(255,255,255,.90);
+}
+
+/* 중간 단계는 짙은 민트 계열 글씨 */
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn:nth-child(n+4) .homeMenuBtnTitle,
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn:nth-child(n+4) .homeMenuBtnTitle{
+  color:#155e58;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn:nth-child(n+4) .homeMenuBtnDesc,
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn:nth-child(n+4) .homeMenuBtnDesc{
+  color:#355f5a;
+}
+
+/* 터치/마우스 반응 */
+#homePanel .homeMenuSection:not(.adminOnly) .homeMenuBtn{
+  transition:transform .12s ease, box-shadow .16s ease, filter .16s ease;
+}
+#homePanel .homeMenuSection:not(.adminOnly) .homeMenuBtn:hover{
+  filter:brightness(1.025);
+  box-shadow:0 6px 15px rgba(15,118,110,.12);
+}
+
+
+/* 새정이마을 스카이블루 그룹의 밝은 단계 글자색 */
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn:nth-child(n+4) .homeMenuBtnTitle{
+  color:#245b78;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn:nth-child(n+4) .homeMenuBtnDesc{
+  color:#486d82;
+}
+
+
+/* 전체 메뉴 박스 오른쪽 클릭 어포던스 */
+#homePanel .homeMenuBtn{
+  position:relative;
+  padding-right:54px !important;
+}
+#homePanel .homeMenuBtn::after{
+  content:"›";
+  position:absolute;
+  right:14px;
+  top:50%;
+  transform:translateY(-50%);
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:23px;
+  line-height:1;
+  font-weight:500;
+  background:rgba(255,255,255,.72);
+  border:1px solid rgba(15,118,110,.20);
+  color:#0f766e;
+  box-shadow:0 2px 7px rgba(15,23,42,.08);
+  transition:transform .15s ease, background .15s ease, box-shadow .15s ease;
+}
+#homePanel .homeMenuBtn:hover::after,
+#homePanel .homeMenuBtn:focus-visible::after{
+  transform:translate(3px,-50%);
+  box-shadow:0 3px 10px rgba(15,23,42,.14);
+}
+#homePanel .homeMenuBtn:active::after{
+  transform:translate(5px,-50%);
+}
+
+/* 어두운 민트/스카이블루 박스에서는 흰색 계열 화살표 */
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn:nth-child(-n+3)::after,
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn:nth-child(-n+3)::after{
+  background:rgba(255,255,255,.18);
+  border-color:rgba(255,255,255,.38);
+  color:#ffffff;
+  box-shadow:0 2px 7px rgba(0,0,0,.10);
+}
+
+/* 관리자 메뉴는 기존 흰 배경에 맞춘 민트 화살표 */
+#homePanel .homeMenuSection.adminOnly .homeMenuBtn::after{
+  background:#eef9f6;
+  border-color:#cbe8e1;
+  color:#0f766e;
+}
+
+@media(max-width:640px){
+  #homePanel .homeMenuBtn{
+    padding-right:48px !important;
+  }
+  #homePanel .homeMenuBtn::after{
+    right:11px;
+    width:26px;
+    height:26px;
+    font-size:21px;
+  }
 }
 
 </style>
