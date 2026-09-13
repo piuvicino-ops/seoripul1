@@ -1514,6 +1514,98 @@ body #appMain .currentMenuChild.saejeongiMenuChild{
   font-size:16px !important;
 }
 
+
+/* 첫 번째 묶음: 민트 → 라이트 민트 */
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuButtons .homeMenuBtn:nth-child(1){
+  background:linear-gradient(135deg,#2FAF8F 0%,#43B99F 100%) !important;
+  border-color:#43B99F !important;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuButtons .homeMenuBtn:nth-child(2){
+  background:linear-gradient(135deg,#55C1A8 0%,#68C9B2 100%) !important;
+  border-color:#72CCB8 !important;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuButtons .homeMenuBtn:nth-child(3){
+  background:linear-gradient(135deg,#82D2BF 0%,#98DACA 100%) !important;
+  border-color:#9EDBCB !important;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuButtons .homeMenuBtn:nth-child(4){
+  background:linear-gradient(135deg,#B2E2D6 0%,#C6EADF 100%) !important;
+  border-color:#C2E7DD !important;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuButtons .homeMenuBtn:nth-child(5){
+  background:linear-gradient(135deg,#D9F0EA 0%,#ECF8F5 100%) !important;
+  border-color:#D7EFE9 !important;
+}
+
+/* 첫 2개는 흰 글씨, 이후는 진한 민트 글씨 */
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn:nth-child(-n+2) .homeMenuBtnTitle{
+  color:#ffffff !important;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn:nth-child(-n+2) .homeMenuBtnDesc{
+  color:rgba(255,255,255,.92) !important;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn:nth-child(n+3) .homeMenuBtnTitle{
+  color:#155E58 !important;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn:nth-child(n+3) .homeMenuBtnDesc{
+  color:#356B63 !important;
+}
+
+/* 화살표도 밝기에 맞춤 */
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn:nth-child(-n+2)::after{
+  color:#ffffff !important;
+  background:rgba(255,255,255,.18) !important;
+  border-color:rgba(255,255,255,.48) !important;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn:nth-child(n+3)::after{
+  color:#0F766E !important;
+  background:rgba(255,255,255,.62) !important;
+  border-color:rgba(255,255,255,.72) !important;
+}
+
+
+/* 전체 메뉴 두 묶음: 제목/설명 글씨를 모두 검정 계열로 통일 */
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn .homeMenuBtnTitle,
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn .homeMenuBtnTitle{
+  color:#111827 !important;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn .homeMenuBtnDesc,
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn .homeMenuBtnDesc{
+  color:#374151 !important;
+}
+
+/* 클릭 화살표도 검정 계열로 통일 */
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn::after,
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn::after{
+  color:#1f2937 !important;
+  background:rgba(255,255,255,.58) !important;
+  border-color:rgba(255,255,255,.72) !important;
+}
+
+
+/* 첫 번째(민트) 묶음 글씨를 검정으로 확실히 고정 */
+#homePanel .homeMenuGrid > .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn .homeMenuBtnTitle,
+#homePanel .homeMenuGrid > .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn span.homeMenuBtnTitle{
+  color:#111111 !important;
+}
+#homePanel .homeMenuGrid > .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn .homeMenuBtnDesc,
+#homePanel .homeMenuGrid > .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn span.homeMenuBtnDesc{
+  color:#2f343a !important;
+}
+
+
+/* 전체 메뉴 박스 안의 메뉴 제목 강조 해제 */
+#homePanel .homeMenuBtn .homeMenuBtnTitle{
+  font-weight:400 !important;
+}
+
+
+/* 전체 메뉴 박스 안의 메뉴 제목을 한 단계 크게 */
+#homePanel .homeMenuBtn .homeMenuBtnTitle{
+  font-size:14px !important;
+  font-weight:400 !important;
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
