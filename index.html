@@ -229,7 +229,90 @@
 .lhQualExtra b{color:#344054}
 @media(max-width:560px){.lhQualHeader{display:block}.lhQualBadge{display:inline-block;margin-top:7px}.lhQualGrid,.lhQualStatus{grid-template-columns:1fr}.lhQualIntro{font-size:11.6px}.lhQualResult .resultMain{font-size:17px}}
 
-</style></head><body><main class="wrap"><header class="header"><h1>새정이마을 주민대책위원회</h1><p class="mainIntroNotice" id="mainIntroNotice">주민들의 재산권 보호를 위한 위원회 활동과 정보를 담고 있습니다. 일부 정보는 추측과 예상 정보를 다루고 있으니 <span style="color:#d92d20;font-weight:800;">참고용으로 활용하시고, 구체적인 부분은 본인이 직접 확인하여 판단하실 것을 당부드립니다.</span></p></header>
+/* 회원 인증 */
+.authShell{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px 16px;background:linear-gradient(160deg,#eef7f5 0%,#f7f9fc 55%,#eef2ff 100%)}
+.authWrap{width:100%;max-width:430px}.authBrand{text-align:center;margin-bottom:16px}
+.authBrand h1{font-size:23px;line-height:1.35;margin:0 0 6px;letter-spacing:-.5px}.authBrand p{font-size:12px;line-height:1.6;color:#667085;margin:0}.authCard{background:#fff;border:1px solid #dfe4ea;border-radius:20px;padding:20px;box-shadow:0 16px 38px rgba(17,24,39,.09)}
+.authTitle{font-size:19px;font-weight:950;letter-spacing:-.3px;margin:0 0 5px}.authDesc{font-size:11.8px;line-height:1.65;color:#667085;margin:0 0 16px}.authForm{display:grid;gap:11px}.authField{display:grid;gap:6px}.authField label{font-size:11.5px;font-weight:900;color:#344054}.authField input{width:100%;border:1px solid #d0d5dd;border-radius:12px;background:#fff;color:#172033;padding:12px 13px;font:inherit;font-size:13px;min-height:44px;outline:none}.authField input:focus{border-color:#087f6b;box-shadow:0 0 0 3px rgba(8,127,107,.11)}
+.authHint{font-size:10.5px;line-height:1.55;color:#667085}.authRemember{display:flex;align-items:center;gap:7px;font-size:11.5px;color:#475467;font-weight:750;cursor:pointer;user-select:none}.authRemember input{width:16px;height:16px;accent-color:#087f6b}.authBtn{width:100%;border:0;border-radius:12px;padding:12px 14px;min-height:45px;font-size:13px;font-weight:950;cursor:pointer}.authBtn.primary{background:#087f6b;color:#fff}.authBtn.primary:disabled{opacity:.55;cursor:not-allowed}.authBtn.secondary{background:#f2f4f7;color:#344054}.authLinks{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:13px}.authLink{border:0;background:transparent;color:#3659b8;font-size:11.5px;font-weight:850;cursor:pointer;padding:4px 2px}.authDivider{color:#c3c8d0;font-size:11px;padding-top:4px}
+.authMessage{display:none;margin-top:12px;padding:11px 12px;border-radius:11px;font-size:11.5px;line-height:1.6}.authMessage.show{display:block}.authMessage.info{background:#eef4ff;border:1px solid #d7e2f7;color:#405273}.authMessage.success{background:#eef8f3;border:1px solid #cae9db;color:#245b47}.authMessage.error{background:#fff3f3;border:1px solid #f0cccc;color:#8a2f2f}.authSetupNotice{margin:0 0 13px;padding:10px 11px;border-radius:11px;background:#fff8e7;border:1px solid #efdfa9;color:#6b571d;font-size:10.7px;line-height:1.55}
+.authPrivacy{margin-top:14px;padding-top:12px;border-top:1px solid #eef0f3;font-size:10.2px;line-height:1.55;color:#7b8494;text-align:center}.authPendingIcon{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;background:#fff8e7;color:#946b16;font-size:24px}.authCenter{text-align:center}.authCenter .authDesc{margin-bottom:14px}.authView[hidden]{display:none!important}
+.memberBar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 13px;padding:10px 12px;border:1px solid #dfe5e9;border-radius:13px;background:#fff}.memberBarInfo{min-width:0}.memberBarName{font-size:11.7px;font-weight:900;color:#344054;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.memberBarSub{font-size:10px;color:#8a94a3;margin-top:2px}.memberLogout{flex:0 0 auto;border:1px solid #d0d5dd;border-radius:9px;background:#f8fafc;color:#475467;padding:7px 9px;font-size:10.5px;font-weight:850;cursor:pointer}
+@media(max-width:560px){.authShell{padding:20px 12px}.authCard{padding:17px;border-radius:17px}.authBrand h1{font-size:21px}.authTitle{font-size:18px}.authField input{font-size:16px}.memberBar{margin-bottom:11px}}
+
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+window.SAEJEONGI_AUTH_CONFIG={
+  supabaseUrl:"https://kymtpgsqdvvoapkvmcnj.supabase.co",
+  supabaseAnonKey:"sb_publishable_Hr6wBoO5Ogaw240lZfQfyA_XEk_zsK-"
+};
+</script>
+</head><body><div class="authShell" id="authShell">
+  <div class="authWrap">
+    <div class="authBrand">
+      <h1>새정이마을 주민대책위원회</h1>
+      <p>승인된 회원만 로그인할 수 있습니다.</p>
+    </div>
+    <div class="authCard">
+      <section class="authView" id="loginView">
+        <h2 class="authTitle">회원 로그인</h2>
+        <p class="authDesc">가입 승인된 회원은 아이디와 비밀번호로 로그인해 주세요.</p>
+        <div class="authSetupNotice" id="authSetupNotice" hidden>현재 인증 서버 설정이 완료되지 않았습니다. 아래 화면은 준비되어 있으며 Supabase 설정값을 입력하면 실제 회원가입·승인·로그인이 작동합니다.</div>
+        <form class="authForm" id="loginForm">
+          <div class="authField"><label for="loginUsername">아이디</label><input id="loginUsername" name="username" autocomplete="username" required placeholder="아이디 입력"/></div>
+          <div class="authField"><label for="loginPassword">비밀번호</label><input id="loginPassword" name="password" type="password" autocomplete="current-password" required placeholder="비밀번호 입력"/></div>
+          <label class="authRemember" for="rememberUsername"><input id="rememberUsername" type="checkbox"/> <span>아이디 저장</span></label>
+          <button class="authBtn primary" type="submit">로그인</button>
+        </form>
+        <div class="authLinks"><button class="authLink" data-auth-view="signupView" type="button">회원가입 신청</button><span class="authDivider">|</span><button class="authLink" data-auth-view="resetView" type="button">비밀번호 찾기</button></div>
+        <div class="authMessage" id="loginMessage" role="status"></div>
+      </section>
+
+      <section class="authView" id="signupView" hidden>
+        <h2 class="authTitle">회원가입 신청</h2>
+        <p class="authDesc">아래 정보를 모두 입력하면 관리자에게 승인 메일이 발송됩니다. 관리자 승인 후 로그인할 수 있습니다.</p>
+        <form class="authForm" id="signupForm">
+          <div class="authField"><label for="signupName">성명</label><input id="signupName" name="fullName" autocomplete="name" required placeholder="성명"/></div>
+          <div class="authField"><label for="signupParcel">새정이마을 소유 주택 지번</label><input id="signupParcel" name="parcelNo" required placeholder="예: 신원동 00-0"/></div>
+          <div class="authField"><label for="signupPhone">핸드폰번호</label><input id="signupPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="010-0000-0000"/></div>
+          <div class="authField"><label for="signupUsername">아이디</label><input id="signupUsername" name="username" autocomplete="username" minlength="4" maxlength="30" pattern="[A-Za-z0-9._-]{4,30}" required placeholder="영문·숫자 4~30자"/><div class="authHint">영문, 숫자, 마침표(.), 밑줄(_), 하이픈(-)만 사용할 수 있습니다.</div></div>
+          <div class="authField"><label for="signupPassword">비밀번호</label><input id="signupPassword" name="password" type="password" autocomplete="new-password" minlength="4" required placeholder="4자 이상"/></div>
+          <div class="authField"><label for="signupPassword2">비밀번호 확인</label><input id="signupPassword2" name="password2" type="password" autocomplete="new-password" minlength="4" required placeholder="비밀번호 다시 입력"/></div>
+          <button class="authBtn primary" type="submit">가입 승인 신청</button>
+        </form>
+        <div class="authLinks"><button class="authLink" data-auth-view="loginView" type="button">로그인으로 돌아가기</button></div>
+        <div class="authMessage" id="signupMessage" role="status"></div>
+      </section>
+
+      <section class="authView" id="resetView" hidden>
+        <h2 class="authTitle">비밀번호 찾기</h2>
+        <p class="authDesc">비밀번호는 보안상 확인해 드릴 수 없으며, 회원가입 당시 정보가 모두 일치하면 새 비밀번호로 재설정됩니다.</p>
+        <form class="authForm" id="resetForm">
+          <div class="authField"><label for="resetName">성명</label><input id="resetName" name="fullName" autocomplete="name" required placeholder="성명"/></div>
+          <div class="authField"><label for="resetParcel">주택 소유 지번</label><input id="resetParcel" name="parcelNo" required placeholder="회원가입 시 입력한 지번"/></div>
+          <div class="authField"><label for="resetPhone">연락처</label><input id="resetPhone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required placeholder="회원가입 시 입력한 연락처"/></div>
+          <div class="authField"><label for="resetPassword">새 비밀번호</label><input id="resetPassword" name="newPassword" type="password" autocomplete="new-password" minlength="4" required placeholder="4자 이상"/></div>
+          <div class="authField"><label for="resetPassword2">새 비밀번호 확인</label><input id="resetPassword2" name="newPassword2" type="password" autocomplete="new-password" minlength="4" required placeholder="새 비밀번호 다시 입력"/></div>
+          <button class="authBtn primary" type="submit">비밀번호 재설정</button>
+        </form>
+        <div class="authLinks"><button class="authLink" data-auth-view="loginView" type="button">로그인으로 돌아가기</button></div>
+        <div class="authMessage" id="resetMessage" role="status"></div>
+      </section>
+
+      <section class="authView authCenter" id="pendingView" hidden>
+        <div class="authPendingIcon">✓</div>
+        <h2 class="authTitle">가입 신청이 접수되었습니다</h2>
+        <p class="authDesc">관리자 <b>piuvicino@gmail.com</b>으로 승인 메일이 발송됩니다.<br/>메일에서 승인 후 로그인할 수 있습니다.</p>
+        <button class="authBtn secondary" data-auth-view="loginView" type="button">로그인 화면으로</button>
+      </section>
+      <div class="authPrivacy">회원정보는 가입 승인과 주민 확인을 위한 용도로만 사용하도록 구성했습니다.</div>
+    </div>
+  </div>
+</div>
+
+<main class="wrap" id="appMain" hidden>
+<div class="memberBar" id="memberBar"><div class="memberBarInfo"><div class="memberBarName" id="memberBarName">승인회원</div><div class="memberBarSub">새정이마을 주민대책위원회</div></div><button class="memberLogout" id="memberLogout" type="button">로그아웃</button></div><header class="header"><h1>새정이마을 주민대책위원회</h1><p class="mainIntroNotice" id="mainIntroNotice">주민들의 재산권 보호를 위한 위원회 활동과 정보를 담고 있습니다. 일부 정보는 추측과 예상 정보를 다루고 있으니 <span style="color:#d92d20;font-weight:800;">참고용으로 활용하시고, 구체적인 부분은 본인이 직접 확인하여 판단하실 것을 당부드립니다.</span></p></header>
 <nav aria-label="주요 메뉴" class="tabs" role="tablist">
 <button aria-controls="activityPanel" aria-selected="true" class="tabBtn active" data-tab="activityPanel" id="activityTab" role="tab" type="button">활동기록</button>
 <button aria-controls="lawsuitPanel" aria-selected="false" class="tabBtn" data-tab="lawsuitPanel" id="lawsuitTab" role="tab" type="button">행정소송</button>
@@ -1015,6 +1098,131 @@
 <button aria-label="맨 위로" class="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" type="button">↑</button>
 <script>
 (function(){
+  // 회원가입 · 승인 · 로그인
+  const AUTH_CONFIG=window.SAEJEONGI_AUTH_CONFIG||{};
+  const authShell=document.getElementById('authShell');
+  const appMain=document.getElementById('appMain');
+  const memberBarName=document.getElementById('memberBarName');
+  const memberLogout=document.getElementById('memberLogout');
+  const authSetupNotice=document.getElementById('authSetupNotice');
+  const authViews=[...document.querySelectorAll('.authView')];
+  const hasAuthConfig=Boolean(AUTH_CONFIG.supabaseUrl && AUTH_CONFIG.supabaseAnonKey && window.supabase);
+  const sb=hasAuthConfig?window.supabase.createClient(AUTH_CONFIG.supabaseUrl,AUTH_CONFIG.supabaseAnonKey):null;
+  const REMEMBER_ID_KEY='saejeongi.rememberedUsername';
+  const loginUsernameInput=document.getElementById('loginUsername');
+  const rememberUsernameInput=document.getElementById('rememberUsername');
+  const restoreRememberedUsername=()=>{
+    try{
+      const saved=localStorage.getItem(REMEMBER_ID_KEY)||'';
+      if(loginUsernameInput) loginUsernameInput.value=saved;
+      if(rememberUsernameInput) rememberUsernameInput.checked=Boolean(saved);
+    }catch{}
+  };
+
+  const showAuthView=(id)=>{authViews.forEach(v=>v.hidden=v.id!==id);};
+  document.querySelectorAll('[data-auth-view]').forEach(btn=>btn.addEventListener('click',()=>showAuthView(btn.dataset.authView)));
+  if(authSetupNotice) authSetupNotice.hidden=hasAuthConfig;
+
+  const showMessage=(id,text,type='info')=>{
+    const el=document.getElementById(id); if(!el) return;
+    el.className=`authMessage show ${type}`; el.textContent=text;
+  };
+  const clearMessage=(id)=>{const el=document.getElementById(id);if(el){el.className='authMessage';el.textContent='';}};
+  const normalizePhone=(v)=>String(v||'').replace(/\D/g,'');
+  const normalizeUsername=(v)=>String(v||'').trim().toLowerCase();
+  const toAuthPassword=(v)=>{const p=String(v||'');return p.length>=8?p:p+'SJM!';};
+  const memberEmail=(username)=>`${normalizeUsername(username)}@members.saejeongi.local`;
+  const fnUrl=(name)=>`${AUTH_CONFIG.supabaseUrl}/functions/v1/${name}`;
+  const callPublicFunction=async(name,payload={},accessToken='')=>{
+    const headers={'Content-Type':'application/json','apikey':AUTH_CONFIG.supabaseAnonKey};
+    if(accessToken) headers['Authorization']=`Bearer ${accessToken}`;
+    const res=await fetch(fnUrl(name),{method:'POST',headers,body:JSON.stringify(payload)});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok) throw new Error(data.error||'요청 처리 중 오류가 발생했습니다.');
+    return data;
+  };
+  const setAppSignedIn=(profile)=>{
+    authShell.hidden=true; appMain.hidden=false;
+    memberBarName.textContent=profile?.full_name?`${profile.full_name}님 · 승인회원`:'승인회원';
+    window.scrollTo({top:0,behavior:'auto'});
+  };
+  const setAppSignedOut=()=>{appMain.hidden=true;authShell.hidden=false;showAuthView('loginView');restoreRememberedUsername();};
+
+  const checkApprovedSession=async()=>{
+    if(!sb){setAppSignedOut();return;}
+    const {data:{session}}=await sb.auth.getSession();
+    if(!session){setAppSignedOut();return;}
+    try{
+      const result=await callPublicFunction('member-session',{},session.access_token);
+      if(!result?.profile||result.profile.status!=='approved') throw new Error('승인된 회원만 로그인할 수 있습니다.');
+      setAppSignedIn(result.profile);
+    }catch(err){
+      await sb.auth.signOut();
+      setAppSignedOut();
+      showMessage('loginMessage',err.message||'로그인 상태를 확인할 수 없습니다.','error');
+    }
+  };
+
+  const loginForm=document.getElementById('loginForm');
+  if(loginForm) loginForm.addEventListener('submit',async(e)=>{
+    e.preventDefault(); clearMessage('loginMessage');
+    if(!sb){showMessage('loginMessage','인증 서버 설정이 필요합니다. 함께 제공된 설치 안내의 Supabase 설정값을 먼저 입력해 주세요.','info');return;}
+    const btn=loginForm.querySelector('button[type="submit"]'); btn.disabled=true;
+    try{
+      const fd=new FormData(loginForm); const username=normalizeUsername(fd.get('username')); const rawPassword=String(fd.get('password')||''); const password=toAuthPassword(rawPassword);
+      const result=await callPublicFunction('member-login',{username,password});
+      if(!result?.session?.access_token||!result?.session?.refresh_token) throw new Error('로그인 세션을 확인할 수 없습니다.');
+      if(!result?.profile||result.profile.status!=='approved') throw new Error('승인된 회원정보를 확인할 수 없습니다.');
+      const {error:setErr}=await sb.auth.setSession({access_token:result.session.access_token,refresh_token:result.session.refresh_token});
+      if(setErr) throw new Error('로그인 세션 저장에 실패했습니다.');
+      try{
+        if(rememberUsernameInput?.checked) localStorage.setItem(REMEMBER_ID_KEY,username);
+        else localStorage.removeItem(REMEMBER_ID_KEY);
+      }catch{}
+      loginForm.reset(); setAppSignedIn(result.profile);
+    }catch(err){showMessage('loginMessage',err.message||'로그인에 실패했습니다.','error');}
+    finally{btn.disabled=false;}
+  });
+
+  const signupForm=document.getElementById('signupForm');
+  if(signupForm) signupForm.addEventListener('submit',async(e)=>{
+    e.preventDefault(); clearMessage('signupMessage');
+    if(!hasAuthConfig){showMessage('signupMessage','인증 서버 설정이 필요합니다. Supabase 설정 후 실제 신청이 접수됩니다.','info');return;}
+    const fd=new FormData(signupForm); const username=normalizeUsername(fd.get('username')); const rawPassword=String(fd.get('password')||''); const password2=String(fd.get('password2')||'');
+    if(!/^[a-z0-9._-]{4,30}$/.test(username)){showMessage('signupMessage','아이디는 영문·숫자·마침표·밑줄·하이픈으로 4~30자 입력해 주세요.','error');return;}
+    if(rawPassword.length<4){showMessage('signupMessage','비밀번호는 4자 이상 입력해 주세요.','error');return;}
+    if(rawPassword!==password2){showMessage('signupMessage','비밀번호 확인이 일치하지 않습니다.','error');return;}
+    const password=toAuthPassword(rawPassword);
+    const btn=signupForm.querySelector('button[type="submit"]'); btn.disabled=true;
+    try{
+      await callPublicFunction('member-signup',{full_name:String(fd.get('fullName')||'').trim(),parcel_number:String(fd.get('parcelNo')||'').trim(),phone:normalizePhone(fd.get('phone')),username,password});
+      signupForm.reset(); showAuthView('pendingView');
+    }catch(err){showMessage('signupMessage',err.message||'가입 신청에 실패했습니다.','error');}
+    finally{btn.disabled=false;}
+  });
+
+  const resetForm=document.getElementById('resetForm');
+  if(resetForm) resetForm.addEventListener('submit',async(e)=>{
+    e.preventDefault(); clearMessage('resetMessage');
+    if(!hasAuthConfig){showMessage('resetMessage','인증 서버 설정이 필요합니다. Supabase 설정 후 비밀번호 재설정이 작동합니다.','info');return;}
+    const fd=new FormData(resetForm); const p1=String(fd.get('newPassword')||''); const p2=String(fd.get('newPassword2')||'');
+    if(p1.length<4){showMessage('resetMessage','새 비밀번호는 4자 이상 입력해 주세요.','error');return;}
+    if(p1!==p2){showMessage('resetMessage','새 비밀번호 확인이 일치하지 않습니다.','error');return;}
+    const authPassword=toAuthPassword(p1);
+    const btn=resetForm.querySelector('button[type="submit"]');btn.disabled=true;
+    try{
+      await callPublicFunction('member-reset-password',{full_name:String(fd.get('fullName')||'').trim(),parcel_number:String(fd.get('parcelNo')||'').trim(),phone:normalizePhone(fd.get('phone')),new_password:authPassword});
+      resetForm.reset(); showMessage('resetMessage','비밀번호가 재설정되었습니다. 새 비밀번호로 로그인해 주세요.','success');
+      setTimeout(()=>showAuthView('loginView'),900);
+    }catch(err){showMessage('resetMessage',err.message||'비밀번호 재설정에 실패했습니다.','error');}
+    finally{btn.disabled=false;}
+  });
+
+  if(memberLogout) memberLogout.addEventListener('click',async()=>{if(sb) await sb.auth.signOut();setAppSignedOut();});
+  restoreRememberedUsername();
+  checkApprovedSession();
+
+
   const buttons=[...document.querySelectorAll('.tabBtn')];
   const panels=[...document.querySelectorAll('.tabPanel')];
   buttons.forEach(btn=>btn.addEventListener('click',()=>{
