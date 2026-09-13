@@ -878,6 +878,634 @@
   }
 }
 
+
+/* ===== 모바일 첫 화면 디자인 정돈 ===== */
+
+/* 1. 상단 회원바를 조금 더 컴팩트하게 */
+.memberBar.appTopBar{
+  gap:8px;
+  padding:8px 10px;
+  margin-bottom:9px;
+  border-radius:12px;
+}
+.memberBarName{
+  font-size:11.2px;
+  font-weight:850;
+}
+.memberBarSub{
+  font-size:9.2px;
+  margin-top:1px;
+}
+.sideMenuOpen,
+.memberHome{
+  width:34px;
+  height:34px;
+  border-radius:9px;
+}
+.sideMenuOpen{font-size:20px}
+.memberHome svg{width:16px;height:16px}
+.memberLogout{
+  min-height:34px;
+  padding:6px 9px;
+  border-radius:9px;
+  font-size:10px;
+}
+.memberBarActions{gap:5px}
+
+/* 2. 참고 안내문은 중요하지만 메뉴보다 먼저 튀지 않도록 완화 */
+.mainIntroNotice{
+  margin-top:5px;
+  padding:0 10px;
+  font-size:11px;
+  line-height:1.58;
+}
+.mainIntroNotice span{
+  color:#9a5c56 !important;
+  font-weight:400 !important;
+}
+.currentMenuTitle{
+  margin-top:10px;
+  margin-bottom:3px;
+}
+.header{margin-bottom:15px}
+
+/* 3. 그룹 카드의 바깥 장식은 한 단계 덜어냄 */
+#homePanel .homeMenuSection{
+  padding:13px;
+  border:1px solid #e7eceb;
+  border-radius:15px;
+  box-shadow:0 2px 9px rgba(15,23,42,.035);
+}
+
+/* 4. 그룹 제목은 각 색상 계열과 연결 */
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuSectionTitle{
+  color:#0f766e;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuSectionTitle{
+  color:#3387bd;
+}
+#homePanel .homeMenuSectionTitle{
+  margin-bottom:10px;
+  font-size:16.5px;
+  font-weight:650;
+  letter-spacing:-.2px;
+}
+
+/* 5. 메뉴 카드 높이와 내부 간격 축소 */
+#homePanel .homeMenuButtons{
+  gap:7px;
+}
+#homePanel .homeMenuBtn{
+  min-height:59px;
+  padding-top:8px;
+  padding-bottom:8px;
+  padding-left:11px;
+  gap:2px;
+  border-radius:11px;
+}
+#homePanel .homeMenuBtnTitle{
+  font-size:12.8px;
+  line-height:1.35;
+  font-weight:750;
+}
+#homePanel .homeMenuBtnDesc{
+  font-size:10.7px;
+  line-height:1.45;
+}
+
+/* 6. 그라데이션의 끝단이 지나치게 희어지지 않도록 톤 보정 */
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn:nth-child(4){
+  background:linear-gradient(135deg,#9fcfc6 0%,#b2dcd4 100%);
+  border-color:#afd9d1;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn:nth-child(5){
+  background:linear-gradient(135deg,#c4e5de 0%,#d9eee9 100%);
+  border-color:#c5e5df;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn:nth-child(5){
+  background:linear-gradient(135deg,#c5e7f8 0%,#d4eefb 100%);
+  border-color:#cae9f8;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn:nth-child(6){
+  background:linear-gradient(135deg,#d4eefb 0%,#e1f4fc 100%);
+  border-color:#d7effa;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn:nth-child(7){
+  background:linear-gradient(135deg,#e2f4fc 0%,#edf8fd 100%);
+  border-color:#e0f3fb;
+}
+
+/* 7. 오른쪽 클릭 어포던스를 모든 카드에서 같은 형태로 통일 */
+#homePanel .homeMenuBtn::after,
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn:nth-child(-n+3)::after,
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn:nth-child(-n+3)::after,
+#homePanel .homeMenuSection.adminOnly .homeMenuBtn::after{
+  right:11px;
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  font-size:20px;
+  font-weight:600;
+  background:rgba(255,255,255,.62);
+  border:1px solid rgba(255,255,255,.68);
+  box-shadow:0 2px 6px rgba(15,23,42,.08);
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn:nth-child(-n+3)::after,
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn:nth-child(-n+3)::after{
+  color:#fff;
+  background:rgba(255,255,255,.16);
+  border-color:rgba(255,255,255,.48);
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(1) .homeMenuBtn:nth-child(n+4)::after{
+  color:#0f766e;
+}
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn:nth-child(n+4)::after{
+  color:#2876a3;
+}
+#homePanel .homeMenuBtn:hover::after,
+#homePanel .homeMenuBtn:focus-visible::after{
+  transform:translate(2px,-50%);
+}
+
+/* 8. 터치 화면에서는 과한 hover 그림자를 억제 */
+@media(hover:none){
+  #homePanel .homeMenuSection:not(.adminOnly) .homeMenuBtn:hover{
+    filter:none;
+    box-shadow:none;
+  }
+}
+
+@media(max-width:640px){
+  .wrap{padding-top:15px}
+  #homePanel .homeMenuSection{padding:12px}
+  #homePanel .homeMenuBtn{
+    min-height:58px;
+    padding-right:46px !important;
+  }
+  #homePanel .homeMenuBtnTitle{font-size:12.7px}
+  #homePanel .homeMenuBtnDesc{font-size:10.6px}
+  .currentMenuChild{font-size:21px}
+}
+
+
+/* ===== 행정소송 화면 디자인 정돈 ===== */
+
+/* 상단 참고문구: 의미는 유지하되 시각적 우선순위 완화 */
+#lawsuitPanel ~ *{} /* selector anchor */
+body:has(#lawsuitPanel.active) .mainIntroNotice{
+  font-size:10.6px;
+  line-height:1.52;
+  padding-left:18px;
+  padding-right:18px;
+}
+body:has(#lawsuitPanel.active) .mainIntroNotice span{
+  color:#8f6965 !important;
+  font-weight:400 !important;
+}
+
+/* 현재 위치 표시: 부모는 한 단계 더 작고 연하게 */
+body:has(#lawsuitPanel.active) .currentMenuTitle{
+  gap:6px;
+  margin-top:8px;
+  margin-bottom:8px;
+}
+body:has(#lawsuitPanel.active) .currentMenuParent{
+  font-size:16px !important;
+  color:#7a8492 !important;
+  font-weight:500 !important;
+}
+body:has(#lawsuitPanel.active) .currentMenuSep{
+  margin:0 1px;
+  color:#a8b0bb !important;
+}
+body:has(#lawsuitPanel.active) .currentMenuChild{
+  font-size:21px !important;
+  color:#0f766e !important;
+  font-weight:650 !important;
+}
+
+/* 메인 사건 카드: 조금 더 조밀하고 차분하게 */
+#lawsuitPanel .lawHero{
+  padding:15px;
+  border-radius:16px;
+  border-color:#e2e8ee;
+  background:linear-gradient(135deg,#f7f9fd 0%,#ffffff 55%,#f3faf7 100%);
+  box-shadow:0 2px 8px rgba(15,23,42,.025);
+  margin-bottom:12px;
+}
+
+/* 사건번호를 작은 법원정보 배지로 */
+#lawsuitPanel .lawHero .eyebrow{
+  display:inline-flex;
+  align-items:center;
+  width:auto;
+  margin:0 0 9px;
+  padding:5px 9px;
+  border-radius:999px;
+  background:#edf4ff;
+  border:1px solid #d8e6fb;
+  color:#3568a8;
+  font-size:10.4px;
+  line-height:1.2;
+  font-weight:750;
+  letter-spacing:-.1px;
+}
+
+#lawsuitPanel .lawHero h2{
+  margin-bottom:7px;
+  font-size:18px;
+  line-height:1.38;
+  letter-spacing:-.35px;
+}
+#lawsuitPanel .lawHero > p{
+  font-size:11.9px;
+  line-height:1.66;
+  color:#566172;
+}
+
+/* 원고·피고·청구·핵심공방: 카드 안의 카드 느낌 완화 */
+#lawsuitPanel .lawCaseGrid{
+  gap:7px;
+  margin-top:11px;
+}
+#lawsuitPanel .lawCaseBox{
+  padding:9px 11px;
+  border-radius:11px;
+  border-color:#e4ebe9;
+  background:rgba(255,255,255,.82);
+  box-shadow:none;
+}
+#lawsuitPanel .lawCaseBox .k{
+  margin-bottom:3px;
+  font-size:10px;
+  color:#7a8493;
+  font-weight:700;
+}
+#lawsuitPanel .lawCaseBox .v{
+  font-size:12px;
+  line-height:1.42;
+  color:#243142;
+  font-weight:800;
+}
+
+/* 읽기 안내는 더 옅은 크림톤으로 */
+#lawsuitPanel .lawNotice{
+  margin-top:10px;
+  padding:10px 11px;
+  border-radius:11px;
+  background:#fffaf0;
+  border-color:#eee4c8;
+  color:#716242;
+  font-size:11px;
+  line-height:1.6;
+}
+
+/* 아래 본문 카드도 조금 가볍게 */
+#lawsuitPanel > .card{
+  border-color:#e6ebe9;
+  box-shadow:0 2px 9px rgba(15,23,42,.025);
+}
+#lawsuitPanel .lawSectionTitle{
+  font-size:16px;
+  margin-bottom:9px;
+}
+
+/* 맨 위로 버튼: 본문을 덜 가리게 */
+.toTop{
+  right:14px;
+  bottom:18px;
+  width:34px;
+  height:34px;
+  font-size:17px;
+  border-color:#d4dce4;
+  box-shadow:0 2px 7px rgba(15,23,42,.07);
+}
+
+/* 워터마크: 식별성은 유지하고 시각적 간섭은 감소 */
+.memberWatermarkGrid{
+  grid-auto-rows:155px;
+  gap:28px 50px;
+}
+.memberWatermarkItem{
+  font-size:14px;
+  color:rgba(15,118,110,.13);
+  font-weight:600;
+}
+@media(max-width:640px){
+  .memberWatermarkGrid{
+    inset:-22vh -62vw;
+    grid-template-columns:repeat(2,minmax(260px,1fr));
+    grid-auto-rows:145px;
+    gap:24px 34px;
+  }
+  .memberWatermarkItem{
+    font-size:12.5px;
+    color:rgba(15,118,110,.14);
+  }
+
+  #lawsuitPanel .lawHero{
+    padding:14px;
+  }
+  #lawsuitPanel .lawCaseBox{
+    padding:8px 10px;
+  }
+  #lawsuitPanel .lawHero h2{
+    font-size:17.5px;
+  }
+  .toTop{
+    right:12px;
+    bottom:18px;
+    width:33px;
+    height:33px;
+  }
+}
+
+
+/* ===== 왼쪽 슬라이드 메뉴 디자인 개선 ===== */
+.sideMenuDrawer{
+  width:min(84vw,324px);
+  background:#fbfcfd;
+  padding:max(16px,env(safe-area-inset-top)) 13px 22px;
+}
+
+.sideMenuHeader{
+  padding:1px 2px 11px;
+  margin-bottom:3px;
+  border-bottom:1px solid #edf0f2;
+}
+
+.menuGroups{
+  gap:18px;
+  margin-top:13px;
+}
+
+.sideMenuDrawer .menuGroup{
+  padding:0;
+}
+
+.sideMenuDrawer .menuGroupTitle{
+  margin:0 0 8px;
+  padding:0 5px 8px;
+  border-bottom:1px solid #edf0f2;
+  font-size:14px;
+  line-height:1.25;
+  font-weight:800;
+  letter-spacing:-.15px;
+  color:#0f766e;
+}
+
+/* 새정이마을 그룹 제목은 선택색과 연결되는 스카이블루 */
+.sideMenuDrawer #saejeongiMenuTitle{
+  color:#3387bd;
+}
+
+/* 관리자 영역은 콘텐츠 메뉴와 시각적으로 분리 */
+.sideMenuDrawer #adminMenuGroup{
+  margin-top:1px;
+  padding-top:2px;
+}
+.sideMenuDrawer #adminMenuTitle{
+  color:#667085;
+}
+.sideMenuDrawer #adminMenuTitle::before{
+  content:"⚙ ";
+  font-size:12px;
+  opacity:.72;
+}
+
+.sideMenuDrawer .menuGroupTabs{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:5px;
+}
+
+/* 공통 메뉴 버튼: 더 낮고 가볍게 */
+.sideMenuDrawer .menuGroupTabs .tabBtn,
+.sideMenuDrawer .menuGroupTabs .districtTabBtn{
+  position:relative;
+  width:100%;
+  min-height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  text-align:left;
+  padding:8px 34px 8px 12px;
+  border:1px solid #e9edf0;
+  border-radius:9px;
+  background:#fff;
+  color:#475467;
+  box-shadow:none;
+  font-size:12.2px;
+  line-height:1.25;
+  font-weight:720;
+  transition:background .15s ease,border-color .15s ease,color .15s ease,transform .12s ease;
+}
+
+/* 오른쪽 작은 chevron: 클릭 가능한 메뉴라는 어포던스 */
+.sideMenuDrawer .menuGroupTabs .tabBtn::after,
+.sideMenuDrawer .menuGroupTabs .districtTabBtn::after{
+  content:"›";
+  position:absolute;
+  right:12px;
+  top:50%;
+  transform:translateY(-51%);
+  color:#a5adb8;
+  font-size:18px;
+  line-height:1;
+  font-weight:500;
+}
+
+/* 서리풀1지구 선택: 연한 민트 + 왼쪽 민트 바 */
+.sideMenuDrawer .seoripulTabs .districtTabBtn.active{
+  background:#eef9f6 !important;
+  color:#0f766e !important;
+  border-color:#cde9e2 !important;
+  box-shadow:inset 4px 0 0 #0f8b78 !important;
+  padding-left:15px;
+}
+.sideMenuDrawer .seoripulTabs .districtTabBtn.active::after{
+  color:#0f8b78;
+}
+
+/* 새정이마을 선택: 스카이블루 + 왼쪽 블루 바 */
+.sideMenuDrawer nav[aria-label="새정이마을 메뉴"] .tabBtn.active{
+  background:#edf8fe !important;
+  color:#2879aa !important;
+  border-color:#cde8f7 !important;
+  box-shadow:inset 4px 0 0 #4aa3df !important;
+  padding-left:15px;
+}
+.sideMenuDrawer nav[aria-label="새정이마을 메뉴"] .tabBtn.active::after{
+  color:#3b94ca;
+}
+
+/* 관리자 선택은 중립적인 연민트 */
+.sideMenuDrawer nav[aria-label="관리자 메뉴"] .tabBtn.active{
+  background:#f1f8f6 !important;
+  color:#37675e !important;
+  border-color:#dceae6 !important;
+  box-shadow:inset 4px 0 0 #79aa9f !important;
+  padding-left:15px;
+}
+.sideMenuDrawer nav[aria-label="관리자 메뉴"] .tabBtn.active::after{
+  color:#6d9f94;
+}
+
+.sideMenuDrawer .menuGroupTabs .tabBtn:active,
+.sideMenuDrawer .menuGroupTabs .districtTabBtn:active{
+  transform:translateX(1px);
+}
+
+@media(hover:hover){
+  .sideMenuDrawer .menuGroupTabs .tabBtn:not(.active):hover,
+  .sideMenuDrawer .menuGroupTabs .districtTabBtn:not(.active):hover{
+    background:#f8fafb;
+    border-color:#dfe5e9;
+  }
+}
+
+@media(max-width:560px){
+  .sideMenuDrawer{
+    width:min(88vw,318px);
+    padding-left:12px;
+    padding-right:12px;
+  }
+  .sideMenuDrawer .menuGroupTabs .tabBtn,
+  .sideMenuDrawer .menuGroupTabs .districtTabBtn{
+    min-height:37px;
+    padding-top:7px;
+    padding-bottom:7px;
+    font-size:12px;
+  }
+  .sideMenuDrawer .menuGroupTitle{
+    font-size:13.7px;
+  }
+}
+
+
+/* 새정이마을 하위 페이지: 선택된 메뉴 제목만 스카이블루 */
+body #appMain .currentMenuChild.saejeongiMenuChild{
+  color:#3387bd !important;
+}
+
+
+/* ===== 새정이마을 하위 페이지: 민트 강조색 → 스카이블루 ===== */
+
+/* 공통 스카이블루 팔레트 */
+#activityPanel,
+#lawsuitPanel,
+#lhPolicyPanel,
+#compensationPanel,
+#preparationPanel,
+#relocationPanel,
+#aptPanel{
+  --sae-sky:#4aa3df;
+  --sae-sky-dark:#3387bd;
+  --sae-sky-deep:#2879aa;
+  --sae-sky-soft:#edf8fe;
+  --sae-sky-soft2:#e4f3fc;
+  --sae-sky-line:#c9e6f7;
+}
+
+/* 대책위원회 활동기록 */
+#activityPanel .timelineDot{
+  background:var(--sae-sky) !important;
+  border-color:#e4f4fc !important;
+}
+#activityPanel .activityPhase{
+  background:var(--sae-sky-soft) !important;
+  color:var(--sae-sky-deep) !important;
+}
+#activityPanel .card[style*="border-left"]{
+  border-left-color:var(--sae-sky) !important;
+}
+
+/* 행정소송 */
+#lawsuitPanel .lawHero{
+  background:linear-gradient(135deg,#f5f9fe 0%,#ffffff 55%,#edf8fe 100%) !important;
+}
+#lawsuitPanel .lawStep.plaintiff .lawDot{
+  background:var(--sae-sky) !important;
+  border-color:#e4f4fc !important;
+}
+#lawsuitPanel .issueTable .p{
+  color:var(--sae-sky-deep) !important;
+}
+
+/* LH 이주정책 */
+#lhPolicyPanel .lhPolicyHero{
+  border-color:var(--sae-sky-line) !important;
+  background:linear-gradient(135deg,#edf8fe 0%,#ffffff 62%,#eef4ff 100%) !important;
+}
+#lhPolicyPanel .lhPolicyHero .eyebrow{
+  color:var(--sae-sky-deep) !important;
+}
+#lhPolicyPanel .lhQualCard{
+  border-color:var(--sae-sky-line) !important;
+}
+#lhPolicyPanel .lhQualBadge,
+#lhPolicyPanel .lhQualFixedDate .fixed{
+  background:var(--sae-sky-soft) !important;
+  color:var(--sae-sky-deep) !important;
+  border-color:var(--sae-sky-line) !important;
+}
+#lhPolicyPanel .lhQualField input:focus,
+#lhPolicyPanel .lhQualField select:focus{
+  border-color:var(--sae-sky) !important;
+  box-shadow:0 0 0 3px rgba(74,163,223,.13) !important;
+}
+#lhPolicyPanel .lhQualBtn.primary{
+  background:var(--sae-sky) !important;
+}
+#lhPolicyPanel .lhQualResult.good,
+#lhPolicyPanel .lhQualLifeNote{
+  background:var(--sae-sky-soft) !important;
+  border-color:var(--sae-sky-line) !important;
+  color:#2d6687 !important;
+}
+
+/* 이주자택지 분석 */
+#relocationPanel .moveHero{
+  background:linear-gradient(135deg,#eef6ff 0%,#f8fbff 55%,#edf8fe 100%) !important;
+}
+#relocationPanel .moveGood{
+  background:var(--sae-sky-soft) !important;
+  border-color:var(--sae-sky-line) !important;
+  color:#2d6687 !important;
+}
+
+/* 이주자주택 분석 */
+#aptPanel .aptHero{
+  border-color:var(--sae-sky-line) !important;
+  background:linear-gradient(135deg,#edf8fe 0%,#ffffff 62%,#eef4ff 100%) !important;
+}
+#aptPanel .aptHero .eyebrow{
+  color:var(--sae-sky-deep) !important;
+}
+#aptPanel .aptPurpose{
+  background:var(--sae-sky-soft) !important;
+  border-color:var(--sae-sky-line) !important;
+  color:#2d6687 !important;
+}
+#aptPanel .aptRankBox .yr{
+  color:var(--sae-sky-deep) !important;
+}
+#aptPanel .aptCheck .n{
+  background:var(--sae-sky-soft) !important;
+  color:var(--sae-sky-deep) !important;
+}
+
+/* 새정이마을 하위 콘텐츠 내 일반적인 민트형 강조 박스가 있을 경우 */
+#activityPanel .infoCallout[style*="background:#f8fafc"],
+#lawsuitPanel .lawFocus{
+  border-color:#dcebf4 !important;
+}
+
+/* 제목은 이미 적용한 스카이블루 유지 */
+body #appMain .currentMenuChild.saejeongiMenuChild{
+  color:var(--sae-sky-dark,#3387bd) !important;
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -1075,7 +1703,7 @@ window.SAEJEONGI_AUTH_CONFIG={
         <button aria-controls="compensationPanel" aria-selected="false" class="tabBtn" data-tab="compensationPanel" id="compensationTab" role="tab" type="button">건축물 보상 방법</button>
         <button aria-controls="preparationPanel" aria-selected="false" class="tabBtn" data-tab="preparationPanel" id="preparationTab" role="tab" type="button">우리집 보상 준비</button>
         <button aria-controls="relocationPanel" aria-selected="false" class="tabBtn" data-tab="relocationPanel" id="relocationTab" role="tab" type="button">이주자택지 분석</button>
-        <button aria-controls="aptPanel" aria-selected="false" class="tabBtn" data-tab="aptPanel" id="aptTab" role="tab" type="button">이주자 APT 분석</button>
+        <button aria-controls="aptPanel" aria-selected="false" class="tabBtn" data-tab="aptPanel" id="aptTab" role="tab" type="button">이주자주택 분석</button>
       </nav>
     </section>
 
@@ -2552,7 +3180,10 @@ window.SAEJEONGI_AUTH_CONFIG={
     panels.forEach(p=>{const on=p.id==='homePanel';p.classList.toggle('active',on);p.hidden=!on;});
     if(currentMenuParent) currentMenuParent.textContent='';
     if(currentMenuSep) currentMenuSep.style.display='none';
-    if(currentMenuChild) currentMenuChild.textContent='전체 메뉴';
+    if(currentMenuChild){
+      currentMenuChild.textContent='전체 메뉴';
+      currentMenuChild.classList.remove('saejeongiMenuChild');
+    }
     clearActiveWatermark();
     try{window.scrollTo({top:0,behavior:'auto'});}catch{}
   };
@@ -2668,7 +3299,10 @@ window.SAEJEONGI_AUTH_CONFIG={
     panels.forEach(p=>{const on=p.id===target;p.classList.toggle('active',on);p.hidden=!on;});
     if(currentMenuParent) currentMenuParent.textContent=target==='memberAdminPanel'?'관리자':'새정이마을';
     if(currentMenuSep) currentMenuSep.style.display='';
-    if(currentMenuChild) currentMenuChild.textContent=(btn.textContent||'').trim();
+    if(currentMenuChild){
+      currentMenuChild.textContent=(btn.textContent||'').trim();
+      currentMenuChild.classList.toggle('saejeongiMenuChild',target!=='memberAdminPanel');
+    }
 
     const watermarkTargets=['lawsuitPanel','relocationPanel','aptPanel'];
     if(watermarkTargets.includes(target)) activateMainWatermark();
@@ -2685,7 +3319,10 @@ window.SAEJEONGI_AUTH_CONFIG={
     panels.forEach(p=>{const on=p.id==='seoripulPanel';p.classList.toggle('active',on);p.hidden=!on;});
     if(currentMenuParent) currentMenuParent.textContent='서리풀1지구';
     if(currentMenuSep) currentMenuSep.style.display='';
-    if(currentMenuChild) currentMenuChild.textContent=(btn.textContent||'').trim();
+    if(currentMenuChild){
+      currentMenuChild.textContent=(btn.textContent||'').trim();
+      currentMenuChild.classList.remove('saejeongiMenuChild');
+    }
     ensureDistrictFrame(embeddedTab);
     selectEmbeddedTab(embeddedTab);
 
