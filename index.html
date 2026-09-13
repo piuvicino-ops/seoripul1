@@ -1142,11 +1142,21 @@ window.SAEJEONGI_AUTH_CONFIG={
     return data;
   };
   const setAppSignedIn=(profile)=>{
-    authShell.hidden=true; appMain.hidden=false;
-    memberBarName.textContent=profile?.full_name?`${profile.full_name}님 · 승인회원`:'승인회원';
-    window.scrollTo({top:0,behavior:'auto'});
+    authShell.hidden=true;
+    authShell.style.display='none';
+    appMain.hidden=false;
+    appMain.style.display='block';
+    if(memberBarName) memberBarName.textContent=profile?.full_name?`${profile.full_name}님 · 승인회원`:'승인회원';
+    try{window.scrollTo({top:0,behavior:'auto'});}catch{}
   };
-  const setAppSignedOut=()=>{appMain.hidden=true;authShell.hidden=false;showAuthView('loginView');restoreRememberedUsername();};
+  const setAppSignedOut=()=>{
+    appMain.hidden=true;
+    appMain.style.display='none';
+    authShell.hidden=false;
+    authShell.style.display='flex';
+    showAuthView('loginView');
+    restoreRememberedUsername();
+  };
 
   const checkApprovedSession=async()=>{
     if(!sb){setAppSignedOut();return;}
@@ -1173,13 +1183,26 @@ window.SAEJEONGI_AUTH_CONFIG={
       const result=await callPublicFunction('member-login',{username,password});
       if(!result?.session?.access_token||!result?.session?.refresh_token) throw new Error('로그인 세션을 확인할 수 없습니다.');
       if(!result?.profile||result.profile.status!=='approved') throw new Error('승인된 회원정보를 확인할 수 없습니다.');
-      const {error:setErr}=await sb.auth.setSession({access_token:result.session.access_token,refresh_token:result.session.refresh_token});
-      if(setErr) throw new Error('로그인 세션 저장에 실패했습니다.');
+
+      // 서버 인증이 성공하면 화면 진입을 세션 저장보다 먼저 처리한다.
+      // 일부 모바일 WebView/file 환경의 저장소 문제로 정상 로그인이 막히지 않게 한다.
+      setAppSignedIn(result.profile);
+
+      try{
+        const {error:setErr}=await sb.auth.setSession({
+          access_token:result.session.access_token,
+          refresh_token:result.session.refresh_token
+        });
+        if(setErr) console.warn('세션 저장 경고:',setErr.message);
+      }catch(sessionErr){
+        console.warn('세션 저장 경고:',sessionErr);
+      }
+
       try{
         if(rememberUsernameInput?.checked) localStorage.setItem(REMEMBER_ID_KEY,username);
         else localStorage.removeItem(REMEMBER_ID_KEY);
       }catch{}
-      loginForm.reset(); setAppSignedIn(result.profile);
+      loginForm.reset();
     }catch(err){showMessage('loginMessage',err.message||'로그인에 실패했습니다.','error');}
     finally{btn.disabled=false;}
   });
@@ -1219,6 +1242,9 @@ window.SAEJEONGI_AUTH_CONFIG={
   });
 
   if(memberLogout) memberLogout.addEventListener('click',async()=>{if(sb) await sb.auth.signOut();setAppSignedOut();});
+  // 초기 화면 상태 명시
+  if(appMain?.hidden) appMain.style.display='none';
+  if(!authShell?.hidden) authShell.style.display='flex';
   restoreRememberedUsername();
   checkApprovedSession();
 
