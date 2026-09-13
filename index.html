@@ -636,6 +636,19 @@
   backdrop-filter:blur(2px);
 }
 
+
+/* 캡처 결과에도 남도록 콘텐츠 자체에 삽입하는 회원 워터마크 */
+#appMain.watermarkEmbedded{
+  background-repeat:repeat;
+  background-position:0 0;
+}
+#appMain.watermarkEmbedded .card,
+#appMain.watermarkEmbedded .homeMenuSection{
+  background-repeat:repeat !important;
+  background-position:center top !important;
+  background-size:330px 135px !important;
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -1719,10 +1732,104 @@ window.SAEJEONGI_AUTH_CONFIG={
     return `${y}.${m}.${day}`;
   };
 
-  const showMemberWatermark=(profile)=>{
-    currentSignedInProfile=profile||null;
-    if(!memberWatermark||!memberWatermarkGrid) return;
+  const makeWatermarkDataUrl=(profile)=>{
     const name=(profile?.full_name||'승인회원').trim();
+    const line1=`${name}님 · 회원전용 · 외부공유금지`;
+    const line2=formatWatermarkDate();
+    const esc=(s)=>String(s)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&apos;');
+    const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="330" height="135" viewBox="0 0 330 135">
+      <g transform="translate(165 67) rotate(-22)">
+        <text x="0" y="-5" text-anchor="middle"
+          font-family="Arial,'Noto Sans KR',sans-serif"
+          font-size="14" font-weight="500"
+          fill="#0f766e" fill-opacity="0.20">${esc(line1)}</text>
+        <text x="0" y="17" text-anchor="middle"
+          font-family="Arial,'Noto Sans KR',sans-serif"
+          font-size="12" font-weight="500"
+          fill="#0f766e" fill-opacity="0.17">${esc(line2)}</text>
+      </g>
+    </svg>`;
+    return `url("data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}")`;
+  };
+
+  const applyEmbeddedWatermarkToMain=(profile)=>{
+    if(!appMain) return;
+    const bg=makeWatermarkDataUrl(profile);
+    appMain.classList.add('watermarkEmbedded');
+    appMain.style.backgroundImage=bg;
+    appMain.style.backgroundSize='330px 135px';
+    appMain.querySelectorAll('.card,.homeMenuSection').forEach(el=>{
+      el.style.backgroundImage=bg;
+      el.style.backgroundRepeat='repeat';
+      el.style.backgroundPosition='center top';
+      el.style.backgroundSize='330px 135px';
+    });
+  };
+
+  const clearEmbeddedWatermarkFromMain=()=>{
+    if(!appMain) return;
+    appMain.classList.remove('watermarkEmbedded');
+    appMain.style.removeProperty('background-image');
+    appMain.style.removeProperty('background-size');
+    appMain.querySelectorAll('.card,.homeMenuSection').forEach(el=>{
+      el.style.removeProperty('background-image');
+      el.style.removeProperty('background-repeat');
+      el.style.removeProperty('background-position');
+      el.style.removeProperty('background-size');
+    });
+  };
+
+  const applyEmbeddedWatermarkToDistrictFrame=(profile)=>{
+    try{
+      const doc=districtFrame?.contentDocument;
+      if(!doc) return;
+      const bg=makeWatermarkDataUrl(profile);
+      doc.documentElement.style.backgroundImage=bg;
+      doc.documentElement.style.backgroundRepeat='repeat';
+      doc.documentElement.style.backgroundSize='330px 135px';
+      if(doc.body){
+        doc.body.style.backgroundImage=bg;
+        doc.body.style.backgroundRepeat='repeat';
+        doc.body.style.backgroundSize='330px 135px';
+      }
+      doc.querySelectorAll('.card').forEach(el=>{
+        el.style.backgroundImage=bg;
+        el.style.backgroundRepeat='repeat';
+        el.style.backgroundPosition='center top';
+        el.style.backgroundSize='330px 135px';
+      });
+    }catch(e){}
+  };
+
+  const clearEmbeddedWatermarkFromDistrictFrame=()=>{
+    try{
+      const doc=districtFrame?.contentDocument;
+      if(!doc) return;
+      [doc.documentElement,doc.body].forEach(el=>{
+        if(!el) return;
+        el.style.removeProperty('background-image');
+        el.style.removeProperty('background-repeat');
+        el.style.removeProperty('background-size');
+      });
+      doc.querySelectorAll('.card').forEach(el=>{
+        el.style.removeProperty('background-image');
+        el.style.removeProperty('background-repeat');
+        el.style.removeProperty('background-position');
+        el.style.removeProperty('background-size');
+      });
+    }catch(e){}
+  };
+
+  const showMemberWatermark=(profile)=>{
+    if(profile) currentSignedInProfile=profile;
+    const activeProfile=profile||currentSignedInProfile;
+    if(!activeProfile||!memberWatermark||!memberWatermarkGrid) return;
+    const name=(activeProfile?.full_name||'승인회원').trim();
     const label=`${name}님 · 회원전용 · 외부공유금지 · ${formatWatermarkDate()}`;
     if(memberWatermarkBadge) memberWatermarkBadge.textContent=label;
     memberWatermarkGrid.innerHTML='';
@@ -1733,14 +1840,35 @@ window.SAEJEONGI_AUTH_CONFIG={
       memberWatermarkGrid.appendChild(item);
     }
     memberWatermark.classList.add('show');
-    syncWatermarkIntoDistrictFrame(profile);
   };
 
-  const hideMemberWatermark=()=>{
-    currentSignedInProfile=null;
+  const clearActiveWatermark=()=>{
     memberWatermark?.classList.remove('show');
     if(memberWatermarkGrid) memberWatermarkGrid.innerHTML='';
     hideWatermarkInDistrictFrame();
+    clearEmbeddedWatermarkFromMain();
+    clearEmbeddedWatermarkFromDistrictFrame();
+  };
+
+  const hideMemberWatermark=()=>{
+    clearActiveWatermark();
+    currentSignedInProfile=null;
+  };
+
+  const activateMainWatermark=()=>{
+    if(!currentSignedInProfile) return;
+    showMemberWatermark(currentSignedInProfile);
+    applyEmbeddedWatermarkToMain(currentSignedInProfile);
+    clearEmbeddedWatermarkFromDistrictFrame();
+    hideWatermarkInDistrictFrame();
+  };
+
+  const activateDistrictWatermark=()=>{
+    if(!currentSignedInProfile) return;
+    showMemberWatermark(currentSignedInProfile);
+    clearEmbeddedWatermarkFromMain();
+    syncWatermarkIntoDistrictFrame(currentSignedInProfile);
+    applyEmbeddedWatermarkToDistrictFrame(currentSignedInProfile);
   };
 
   const syncWatermarkIntoDistrictFrame=(profile)=>{
@@ -1854,7 +1982,8 @@ window.SAEJEONGI_AUTH_CONFIG={
     appMain.hidden=false;
     appMain.style.display='block';
     if(memberBarName) memberBarName.textContent=profile?.full_name?`${profile.full_name}님 · 승인회원`:'승인회원';
-    showMemberWatermark(profile);
+    currentSignedInProfile=profile||null;
+    clearActiveWatermark();
 
     // 로그인 후 첫 화면은 전체 메뉴
     try{setTimeout(()=>openHomePanel(),0);}catch{}
@@ -2014,6 +2143,7 @@ window.SAEJEONGI_AUTH_CONFIG={
     if(currentMenuParent) currentMenuParent.textContent='';
     if(currentMenuSep) currentMenuSep.style.display='none';
     if(currentMenuChild) currentMenuChild.textContent='전체 메뉴';
+    clearActiveWatermark();
     try{window.scrollTo({top:0,behavior:'auto'});}catch{}
   };
 
@@ -2066,7 +2196,12 @@ window.SAEJEONGI_AUTH_CONFIG={
     districtFrame.addEventListener('load',()=>{
       try{
         selectEmbeddedTab(pendingEmbeddedTab);
-        if(currentSignedInProfile) syncWatermarkIntoDistrictFrame(currentSignedInProfile);
+        if(currentSignedInProfile && pendingEmbeddedTab==='costPane'){
+          activateDistrictWatermark();
+        }else{
+          clearEmbeddedWatermarkFromDistrictFrame();
+          hideWatermarkInDistrictFrame();
+        }
         const doc=districtFrame.contentDocument;
         if(doc?.body && 'ResizeObserver' in window){
           const ro=new ResizeObserver(()=>resizeDistrictFrame());
@@ -2120,6 +2255,11 @@ window.SAEJEONGI_AUTH_CONFIG={
     if(currentMenuParent) currentMenuParent.textContent='새정이마을';
     if(currentMenuSep) currentMenuSep.style.display='';
     if(currentMenuChild) currentMenuChild.textContent=(btn.textContent||'').trim();
+
+    const watermarkTargets=['lawsuitPanel','relocationPanel','aptPanel'];
+    if(watermarkTargets.includes(target)) activateMainWatermark();
+    else clearActiveWatermark();
+
     window.scrollTo({top:0,behavior:'smooth'});
   };
 
@@ -2133,6 +2273,13 @@ window.SAEJEONGI_AUTH_CONFIG={
     if(currentMenuChild) currentMenuChild.textContent=(btn.textContent||'').trim();
     ensureDistrictFrame(embeddedTab);
     selectEmbeddedTab(embeddedTab);
+
+    if(embeddedTab==='costPane'){
+      setTimeout(()=>activateDistrictWatermark(),120);
+    }else{
+      clearActiveWatermark();
+    }
+
     window.scrollTo({top:0,behavior:'smooth'});
   };
 
