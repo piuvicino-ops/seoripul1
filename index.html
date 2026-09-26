@@ -1993,8 +1993,98 @@ window.SAEJEONGI_AUTH_CONFIG={
   #homePanel .homeScheduleProcedure{font-size:13.8px;}
 }
 </style>
-</head><body><div class="authShell" id="authShell">
+
+<style>
+/* 2026-09-27 로그인 화면 디테일 정돈 */
+.authBrand{margin-bottom:10px;}
+.authBrand h1{margin-bottom:2px;}
+.authBrand .creatorLine{margin-top:0!important;margin-bottom:4px;}
+.authBrand .loginSiteDesc{
+  margin:7px 0 5px!important;
+  padding:9px 11px;
+  background:rgba(255,255,255,.72);
+  border:1px solid #e3e8ef;
+  border-radius:10px;
+  box-shadow:none;
+}
+.authBrand > p:last-child{margin:3px 0 0!important;}
+.authCard{padding:18px;}
+#loginView .authDesc{margin-bottom:13px;}
+#loginView .authForm{gap:9px;}
+#loginView .authField{gap:5px;}
+#loginView .authField input{min-height:41px;padding:10px 12px;}
+#loginView .authRemember{gap:6px;font-size:11.2px;}
+#loginView .authRemember input{width:14px;height:14px;}
+#loginView .authLinks{margin-top:9px;}
+
+/* 로그인 버튼만 라이트 스카이블루 */
+#loginForm .authBtn.primary{
+  background:#bfe6fa;
+  color:#174a66;
+  box-shadow:0 3px 9px rgba(96,181,225,.18);
+}
+#loginForm .authBtn.primary:hover,#loginForm .authBtn.primary:focus-visible{background:#b3e0f8;}
+#loginForm .authBtn.primary:active{background:#a9daf4;}
+
+/* 설치/바로가기 안내: 홈 메뉴와 같은 원형 chevron 계열 */
+#loginView .installGuide{margin-top:16px;padding-top:15px;}
+#loginView .installGuideToggle{
+  padding:13px 12px;
+  font-size:13px;
+  font-weight:400;
+}
+#loginView .installGuideToggleIcon{
+  width:26px;
+  height:26px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 26px;
+  background:rgba(255,255,255,.86);
+  border:1px solid rgba(15,118,110,.22);
+  color:#0f766e;
+  box-shadow:0 2px 7px rgba(15,23,42,.08);
+  font-size:21px;
+  line-height:1;
+  font-weight:500;
+  transform:rotate(90deg);
+  transition:transform .18s ease,box-shadow .15s ease,background .15s ease;
+}
+#loginView .installGuideCard.open .installGuideToggleIcon{transform:rotate(-90deg);}
+#loginView .installGuideToggle:hover .installGuideToggleIcon,
+#loginView .installGuideToggle:focus-visible .installGuideToggleIcon{box-shadow:0 3px 10px rgba(15,23,42,.13);}
+#loginView .installGuideLead{margin:12px 0 10px;}
+#loginView .installGuideSteps{margin-bottom:11px;}
+
+/* 개인정보 문구가 단어 중간에서 어색하게 잘리지 않도록 */
+.authPrivacy{
+  margin-top:11px;
+  padding:10px 2px 0;
+  font-size:9.6px;
+  line-height:1.48;
+  word-break:keep-all;
+  overflow-wrap:break-word;
+  text-wrap:balance;
+}
+
+@media(max-width:560px){
+  .authShell{padding:18px 12px;}
+  .authCard{padding:16px;border-radius:17px;}
+  .authBrand{margin-bottom:9px;}
+  .authBrand h1{margin-bottom:1px;}
+  .authBrand .creatorLine{margin-bottom:3px;}
+  .authBrand .loginSiteDesc{margin:6px 0 4px!important;padding:8px 10px;}
+  #loginView .authField input{min-height:40px;padding:9px 11px;font-size:16px;}
+  #loginView .authRemember input{width:14px;height:14px;}
+  #loginView .installGuide{margin-top:14px;padding-top:13px;}
+  #loginView .installGuideToggle{padding:12px 11px;font-size:12.5px;}
+  .authPrivacy{font-size:9.3px;line-height:1.45;}
+}
+</style>
+</head><body><div class="authShell" id="authShell" hidden aria-hidden="true">
   <div class="authWrap">
+    <button class="authModalClose" id="authModalClose" type="button" aria-label="로그인 창 닫기">×</button>
     <div class="authBrand">
       <h1>서리풀1지구, 개인적인 기록과 메모</h1>
       <div class="creatorLine">by 김민철</div>
@@ -2019,7 +2109,7 @@ window.SAEJEONGI_AUTH_CONFIG={
           <div class="installGuideCard" id="installGuideCard">
             <button class="installGuideToggle" id="installGuideToggle" type="button" aria-expanded="false" aria-controls="installGuideBody">
               <span>휴대폰에 설치 및 바로가기 만들기</span>
-              <span class="installGuideToggleIcon" aria-hidden="true">⌄</span>
+              <span class="installGuideToggleIcon" aria-hidden="true">›</span>
             </button>
             <div class="installGuideBody" id="installGuideBody">
               <p class="installGuideLead">브라우저 메뉴에서 홈 화면에 바로가기를 만들어 두면 다음부터 더 편리하게 접속할 수 있습니다.</p>
@@ -2077,11 +2167,11 @@ window.SAEJEONGI_AUTH_CONFIG={
   </div>
 </div>
 
-<main class="wrap" id="appMain" hidden>
+<main class="wrap" id="appMain">
 <div class="memberBar appTopBar" id="memberBar">
   <button class="sideMenuOpen" id="sideMenuOpen" type="button" aria-label="메뉴 열기" aria-controls="sideMenuDrawer" aria-expanded="false">☰</button>
   <div class="memberBarInfo">
-    <div class="memberBarName" id="memberBarName">승인회원</div>
+    <div class="memberBarName" id="memberBarName">로그인 전 미리보기</div>
     <div class="memberBarSub">서리풀1지구, 개인적인 기록과 메모 · by 김민철</div>
   </div>
   <div class="memberBarActions">
@@ -2092,7 +2182,7 @@ window.SAEJEONGI_AUTH_CONFIG={
         <path d="M9.5 20v-5.5h5V20"></path>
       </svg>
     </button>
-    <button class="memberLogout" id="memberLogout" type="button">로그아웃</button>
+    <button class="memberLogout" id="memberLogout" type="button">로그인</button>
   </div>
 </div><header class="header"><p class="mainIntroNotice" id="mainIntroNotice"><span style="color:#d92d20;font-weight:400;">참고용으로 활용하시고, 구체적인 부분은 본인이 직접 확인하여 판단하실 것을 당부드립니다.</span></p><div class="currentMenuTitle" id="currentMenuTitle">
   <span class="currentMenuParent" id="currentMenuParent"></span>
@@ -3500,6 +3590,8 @@ window.SAEJEONGI_AUTH_CONFIG={
   const memberLogout=document.getElementById('memberLogout');
   const authSetupNotice=document.getElementById('authSetupNotice');
   const authViews=[...document.querySelectorAll('.authView')];
+  const authModalClose=document.getElementById('authModalClose');
+  let pendingProtectedElement=null;
   const hasAuthConfig=Boolean(AUTH_CONFIG.supabaseUrl && AUTH_CONFIG.supabaseAnonKey && window.supabase);
   const sb=hasAuthConfig?window.supabase.createClient(AUTH_CONFIG.supabaseUrl,AUTH_CONFIG.supabaseAnonKey):null;
   const REMEMBER_ID_KEY='saejeongi.rememberedUsername';
@@ -3514,6 +3606,30 @@ window.SAEJEONGI_AUTH_CONFIG={
   };
 
   const showAuthView=(id)=>{authViews.forEach(v=>v.hidden=v.id!==id);};
+  const openAuthModal=(view='loginView')=>{
+    if(!authShell) return;
+    showAuthView(view);
+    authShell.hidden=false;
+    authShell.style.display='flex';
+    authShell.setAttribute('aria-hidden','false');
+    document.body.classList.add('authModalOpen');
+    if(view==='loginView') restoreRememberedUsername();
+    setTimeout(()=>{
+      const focusTarget=view==='loginView'?document.getElementById('loginUsername'):authShell.querySelector('.authView:not([hidden]) input');
+      focusTarget?.focus?.();
+    },40);
+  };
+  const closeAuthModal=()=>{
+    if(!authShell) return;
+    authShell.hidden=true;
+    authShell.style.display='none';
+    authShell.setAttribute('aria-hidden','true');
+    document.body.classList.remove('authModalOpen');
+  };
+  authModalClose?.addEventListener('click',()=>{ pendingProtectedElement=null; closeAuthModal(); });
+  authShell?.addEventListener('click',(e)=>{
+    if(e.target===authShell){ pendingProtectedElement=null; closeAuthModal(); }
+  });
   document.querySelectorAll('[data-auth-view]').forEach(btn=>btn.addEventListener('click',()=>showAuthView(btn.dataset.authView)));
   if(authSetupNotice) authSetupNotice.hidden=hasAuthConfig;
 
@@ -3668,30 +3784,42 @@ window.SAEJEONGI_AUTH_CONFIG={
   });
 
   const setAppSignedIn=(profile)=>{
-    authShell.hidden=true;
-    authShell.style.display='none';
+    closeAuthModal();
     appMain.hidden=false;
     appMain.style.display='block';
     currentSignedInProfile=profile||null;
     const grade=profile?.membership_role==='admin'?'관리자':'일반회원';
     if(memberBarName) memberBarName.textContent=profile?.full_name?`${profile.full_name}님 · ${grade}`:grade;
+    if(memberLogout) memberLogout.textContent='로그아웃';
     setAdminMenuVisibility(profile);
     clearActiveWatermark();
 
-    // 로그인 후 첫 화면은 전체 메뉴
-    try{setTimeout(()=>openHomePanel(),0);}catch{}
+    // 로그인 직전 선택한 메뉴/일정이 있으면 그 위치로 바로 이어서 진입합니다.
+    const resumeTarget=pendingProtectedElement;
+    pendingProtectedElement=null;
+    try{
+      setTimeout(()=>{
+        openHomePanel();
+        if(resumeTarget&&document.documentElement.contains(resumeTarget)){
+          setTimeout(()=>resumeTarget.click(),30);
+        }
+      },0);
+    }catch{}
 
     try{window.scrollTo({top:0,behavior:'auto'});}catch{}
   };
   const setAppSignedOut=()=>{
     hideMemberWatermark();
+    currentSignedInProfile=null;
     setAdminMenuVisibility(null);
-    appMain.hidden=true;
-    appMain.style.display='none';
-    authShell.hidden=false;
-    authShell.style.display='flex';
+    appMain.hidden=false;
+    appMain.style.display='block';
+    if(memberBarName) memberBarName.textContent='로그인 전 미리보기';
+    if(memberLogout) memberLogout.textContent='로그인';
+    closeAuthModal();
     showAuthView('loginView');
     restoreRememberedUsername();
+    try{setTimeout(()=>openHomePanel(),0);}catch{}
   };
 
   const checkApprovedSession=async()=>{
@@ -3705,6 +3833,7 @@ window.SAEJEONGI_AUTH_CONFIG={
     }catch(err){
       await sb.auth.signOut();
       setAppSignedOut();
+      openAuthModal('loginView');
       showMessage('loginMessage',err.message||'로그인 상태를 확인할 수 없습니다.','error');
     }
   };
@@ -3782,10 +3911,20 @@ window.SAEJEONGI_AUTH_CONFIG={
     openHomePanel();
   });
   if(memberLogout) memberLogout.addEventListener('click',async()=>{
-    try{closeSideMenu();}catch{}if(sb) await sb.auth.signOut();setAppSignedOut();});
-  // 초기 화면 상태 명시
-  if(appMain?.hidden) appMain.style.display='none';
-  if(!authShell?.hidden) authShell.style.display='flex';
+    try{closeSideMenu();}catch{}
+    if(!currentSignedInProfile){
+      pendingProtectedElement=null;
+      openAuthModal('loginView');
+      return;
+    }
+    if(sb) await sb.auth.signOut();
+    setAppSignedOut();
+  });
+  // 비로그인 상태에서도 첫 화면을 미리 보여줍니다.
+  if(appMain){appMain.hidden=false;appMain.style.display='block';}
+  if(authShell){authShell.hidden=true;authShell.style.display='none';authShell.setAttribute('aria-hidden','true');}
+  if(memberBarName) memberBarName.textContent='로그인 전 미리보기';
+  if(memberLogout) memberLogout.textContent='로그인';
   restoreRememberedUsername();
 
 
@@ -3825,10 +3964,38 @@ window.SAEJEONGI_AUTH_CONFIG={
   sideMenuBackdrop?.addEventListener('click',closeSideMenu);
   document.addEventListener('keydown',(e)=>{
     if(e.key==='Escape'&&sideMenuDrawer?.classList.contains('open')) closeSideMenu();
+    if(e.key==='Escape'&&authShell&&!authShell.hidden){ pendingProtectedElement=null; closeAuthModal(); }
   });
 
   const homeMainButtons=[...document.querySelectorAll('.mainHomeBtn')];
   const homeDistrictButtons=[...document.querySelectorAll('.districtHomeBtn')];
+
+  // 로그인 전에는 첫 화면의 제목과 메뉴를 미리 보여주되, 실제 콘텐츠 진입 시 로그인 팝업을 띄웁니다.
+  const protectedPreviewSelector='.homeMenuBtn,.tabBtn,.districtTabBtn,.homeScheduleItem,#homeScheduleToggle';
+  document.addEventListener('click',(e)=>{
+    if(currentSignedInProfile||!appMain||appMain.hidden) return;
+    if(authShell && !authShell.hidden) return;
+    const target=e.target.closest?.(protectedPreviewSelector);
+    if(!target) return;
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    pendingProtectedElement=target;
+    try{closeSideMenu();}catch{}
+    openAuthModal('loginView');
+  },true);
+  document.addEventListener('keydown',(e)=>{
+    if(currentSignedInProfile||!appMain||appMain.hidden) return;
+    if(authShell && !authShell.hidden) return;
+    if(e.key!=='Enter'&&e.key!==' ') return;
+    const target=e.target.closest?.('.homeScheduleItem');
+    if(!target) return;
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    pendingProtectedElement=target;
+    openAuthModal('loginView');
+  },true);
 
   const openHomePanel=()=>{
     buttons.forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false');});
@@ -4452,3 +4619,124 @@ window.SAEJEONGI_AUTH_CONFIG={
 </script>
 
 </body></html>
+
+<style>
+/* 2026-09-27 로그인 화면 상단 여백 및 다크 민트 버튼 최종 조정 */
+.authShell{
+  align-items:flex-start !important;
+  padding-top:42px !important;
+  padding-bottom:24px !important;
+}
+.authWrap{margin:0 auto;}
+
+/* 제목 블록과 로그인 카드 사이 간격을 조금 더 조밀하게 */
+.authBrand{margin-bottom:8px !important;}
+.authBrand h1{margin-bottom:1px !important;}
+.authBrand .creatorLine{margin-top:0 !important;margin-bottom:3px !important;}
+.authBrand .loginSiteDesc{margin:6px 0 4px !important;}
+.authBrand > p:last-child{
+  margin:4px 0 0 !important;
+  font-size:11.5px;
+  line-height:1.45;
+}
+
+/* 로그인 카드 내부 세로 리듬 보정 */
+#loginView .authTitle{margin-bottom:4px;}
+#loginView .authDesc{margin-bottom:11px;}
+#loginView .authForm{gap:8px;}
+#loginView .authLinks{margin-top:7px;}
+#loginView .installGuide{margin-top:12px;padding-top:12px;}
+#loginView .installGuideToggle{padding:11px 11px;}
+.authPrivacy{margin-top:9px;padding-top:9px;}
+
+/* 로그인 버튼: 다크 민트 */
+#loginForm .authBtn.primary{
+  background:#0f766e !important;
+  color:#ffffff !important;
+  box-shadow:0 3px 9px rgba(15,118,110,.18) !important;
+}
+#loginForm .authBtn.primary:hover,
+#loginForm .authBtn.primary:focus-visible{
+  background:#0d6f67 !important;
+}
+#loginForm .authBtn.primary:active{
+  background:#0b625c !important;
+}
+
+@media(max-width:560px){
+  .authShell{
+    align-items:flex-start !important;
+    padding:30px 12px 18px !important;
+  }
+  .authBrand{margin-bottom:7px !important;}
+  .authBrand .loginSiteDesc{margin:5px 0 3px !important;}
+  .authCard{padding:15px !important;}
+  #loginView .authDesc{margin-bottom:10px;}
+  #loginView .authField input{min-height:39px;}
+  #loginView .installGuide{margin-top:11px;padding-top:11px;}
+  .authPrivacy{margin-top:8px;padding-top:8px;font-size:9.2px;}
+}
+</style>
+
+<style>
+/* 2026-09-27 로그인 전 첫 화면 미리보기 + 로그인 팝업 */
+.authShell{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:10050 !important;
+  min-height:100dvh !important;
+  padding:18px 12px !important;
+  align-items:center !important;
+  justify-content:center !important;
+  overflow:auto !important;
+  background:rgba(15,23,42,.48) !important;
+  backdrop-filter:blur(5px);
+  -webkit-backdrop-filter:blur(5px);
+}
+.authShell[hidden]{display:none !important;}
+.authShell .authWrap{
+  position:relative;
+  width:min(430px,100%);
+  max-height:calc(100dvh - 36px);
+  overflow:auto;
+  margin:auto;
+  padding:0;
+}
+.authShell .authBrand{display:none !important;}
+.authShell .authCard{
+  margin:0;
+  padding:20px !important;
+  border-radius:20px !important;
+  box-shadow:0 22px 55px rgba(15,23,42,.22) !important;
+}
+.authModalClose{
+  position:absolute;
+  top:10px;
+  right:10px;
+  z-index:3;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  border:1px solid #d7dde4;
+  background:rgba(255,255,255,.96);
+  color:#667085;
+  font-size:22px;
+  line-height:1;
+  cursor:pointer;
+  box-shadow:0 2px 8px rgba(15,23,42,.08);
+}
+.authModalClose:hover,.authModalClose:focus-visible{color:#172033;border-color:#bfc7d2;}
+.authShell .authTitle{padding-right:36px;}
+body.authModalOpen{overflow:hidden !important;}
+
+/* 로그인 전 상단바를 미리보기 상태로 자연스럽게 표시 */
+body:not(.authModalOpen) .memberLogout{transition:background .15s ease,border-color .15s ease,color .15s ease;}
+.memberLogout{min-width:58px;}
+
+@media(max-width:560px){
+  .authShell{padding:12px !important;align-items:center !important;}
+  .authShell .authWrap{max-height:calc(100dvh - 24px);}
+  .authShell .authCard{padding:18px 16px 16px !important;border-radius:18px !important;}
+  .authModalClose{top:8px;right:8px;width:30px;height:30px;font-size:20px;}
+}
+</style>
