@@ -768,6 +768,17 @@
 }
 .adminSummaryBox .k{font-size:11px;color:#667085;margin-bottom:4px}
 .adminSummaryBox .v{font-size:20px;font-weight:750;color:#172033}
+.adminAccessOverview{
+  display:grid;grid-template-columns:minmax(0,1.5fr) repeat(2,minmax(92px,.75fr));gap:9px;margin:-5px 0 16px
+}
+.adminAccessBox{
+  border:1px solid #dbe7e4;border-radius:12px;padding:11px 12px;background:#f4fbf9;min-width:0
+}
+.adminAccessBox .k{font-size:10.5px;color:#667085;margin-bottom:4px;font-weight:700}
+.adminAccessBox .v{font-size:15px;font-weight:800;color:#0f766e;line-height:1.35;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.adminAccessBox .s{font-size:10.5px;color:#667085;line-height:1.45;margin-top:3px}
+.adminAccessCount{font-size:20px!important;line-height:1.2!important}
+.adminSortNote{margin:-6px 1px 10px;font-size:10.5px;line-height:1.5;color:#98a2b3}
 .adminMemberList{display:flex;flex-direction:column;gap:10px}
 .adminMemberRow{
   display:grid;grid-template-columns:minmax(130px,1.25fr) minmax(86px,.7fr) minmax(145px,1fr) minmax(105px,.8fr);
@@ -777,6 +788,10 @@
 .adminMemberIdentity .id{font-size:11px;color:#7b8494;margin-top:3px;word-break:break-all}
 .adminMemberMeta{font-size:11px;color:#667085;line-height:1.55}
 .adminMemberMeta b{display:block;color:#344054;font-size:11px;margin-bottom:2px}
+.adminAccessTime{display:block;color:#344054;font-weight:700}
+.adminAccessRelative{display:inline-flex;align-items:center;gap:5px;margin-top:3px;padding:2px 6px;border-radius:999px;background:#f2f4f7;color:#667085;font-size:9.8px;font-weight:750}
+.adminAccessRelative.recent{background:#eaf7f4;color:#08775e}
+.adminAccessRelative.recent:before{content:'';width:5px;height:5px;border-radius:50%;background:#16a085;display:inline-block}
 .memberRoleBadge{
   display:inline-flex;align-items:center;justify-content:center;border-radius:999px;
   padding:5px 9px;font-size:11px;font-weight:700;white-space:nowrap
@@ -798,12 +813,33 @@
 .adminInlineMsg{font-size:12px;min-height:18px;margin-top:10px;color:#667085}
 .adminInlineMsg.error{color:#b42318}
 .adminInlineMsg.success{color:#08775e}
+.adminGuestSection{margin-top:22px;padding-top:19px;border-top:1px solid #e5e7eb}
+.adminGuestHead{margin-bottom:11px}
+.adminGuestTitle{margin:0 0 4px;font-size:16px;font-weight:750;color:#344054}
+.adminGuestDesc{margin:0;font-size:11px;line-height:1.55;color:#7b8494}
+.adminGuestSummary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:10px}
+.adminGuestSummaryBox{border:1px solid #e2e8f0;border-radius:11px;padding:10px;background:#fafbfc}
+.adminGuestSummaryBox .k{font-size:10.5px;color:#667085;margin-bottom:3px}
+.adminGuestSummaryBox .v{font-size:19px;font-weight:750;color:#344054}
+.adminGuestLatest{padding:10px 11px;margin-bottom:10px;border:1px solid #e2e8f0;border-radius:11px;background:#f8fafc}
+.adminGuestLatest .k{font-size:10.5px;color:#667085;margin-bottom:3px}
+.adminGuestLatest .v{font-size:12.5px;font-weight:750;color:#344054;line-height:1.45}
+.adminGuestLatest .s{font-size:10.5px;color:#7b8494;margin-top:2px}
+.adminGuestList{display:flex;flex-direction:column;gap:8px}
+.adminGuestRow{display:grid;grid-template-columns:minmax(90px,.7fr) minmax(150px,1fr) minmax(130px,1fr);gap:10px;align-items:center;border:1px solid #e5e7eb;border-radius:11px;padding:10px 11px;background:#fff}
+.adminGuestIdentity{font-size:12px;font-weight:750;color:#344054}
+.adminGuestIdentity .code{display:block;margin-top:2px;font-size:9.8px;font-weight:650;color:#98a2b3;letter-spacing:.06em}
+.adminGuestDevice{font-size:11px;line-height:1.5;color:#667085}
+.adminGuestNote{margin-top:9px;font-size:9.8px;line-height:1.55;color:#98a2b3}
 @media(max-width:680px){
   .adminManageCard{padding:14px}
   .adminManageHead{align-items:center}
   .adminSummary{grid-template-columns:repeat(3,1fr)}
   .adminSummaryBox{padding:10px 8px}
   .adminSummaryBox .v{font-size:18px}
+  .adminAccessOverview{grid-template-columns:1fr 1fr}
+  .adminAccessBox:first-child{grid-column:1/3}
+  .adminAccessCount{font-size:18px!important}
   .adminMemberRow{
     grid-template-columns:1fr auto;
     gap:9px 10px;
@@ -812,6 +848,10 @@
   .adminMemberRow>.memberRoleBadge{grid-column:2/3;grid-row:1}
   .adminMemberMeta{grid-column:1/3}
   .adminMemberActions{grid-column:1/3;justify-content:flex-start}
+  .adminGuestSummary{grid-template-columns:repeat(3,1fr)}
+  .adminGuestSummaryBox{padding:9px 7px}
+  .adminGuestSummaryBox .v{font-size:17px}
+  .adminGuestRow{grid-template-columns:1fr}
 }
 
 
@@ -2308,7 +2348,7 @@ window.SAEJEONGI_AUTH_CONFIG={
         <p class="authDesc">관리자 <b>piuvicino@gmail.com</b>으로 승인 메일이 발송됩니다.<br/>메일에서 승인 후 로그인할 수 있습니다.</p>
         <button class="authBtn secondary" data-auth-view="loginView" type="button">로그인 화면으로</button>
       </section>
-      <div class="authPrivacy">회원정보는 가입 승인과 주민 확인을 위한 용도로만 사용하도록 구성했습니다.</div>
+      <div class="authPrivacy">회원정보는 가입 승인과 주민 확인을 위한 용도로만 사용합니다. 비회원 접속 현황은 익명 브라우저 식별자·접속시각·기기/브라우저 종류만 기록하며 이름·전화번호·IP 주소는 저장하지 않습니다.</div>
     </div>
   </div>
 </div>
@@ -3591,7 +3631,7 @@ window.SAEJEONGI_AUTH_CONFIG={
     <div class="adminManageHead">
       <div>
         <h2 class="adminManageTitle">회원관리</h2>
-        <p class="adminManageDesc">회원등급은 관리자 · 일반회원 · 승인대기로 구분됩니다. 최근 로그인 시간은 한국시간 기준입니다.</p>
+        <p class="adminManageDesc">회원등급은 관리자 · 일반회원 · 승인대기로 구분됩니다. 최근 접속 정보는 로그인 또는 저장된 세션으로 앱을 다시 열고 활성화한 시각을 기준으로 하며 한국시간으로 표시됩니다.</p>
       </div>
       <button class="adminRefreshBtn" id="adminRefreshBtn" type="button">새로고침</button>
     </div>
@@ -3600,10 +3640,49 @@ window.SAEJEONGI_AUTH_CONFIG={
       <div class="adminSummaryBox"><div class="k">일반회원</div><div class="v" id="adminCountMember">-</div></div>
       <div class="adminSummaryBox"><div class="k">승인대기</div><div class="v" id="adminCountPending">-</div></div>
     </div>
+    <div class="adminAccessOverview" aria-label="최근 접속 현황">
+      <div class="adminAccessBox">
+        <div class="k">가장 최근 접속</div>
+        <div class="v" id="adminLatestAccess">-</div>
+        <div class="s" id="adminLatestAccessTime">접속 기록을 불러오는 중입니다.</div>
+      </div>
+      <div class="adminAccessBox">
+        <div class="k">최근 24시간</div>
+        <div class="v adminAccessCount" id="adminAccess24h">-</div>
+        <div class="s">접속 회원</div>
+      </div>
+      <div class="adminAccessBox">
+        <div class="k">최근 7일</div>
+        <div class="v adminAccessCount" id="adminAccess7d">-</div>
+        <div class="s">접속 회원</div>
+      </div>
+    </div>
+    <div class="adminSortNote">승인회원은 최근 접속순으로 표시됩니다. 로그인 상태가 유지되어 있어도 앱을 다시 열거나 활성화하면 최근 접속시각이 갱신됩니다.</div>
     <div class="adminMemberList" id="adminMemberList">
       <div class="adminStateMsg">회원관리 메뉴를 열면 회원정보를 불러옵니다.</div>
     </div>
     <div class="adminInlineMsg" id="adminInlineMsg" role="status"></div>
+
+    <div class="adminGuestSection" aria-label="비회원 접속 현황">
+      <div class="adminGuestHead">
+        <h3 class="adminGuestTitle">비회원 최근 접속</h3>
+        <p class="adminGuestDesc">로그인하지 않은 방문은 익명 브라우저 단위로 기록합니다. 이름·전화번호·IP 주소는 저장하지 않습니다.</p>
+      </div>
+      <div class="adminGuestSummary">
+        <div class="adminGuestSummaryBox"><div class="k">오늘</div><div class="v" id="adminGuestToday">-</div></div>
+        <div class="adminGuestSummaryBox"><div class="k">최근 7일</div><div class="v" id="adminGuest7d">-</div></div>
+        <div class="adminGuestSummaryBox"><div class="k">누적 익명 브라우저</div><div class="v" id="adminGuestTotal">-</div></div>
+      </div>
+      <div class="adminGuestLatest">
+        <div class="k">가장 최근 비회원 접속</div>
+        <div class="v" id="adminGuestLatest">접속 기록 없음</div>
+        <div class="s" id="adminGuestLatestTime">기록이 생기면 여기에 표시됩니다.</div>
+      </div>
+      <div class="adminGuestList" id="adminGuestList">
+        <div class="adminStateMsg">비회원 접속정보를 불러오는 중입니다.</div>
+      </div>
+      <div class="adminGuestNote">※ 같은 브라우저는 무작위 익명 ID로 구분하므로 실제 사람 수와 완전히 일치하지 않을 수 있습니다.</div>
+    </div>
   </div>
 </section>
 
@@ -3644,8 +3723,19 @@ window.SAEJEONGI_AUTH_CONFIG={
   const adminCountAdmin=document.getElementById('adminCountAdmin');
   const adminCountMember=document.getElementById('adminCountMember');
   const adminCountPending=document.getElementById('adminCountPending');
+  const adminLatestAccess=document.getElementById('adminLatestAccess');
+  const adminLatestAccessTime=document.getElementById('adminLatestAccessTime');
+  const adminAccess24h=document.getElementById('adminAccess24h');
+  const adminAccess7d=document.getElementById('adminAccess7d');
+  const adminGuestToday=document.getElementById('adminGuestToday');
+  const adminGuest7d=document.getElementById('adminGuest7d');
+  const adminGuestTotal=document.getElementById('adminGuestTotal');
+  const adminGuestLatest=document.getElementById('adminGuestLatest');
+  const adminGuestLatestTime=document.getElementById('adminGuestLatestTime');
+  const adminGuestList=document.getElementById('adminGuestList');
   const memberWatermark=document.getElementById('memberWatermark');
   let currentSignedInProfile=null;
+  let authSessionResolved=false;
   const memberWatermarkGrid=document.getElementById('memberWatermarkGrid');
   const memberWatermarkBadge=document.getElementById('memberWatermarkBadge');
 
@@ -3948,6 +4038,33 @@ window.SAEJEONGI_AUTH_CONFIG={
     }catch{return String(iso);}
   };
 
+  const memberLastAccess=(m)=>m?.last_access_at||m?.last_login_at||m?.last_sign_in_at||null;
+
+  const accessTimeValue=(m)=>{
+    const iso=memberLastAccess(m);
+    if(!iso) return 0;
+    const t=new Date(iso).getTime();
+    return Number.isFinite(t)?t:0;
+  };
+
+  const formatAccessAgo=(iso)=>{
+    if(!iso) return {text:'접속 기록 없음',recent:false};
+    const t=new Date(iso).getTime();
+    if(!Number.isFinite(t)) return {text:'접속 기록 없음',recent:false};
+    const diff=Math.max(0,Date.now()-t);
+    const min=Math.floor(diff/60000);
+    if(min<1) return {text:'방금 전',recent:true};
+    if(min<60) return {text:`${min}분 전`,recent:true};
+    const hr=Math.floor(min/60);
+    if(hr<24) return {text:`${hr}시간 전`,recent:true};
+    const day=Math.floor(hr/24);
+    if(day<7) return {text:`${day}일 전`,recent:false};
+    if(day<30) return {text:`${day}일 전`,recent:false};
+    const month=Math.floor(day/30);
+    if(month<12) return {text:`약 ${month}개월 전`,recent:false};
+    return {text:`약 ${Math.floor(month/12)}년 전`,recent:false};
+  };
+
   const roleLabel=(m)=>{
     if(m.membership_role==='admin') return {text:'관리자',cls:'admin'};
     if(m.status==='pending'||m.membership_role==='pending') return {text:'승인대기',cls:'pending'};
@@ -3981,13 +4098,40 @@ window.SAEJEONGI_AUTH_CONFIG={
     if(adminCountMember) adminCountMember.textContent=String(count.member);
     if(adminCountPending) adminCountPending.textContent=String(count.pending);
 
+    const now=Date.now();
+    const approved=members.filter(m=>!(m.status==='pending'||m.membership_role==='pending'));
+    const accessed=approved.filter(m=>accessTimeValue(m)>0);
+    const latest=[...accessed].sort((a,b)=>accessTimeValue(b)-accessTimeValue(a))[0]||null;
+    const countWithin=(ms)=>accessed.filter(m=>(now-accessTimeValue(m))>=0&&(now-accessTimeValue(m))<=ms).length;
+    if(adminAccess24h) adminAccess24h.textContent=String(countWithin(24*60*60*1000));
+    if(adminAccess7d) adminAccess7d.textContent=String(countWithin(7*24*60*60*1000));
+    if(adminLatestAccess) adminLatestAccess.textContent=latest?.full_name||'접속 기록 없음';
+    if(adminLatestAccessTime){
+      if(latest){
+        const iso=memberLastAccess(latest);
+        const ago=formatAccessAgo(iso);
+        adminLatestAccessTime.textContent=`${formatAdminDate(iso)} · ${ago.text}`;
+      }else{
+        adminLatestAccessTime.textContent='아직 확인 가능한 접속 기록이 없습니다.';
+      }
+    }
+
     if(!adminMemberList) return;
     if(!members.length){
       adminMemberList.innerHTML='<div class="adminStateMsg">등록된 회원이 없습니다.</div>';
       return;
     }
 
-    adminMemberList.innerHTML=members.map(m=>{
+    const sorted=[...members].sort((a,b)=>{
+      const aPending=a.status==='pending'||a.membership_role==='pending';
+      const bPending=b.status==='pending'||b.membership_role==='pending';
+      if(aPending!==bPending) return aPending?1:-1;
+      const byAccess=accessTimeValue(b)-accessTimeValue(a);
+      if(byAccess!==0) return byAccess;
+      return String(a.full_name||'').localeCompare(String(b.full_name||''),'ko');
+    });
+
+    adminMemberList.innerHTML=sorted.map(m=>{
       const role=roleLabel(m);
       const isAdmin=m.membership_role==='admin';
       const isPending=m.status==='pending'||m.membership_role==='pending';
@@ -3997,6 +4141,8 @@ window.SAEJEONGI_AUTH_CONFIG={
       const deleteBtn=!isAdmin
         ? `<button class="adminActionBtn delete" type="button" data-admin-action="delete" data-user-id="${escHtml(m.user_id)}" data-member-name="${escHtml(m.full_name)}">회원탈퇴</button>`
         : '<span class="adminMemberMeta">관리자 보호</span>';
+      const lastAccess=memberLastAccess(m);
+      const ago=formatAccessAgo(lastAccess);
 
       return `<div class="adminMemberRow">
         <div class="adminMemberIdentity">
@@ -4004,8 +4150,41 @@ window.SAEJEONGI_AUTH_CONFIG={
           <div class="id">${escHtml(m.username)}</div>
         </div>
         <span class="memberRoleBadge ${role.cls}">${role.text}</span>
-        <div class="adminMemberMeta"><b>최근 로그인</b>${escHtml(formatAdminDate(m.last_login_at))}</div>
+        <div class="adminMemberMeta"><b>최근 접속</b><span class="adminAccessTime">${escHtml(formatAdminDate(lastAccess))}</span><span class="adminAccessRelative${ago.recent?' recent':''}">${escHtml(ago.text)}</span></div>
         <div class="adminMemberActions">${approveBtn}${deleteBtn}</div>
+      </div>`;
+    }).join('');
+  };
+
+  const renderAdminGuests=(guests=[],stats={})=>{
+    if(adminGuestToday) adminGuestToday.textContent=String(Number(stats.today||0));
+    if(adminGuest7d) adminGuest7d.textContent=String(Number(stats.seven_days||0));
+    if(adminGuestTotal) adminGuestTotal.textContent=String(Number(stats.total||0));
+
+    const latest=Array.isArray(guests)&&guests.length?guests[0]:null;
+    if(adminGuestLatest) adminGuestLatest.textContent=latest?`익명 방문자 · ${latest.device_summary||'기기 정보 없음'}`:'접속 기록 없음';
+    if(adminGuestLatestTime){
+      if(latest){
+        const ago=formatAccessAgo(latest.last_seen_at);
+        adminGuestLatestTime.textContent=`${formatAdminDate(latest.last_seen_at)} · ${ago.text}`;
+      }else{
+        adminGuestLatestTime.textContent='아직 비회원 접속 기록이 없습니다.';
+      }
+    }
+
+    if(!adminGuestList) return;
+    if(!Array.isArray(guests)||!guests.length){
+      adminGuestList.innerHTML='<div class="adminStateMsg">아직 비회원 접속 기록이 없습니다.</div>';
+      return;
+    }
+
+    adminGuestList.innerHTML=guests.map(g=>{
+      const ago=formatAccessAgo(g.last_seen_at);
+      const code=g.visitor_code?`#${g.visitor_code}`:'#------';
+      return `<div class="adminGuestRow">
+        <div class="adminGuestIdentity">익명 방문자<span class="code">${escHtml(code)}</span></div>
+        <div class="adminMemberMeta"><b>최근 접속</b><span class="adminAccessTime">${escHtml(formatAdminDate(g.last_seen_at))}</span><span class="adminAccessRelative${ago.recent?' recent':''}">${escHtml(ago.text)}</span></div>
+        <div class="adminGuestDevice">${escHtml(g.device_summary||'기기 정보 없음')}</div>
       </div>`;
     }).join('');
   };
@@ -4016,6 +4195,7 @@ window.SAEJEONGI_AUTH_CONFIG={
       return;
     }
     if(adminMemberList) adminMemberList.innerHTML='<div class="adminStateMsg">회원정보를 불러오는 중입니다.</div>';
+    if(adminGuestList) adminGuestList.innerHTML='<div class="adminStateMsg">비회원 접속정보를 불러오는 중입니다.</div>';
     if(adminRefreshBtn) adminRefreshBtn.disabled=true;
     setAdminMsg('');
     try{
@@ -4023,8 +4203,10 @@ window.SAEJEONGI_AUTH_CONFIG={
       if(!token) throw new Error('관리자 로그인 세션을 확인할 수 없습니다.');
       const result=await callPublicFunction('member-admin',{action:'list'},token);
       renderAdminMembers(result.members||[]);
+      renderAdminGuests(result.guest_visitors||[],result.guest_stats||{});
     }catch(err){
       if(adminMemberList) adminMemberList.innerHTML='<div class="adminStateMsg">회원정보를 불러오지 못했습니다.</div>';
+      if(adminGuestList) adminGuestList.innerHTML='<div class="adminStateMsg">비회원 접속정보를 불러오지 못했습니다.</div>';
       setAdminMsg(err.message||'회원정보 조회 중 오류가 발생했습니다.','error');
     }finally{
       if(adminRefreshBtn) adminRefreshBtn.disabled=false;
@@ -4106,21 +4288,116 @@ window.SAEJEONGI_AUTH_CONFIG={
     try{setTimeout(()=>openHomePanel(),0);}catch{}
   };
 
+  const GUEST_VISITOR_KEY='saejeongi_guest_visitor_id_v1';
+  const GUEST_TOUCH_KEY='saejeongi_guest_touch_at_v1';
+  let lastGuestTouchAt=0;
+
+  const getGuestVisitorId=()=>{
+    try{
+      let id=localStorage.getItem(GUEST_VISITOR_KEY)||'';
+      if(/^[A-Za-z0-9_-]{16,80}$/.test(id)) return id;
+      id=(crypto?.randomUUID?.()||`guest_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,14)}`).replace(/[^A-Za-z0-9_-]/g,'');
+      localStorage.setItem(GUEST_VISITOR_KEY,id);
+      return id;
+    }catch{
+      return `guest_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,14)}`;
+    }
+  };
+
+  const getGuestDeviceSummary=()=>{
+    const ua=String(navigator.userAgent||'');
+    let device='기타 기기';
+    if(/Android/i.test(ua)) device='Android';
+    else if(/iPhone/i.test(ua)) device='iPhone';
+    else if(/iPad/i.test(ua)) device='iPad';
+    else if(/Windows/i.test(ua)) device='Windows';
+    else if(/Macintosh|Mac OS X/i.test(ua)) device='Mac';
+
+    let browser='브라우저';
+    if(/SamsungBrowser/i.test(ua)) browser='Samsung Internet';
+    else if(/Edg\//i.test(ua)) browser='Edge';
+    else if(/CriOS|Chrome\//i.test(ua)) browser='Chrome';
+    else if(/FxiOS|Firefox\//i.test(ua)) browser='Firefox';
+    else if(/Safari\//i.test(ua)) browser='Safari';
+    return `${device} · ${browser}`;
+  };
+
+  const trackGuestVisit=async(force=false)=>{
+    if(!authSessionResolved||currentSignedInProfile) return;
+    const now=Date.now();
+    let stored=0;
+    try{stored=Number(localStorage.getItem(GUEST_TOUCH_KEY)||0)||0;}catch{}
+    const recent=Math.max(lastGuestTouchAt,stored);
+    if(!force&&now-recent<5*60*1000) return;
+    lastGuestTouchAt=now;
+    try{localStorage.setItem(GUEST_TOUCH_KEY,String(now));}catch{}
+    try{
+      await callPublicFunction('guest-visit',{
+        visitor_id:getGuestVisitorId(),
+        device_summary:getGuestDeviceSummary()
+      });
+    }catch(err){
+      console.warn('비회원 접속 기록 경고:',err?.message||err);
+    }
+  };
+
   const checkApprovedSession=async()=>{
-    if(!sb){setAppSignedOut();return;}
+    if(!sb){
+      authSessionResolved=true;
+      setAppSignedOut();
+      trackGuestVisit();
+      return;
+    }
     const {data:{session}}=await sb.auth.getSession();
-    if(!session){setAppSignedOut();return;}
+    if(!session){
+      authSessionResolved=true;
+      setAppSignedOut();
+      trackGuestVisit();
+      return;
+    }
     try{
       const result=await callPublicFunction('member-session',{},session.access_token);
       if(!result?.profile||result.profile.status!=='approved') throw new Error('승인된 회원만 로그인할 수 있습니다.');
       setAppSignedIn(result.profile);
+      authSessionResolved=true;
     }catch(err){
       await sb.auth.signOut();
+      authSessionResolved=true;
       setAppSignedOut();
+      trackGuestVisit();
       openAuthModal('loginView');
       showMessage('loginMessage',err.message||'로그인 상태를 확인할 수 없습니다.','error');
     }
   };
+
+  // 로그인 세션이 유지되는 경우에도 실제 앱 재접속 시각을 기록합니다.
+  // 백그라운드에서 다시 활성화되거나 같은 탭이 다시 포커스될 때 member-session을 호출합니다.
+  let lastAccessTouchAt=0;
+  const touchMemberAccess=async(force=false)=>{
+    if(!sb||!currentSignedInProfile) return;
+    const now=Date.now();
+    if(!force&&now-lastAccessTouchAt<60*1000) return;
+    lastAccessTouchAt=now;
+    try{
+      const {data:{session}}=await sb.auth.getSession();
+      if(!session?.access_token) return;
+      await callPublicFunction('member-session',{touch:true},session.access_token);
+    }catch(err){
+      console.warn('최근 접속 기록 갱신 경고:',err?.message||err);
+    }
+  };
+
+  const touchCurrentAccess=()=>{
+    if(!authSessionResolved) return;
+    if(currentSignedInProfile) touchMemberAccess();
+    else trackGuestVisit();
+  };
+
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='visible') touchCurrentAccess();
+  });
+  window.addEventListener('pageshow',()=>touchCurrentAccess());
+  window.addEventListener('focus',()=>touchCurrentAccess());
 
   const loginForm=document.getElementById('loginForm');
   if(loginForm) loginForm.addEventListener('submit',async(e)=>{
