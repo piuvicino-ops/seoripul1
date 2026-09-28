@@ -1144,6 +1144,17 @@
 }
 .memberBarActions{gap:5px}
 
+/* iPhone 홈 화면 설치 앱에서만 표시하는 내부 뒤로가기 */
+.iosHistoryBack{
+  display:none;flex:0 0 auto;width:34px;height:34px;padding:0;
+  border:1px solid #b7d9d1;border-radius:9px;background:#eef8f5;color:#0f766e;
+  align-items:center;justify-content:center;font-size:22px;font-weight:700;line-height:1;cursor:pointer;
+}
+body.iphonePwa.appCanGoBack .iosHistoryBack{display:flex}
+body.iphonePwa.appCanGoBack .iosHistoryBack[hidden]{display:flex!important}
+.iosHistoryBack:active{transform:translateY(1px)}
+.memberBarInfo{flex:1}
+
 /* 2. 첫 화면 참고 안내 — 경고문이 아닌 차분한 정보 바 */
 .mainIntroNotice{
   max-width:780px;
@@ -2503,6 +2514,7 @@ window.SAEJEONGI_AUTH_CONFIG={
 
 <main class="wrap" id="appMain">
 <div class="memberBar appTopBar" id="memberBar">
+  <button class="iosHistoryBack" id="iosHistoryBack" type="button" aria-label="이전 화면" title="이전" hidden>←</button>
   <button class="sideMenuOpen" id="sideMenuOpen" type="button" aria-label="메뉴 열기" aria-controls="sideMenuDrawer" aria-expanded="false">☰</button>
   <div class="memberBarInfo">
     <div class="memberBarName" id="memberBarName">로그인 전 미리보기</div>
@@ -4781,6 +4793,46 @@ window.SAEJEONGI_AUTH_CONFIG={
   const sideMenuDrawer=document.getElementById('sideMenuDrawer');
   const sideMenuBackdrop=document.getElementById('sideMenuBackdrop');
   const sideMenuClose=document.getElementById('sideMenuClose');
+  const iosHistoryBack=document.getElementById('iosHistoryBack');
+
+  // 앱 내부 화면 전환을 브라우저 히스토리에 기록합니다.
+  // Android PWA에서는 시스템 백버튼이 이 히스토리를 사용하고,
+  // iPhone 홈 화면 설치 앱에서는 같은 히스토리를 상단 ← 버튼이 사용합니다.
+  let appHistoryRestoring=false;
+  const isIPhoneDevice=/iPhone|iPod/i.test(navigator.userAgent||'');
+  const isStandaloneMode=window.matchMedia?.('(display-mode: standalone)')?.matches===true || window.navigator.standalone===true;
+  const isIPhonePwa=isIPhoneDevice&&isStandaloneMode;
+  // Android 등 다른 기기에서도 iPhone PWA의 상단 뒤로가기 UI를 확인하기 위한 미리보기 모드
+  // 운영 주소 끝에 ?iospreview=1 을 붙이면 활성화됩니다.
+  const isIosPreview=new URLSearchParams(location.search).get('iospreview')==='1';
+  const showIosHistoryBack=isIPhonePwa||isIosPreview;
+  if(showIosHistoryBack) document.body.classList.add('iphonePwa');
+
+  const appHistoryKey=(state)=>{
+    if(!state||state.__seoripulNav!==1) return '';
+    return [state.view||'',state.tab||'',state.embeddedTab||'',state.board||'',state.postId||''].join('|');
+  };
+  const refreshAppBackUi=()=>{
+    const state=history.state;
+    const canGoBack=Boolean(state&&state.__seoripulNav===1&&state.view!=='home');
+    document.body.classList.toggle('appCanGoBack',canGoBack);
+    if(iosHistoryBack) iosHistoryBack.hidden=!(showIosHistoryBack&&canGoBack);
+  };
+  const writeAppHistory=(state,{replace=false}={})=>{
+    if(appHistoryRestoring) return;
+    const next={__seoripulNav:1,...state};
+    if(appHistoryKey(history.state)===appHistoryKey(next)){refreshAppBackUi();return;}
+    if(replace) history.replaceState(next,'');
+    else history.pushState(next,'');
+    refreshAppBackUi();
+  };
+  if(!history.state||history.state.__seoripulNav!==1){
+    history.replaceState({__seoripulNav:1,view:'home'},'');
+  }
+  refreshAppBackUi();
+  iosHistoryBack?.addEventListener('click',()=>history.back());
+  window.__pushAppNav=(state,replace=false)=>writeAppHistory(state,{replace});
+  window.__isAppNavRestoring=()=>appHistoryRestoring;
 
   const openSideMenu=()=>{
     if(!sideMenuDrawer||!sideMenuBackdrop) return;
@@ -4916,6 +4968,7 @@ window.SAEJEONGI_AUTH_CONFIG={
       currentMenuChild.classList.remove('saejeongiMenuChild');
     }
     clearActiveWatermark();
+    writeAppHistory({view:'home'});
     try{window.scrollTo({top:0,behavior:'auto'});}catch{}
   };
 
@@ -5094,6 +5147,7 @@ window.SAEJEONGI_AUTH_CONFIG={
 
     if(target==='memberAdminPanel') loadAdminMembers();
     if(target==='incentivePanel') ensureIncentiveFrame();
+    writeAppHistory({view:'main',tab:target,board:target==='boardPanel'?'list':''});
     window.scrollTo({top:0,behavior:'smooth'});
   };
 
@@ -5118,6 +5172,7 @@ window.SAEJEONGI_AUTH_CONFIG={
       clearActiveWatermark();
     }
 
+    writeAppHistory({view:'district',embeddedTab});
     window.scrollTo({top:0,behavior:'smooth'});
   };
 
@@ -5207,6 +5262,33 @@ window.SAEJEONGI_AUTH_CONFIG={
     }
     openDistrictTab(btn);
   }));
+
+  window.addEventListener('popstate',(event)=>{
+    const state=event.state;
+    appHistoryRestoring=true;
+    try{
+      closeSideMenu();
+      if(!state||state.__seoripulNav!==1||state.view==='home'){
+        openHomePanel();
+      }else if(state.view==='district'){
+        const btn=districtButtons.find(b=>(b.dataset.embeddedTab||'')===(state.embeddedTab||'basicPane'));
+        if(btn) openDistrictTab(btn); else openHomePanel();
+      }else if(state.view==='main'){
+        const btn=buttons.find(b=>(b.dataset.tab||'')===(state.tab||''));
+        if(btn){
+          openTab(btn);
+          if(state.tab==='boardPanel'){
+            setTimeout(()=>window.dispatchEvent(new CustomEvent('app-board-history',{detail:state})),0);
+          }
+        }else openHomePanel();
+      }else{
+        openHomePanel();
+      }
+    }finally{
+      appHistoryRestoring=false;
+      refreshAppBackUi();
+    }
+  });
 
   noticeGateConfirm.addEventListener('click',()=>{
     const btn=pendingTabButton;
@@ -5733,8 +5815,10 @@ window.SAEJEONGI_AUTH_CONFIG={
     const likeRow=`<div class="boardLikeRow"><button class="boardLikeBtn${liked?' active':''}" data-toggle-like type="button" aria-pressed="${liked?'true':'false'}"${data.member?'':' disabled'}>${liked?'♥':'♡'} 좋아요 <span>${likeCount}</span></button>${data.member?'':'<span class="boardLikeHint">로그인 후 좋아요를 표시할 수 있습니다.</span>'}</div>`;
     detailCard.innerHTML=`<div class="boardViewHead"><div class="boardPostTop">${badges(p)}</div><h2 class="boardViewTitle">${esc(p.title)}</h2><div class="boardViewMeta">${esc(authorName(p)||'작성자')} · ${esc(fmtDate(p.published_at||p.created_at))} · <span class="boardMetaNoWrap">조회 ${Number(p.view_count||0)}</span> · <span class="boardMetaNoWrap">좋아요 ${likeCount}</span></div></div><div class="boardContent">${esc(p.content)}</div>${renderAttachments(data.attachments||[])}${likeRow}${actions}<section class="boardComments"><h3>댓글 ${comments.length}</h3>${commentItems}${commentForm}</section>`;
   };
-  const openDetail=async(id)=>{
-    show('detail');detailCard.innerHTML='<div class="boardState">게시글을 불러오는 중입니다.</div>';
+  const openDetail=async(id,options={})=>{
+    show('detail');
+    if(!options.noHistory) window.__pushAppNav?.({view:'main',tab:'boardPanel',board:'detail',postId:id},Boolean(options.replaceHistory));
+    detailCard.innerHTML='<div class="boardState">게시글을 불러오는 중입니다.</div>';
     try{renderDetail(await call({action:'detail',post_id:id}));}catch(e){detailCard.innerHTML=`<div class="boardState">${esc(e.message)}</div>`;}
   };
   const openBoardFromHome=(id=null)=>{
@@ -5744,12 +5828,14 @@ window.SAEJEONGI_AUTH_CONFIG={
   const resetEditor=()=>{
     editorForm.reset();postIdInput.value='';categoryInput.value='opinion';visibilityInput.value='members';pinnedInput.checked=false;existingFiles.innerHTML='';editorMessage.textContent='';document.getElementById('boardEditorTitle').textContent='새 글 작성';
   };
-  const openEditor=(data=null)=>{
+  const openEditor=(data=null,options={})=>{
     resetEditor();
     if(data){
       const p=data.post;postIdInput.value=p.id;categoryInput.value=p.category;visibilityInput.value=p.visibility;titleInput.value=p.title;contentInput.value=p.content;pinnedInput.checked=Boolean(p.is_pinned);document.getElementById('boardEditorTitle').textContent='게시글 수정';existingFiles.innerHTML=renderAttachments(data.attachments||[],true);
     }
-    show('editor');titleInput.focus();
+    show('editor');
+    if(!options.noHistory) window.__pushAppNav?.({view:'main',tab:'boardPanel',board:'editor',postId:data?.post?.id||''});
+    titleInput.focus();
   };
   const uploadFiles=async(postId)=>{
     for(const file of [...(fileInput.files||[])]){
@@ -5779,8 +5865,13 @@ window.SAEJEONGI_AUTH_CONFIG={
   homeBoardMore?.addEventListener('click',()=>openBoardFromHome());
   writeBtn.addEventListener('click',()=>openEditor());
   refreshBtn.addEventListener('click',loadPosts);
-  document.getElementById('boardDetailBack').addEventListener('click',()=>{show('list');loadPosts();});
-  document.getElementById('boardEditorBack').addEventListener('click',()=>{show('list');loadPosts();});
+  const boardHistoryBack=()=>{
+    const st=history.state;
+    if(st&&st.__seoripulNav===1&&st.tab==='boardPanel'&&(st.board==='detail'||st.board==='editor')) history.back();
+    else{show('list');loadPosts();window.__pushAppNav?.({view:'main',tab:'boardPanel',board:'list'});}
+  };
+  document.getElementById('boardDetailBack').addEventListener('click',boardHistoryBack);
+  document.getElementById('boardEditorBack').addEventListener('click',boardHistoryBack);
   document.getElementById('boardSaveDraftBtn').addEventListener('click',()=>savePost('draft'));
   editorForm.addEventListener('submit',e=>{e.preventDefault();savePost('published');});
   document.querySelectorAll('[data-board-filter]').forEach(btn=>btn.addEventListener('click',()=>{filter=btn.dataset.boardFilter;document.querySelectorAll('[data-board-filter]').forEach(b=>b.classList.toggle('active',b===btn));renderList();}));
@@ -5816,6 +5907,20 @@ window.SAEJEONGI_AUTH_CONFIG={
   existingFiles.addEventListener('click',async e=>{
     const btn=e.target.closest('[data-remove-attachment]');if(!btn||!confirm('이 첨부파일을 삭제하시겠습니까?')) return;
     try{await call({action:'remove_attachment',attachment_id:btn.dataset.removeAttachment},true);currentDetail=await call({action:'detail',post_id:postIdInput.value});openEditor(currentDetail);}catch(err){alert(err.message);}
+  });
+  window.addEventListener('app-board-history',async(event)=>{
+    const state=event.detail||{};
+    if(state.board==='detail'&&state.postId){
+      await openDetail(state.postId,{noHistory:true});
+    }else if(state.board==='editor'){
+      if(state.postId){
+        try{openEditor(await call({action:'detail',post_id:state.postId}),{noHistory:true});}
+        catch{show('list');loadPosts();}
+      }else openEditor(null,{noHistory:true});
+    }else{
+      show('list');
+      loadPosts();
+    }
   });
   document.getElementById('boardTab')?.addEventListener('click',()=>setTimeout(loadPosts,0));
   document.querySelector('[data-target-tab="boardPanel"]')?.addEventListener('click',()=>setTimeout(loadPosts,0));
