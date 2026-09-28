@@ -1152,8 +1152,12 @@
 }
 body.iphonePwa.appCanGoBack .iosHistoryBack{display:flex}
 body.iphonePwa.appCanGoBack .iosHistoryBack[hidden]{display:flex!important}
+/* 뒤로가기 버튼이 나타날 때도 상단바를 반드시 한 줄 4열로 유지 */
+body.iphonePwa.appCanGoBack .appTopBar{
+  grid-template-columns:auto auto minmax(0,1fr) auto!important;
+}
 .iosHistoryBack:active{transform:translateY(1px)}
-.memberBarInfo{flex:1}
+.memberBarInfo{flex:1;min-width:0}
 
 /* 2. 첫 화면 참고 안내 — 경고문이 아닌 차분한 정보 바 */
 .mainIntroNotice{
