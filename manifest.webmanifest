@@ -1,11 +1,12 @@
 {
-  "name": "서리풀1지구, 개인적인 기록과 메모",
-  "short_name": "서리풀1 기록",
+  "name": "서울서리풀1 씹어먹기",
+  "short_name": "서리풀1 씹어먹기",
+  "description": "서울서리풀1지구의 보상부터 이주대책, 토지이용계획, 행정소송, 주요 일정까지 한곳에 정리한 개인 기록·분석입니다.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#0f766e",
+  "background_color": "#f7faf9",
+  "theme_color": "#087f6b",
   "icons": [
     {
       "src": "icon-192.png",
