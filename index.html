@@ -426,6 +426,7 @@
   gap:8px;
   flex-wrap:wrap;
 }
+.currentMenuTitle.homeHidden{display:none !important;}
 .currentMenuParent{
   font-size:18px;
   font-weight:400;
@@ -451,14 +452,25 @@
 
 /* 첫 화면 주요일정 */
 .homeTopLevelTitle{
-  margin:12px 0 10px;
-  font-size:24px;
+  margin:18px 0 12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:11px;
+  font-size:13px;
   line-height:1.3;
-  font-weight:400;
-  letter-spacing:-.35px;
-  color:#0f766e;
-  text-align:left;
+  font-weight:800;
+  letter-spacing:-.15px;
+  color:#667085;
+  text-align:center;
 }
+.homeTopLevelTitle::before,.homeTopLevelTitle::after{
+  content:"";
+  height:1px;
+  flex:1 1 auto;
+  background:linear-gradient(90deg,transparent,#d5dde2);
+}
+.homeTopLevelTitle::after{background:linear-gradient(90deg,#d5dde2,transparent);}
 .homeScheduleSection{
   margin:2px 0 20px;padding:0;background:transparent;border:0;box-shadow:none;
 }
@@ -504,7 +516,7 @@
 .homeScheduleToggle:hover .arrow,.homeScheduleToggle:focus-visible .arrow{box-shadow:0 3px 10px rgba(15,23,42,.14)}
 .homeScheduleSection.expanded .homeScheduleToggle .arrow{transform:rotate(-90deg)}
 @media(max-width:560px){
-  .homeTopLevelTitle{font-size:22px;margin:10px 0 9px}
+  .homeTopLevelTitle{font-size:12.5px;margin:17px 0 11px;gap:9px}
   .homeScheduleSection{margin-bottom:17px}
   .homeScheduleHint{font-size:10.5px}
   .homeScheduleItem{padding:14px 14px 13px;border-radius:14px}
@@ -604,6 +616,88 @@
   font-weight:400;
   color:#667085;
   word-break:keep-all;
+}
+
+/* 첫 화면 게시판 — 주요 예상 일정과 동일한 섹션 레벨 */
+#homePanel .homeBoardShortcut{
+  width:100%;
+  margin:2px 0 12px;
+  padding:13px;
+  background:#fff;
+  border:1px solid #e7e5ee;
+  border-radius:15px;
+  box-shadow:0 2px 9px rgba(15,23,42,.035);
+}
+#homePanel .homeBoardHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:0 2px 10px;
+}
+#homePanel .homeBoardTitle{
+  margin:0;
+  color:#174b45;
+  font-size:15px;
+  font-weight:850;
+  letter-spacing:-.2px;
+}
+#homePanel .homeBoardMore{
+  border:0;
+  background:transparent;
+  color:#0f766e;
+  font-size:11px;
+  font-weight:800;
+  cursor:pointer;
+  padding:5px 2px;
+}
+#homePanel .homeBoardList{display:grid;gap:7px;}
+#homePanel .homeBoardPost{
+  width:100%;
+  min-height:62px;
+  padding:10px 46px 9px 13px;
+  background:linear-gradient(135deg,#dff3ef 0%,#edf9f7 100%);
+  border:1px solid rgba(15,118,110,.16);
+  border-radius:13px;
+  box-shadow:0 2px 7px rgba(15,118,110,.045);
+  position:relative;
+  text-align:left;
+  cursor:pointer;
+}
+#homePanel .homeBoardPost::after{
+  content:'›';
+  position:absolute;
+  right:11px;
+  top:50%;
+  transform:translateY(-50%);
+  width:27px;
+  height:27px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,.88);
+  border:1px solid rgba(15,118,110,.24);
+  color:#0f766e;
+  font-size:18px;
+  font-weight:700;
+}
+#homePanel .homeBoardPostTitle{display:block;color:#174b45;font-size:13px;font-weight:800;line-height:1.35;}
+#homePanel .homeBoardPostMeta{display:block;margin-top:3px;color:#52716d;font-size:10.5px;line-height:1.35;}
+#homePanel .homeBoardEmpty{padding:18px 10px;text-align:center;color:#758581;font-size:12px;}
+#homePanel .homeScheduleHeader{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin:0 2px 10px;
+}
+#homePanel .homeScheduleTitle{
+  margin:0;
+  color:#4f3970;
+  font-size:15px;
+  font-weight:850;
+  letter-spacing:-.2px;
 }
 
 
@@ -761,7 +855,7 @@
 }
 .adminRefreshBtn:disabled{opacity:.55;cursor:default}
 .adminSummary{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:16px
+  display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:16px
 }
 .adminSummaryBox{
   border:1px solid #e5e7eb;border-radius:12px;padding:12px;background:#f8fafc
@@ -797,8 +891,12 @@
   padding:5px 9px;font-size:11px;font-weight:700;white-space:nowrap
 }
 .memberRoleBadge.admin{background:#e7f7f2;color:#08775e}
-.memberRoleBadge.member{background:#eef4ff;color:#2457a6}
+.memberRoleBadge.resident{background:#eef4ff;color:#2457a6}
+.memberRoleBadge.landowner{background:#f2ebff;color:#6d45a3}
 .memberRoleBadge.pending{background:#fff6dc;color:#966300}
+.adminRoleControl{display:grid;gap:6px;min-width:0}
+.adminRoleSelect{width:100%;min-width:0;border:1px solid #d0d5dd;border-radius:8px;background:#fff;padding:7px 8px;font-size:10.5px;color:#344054}
+.adminRoleSelect:disabled{background:#f2f4f7;color:#667085}
 .adminMemberActions{display:flex;justify-content:flex-end;gap:6px;flex-wrap:wrap}
 .adminActionBtn{
   border-radius:8px;padding:7px 9px;font-size:11px;font-weight:650;cursor:pointer;border:1px solid #d0d5dd;background:#fff;color:#344054
@@ -834,7 +932,7 @@
 @media(max-width:680px){
   .adminManageCard{padding:14px}
   .adminManageHead{align-items:center}
-  .adminSummary{grid-template-columns:repeat(3,1fr)}
+  .adminSummary{grid-template-columns:repeat(2,1fr)}
   .adminSummaryBox{padding:10px 8px}
   .adminSummaryBox .v{font-size:18px}
   .adminAccessOverview{grid-template-columns:1fr 1fr}
@@ -845,7 +943,7 @@
     gap:9px 10px;
   }
   .adminMemberIdentity{grid-column:1/2}
-  .adminMemberRow>.memberRoleBadge{grid-column:2/3;grid-row:1}
+  .adminMemberRow>.adminRoleControl{grid-column:2/3;grid-row:1}
   .adminMemberMeta{grid-column:1/3}
   .adminMemberActions{grid-column:1/3;justify-content:flex-start}
   .adminGuestSummary{grid-template-columns:repeat(3,1fr)}
@@ -2268,6 +2366,32 @@ window.SAEJEONGI_AUTH_CONFIG={
 #homePanel .homeScheduleItem.decisionPoint.itemExpanded{box-shadow:inset 3px 0 0 rgba(111,78,159,.42),0 5px 14px rgba(78,61,122,.07);}
 </style>
 
+<style id="boardStyles">
+.boardShell{max-width:760px;margin:0 auto;padding:2px 0 28px}
+.boardHero{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:14px;padding:20px;border:1px solid #dbe8e5;border-radius:18px;background:linear-gradient(135deg,#f0faf8,#fff);box-shadow:0 5px 18px rgba(15,118,110,.06)}
+.boardHero h2{margin:0 0 5px;font-size:22px;color:#123b35}.boardHero p{margin:0;color:#64748b;font-size:13px;line-height:1.6}
+.boardPrimary,.boardSecondary,.boardDanger{border:0;border-radius:11px;padding:10px 14px;font-size:13px;font-weight:800;cursor:pointer}
+.boardPrimary{background:#0f766e;color:#fff}.boardSecondary{background:#edf4f3;color:#31534f}.boardDanger{background:#fff0f0;color:#b42318;border:1px solid #ffd0d0}
+.boardPrimary:disabled,.boardSecondary:disabled{opacity:.55;cursor:default}
+.boardToolbar{display:flex;gap:7px;align-items:center;margin:0 0 11px;flex-wrap:wrap}
+.boardFilter{border:1px solid #d9e2e0;border-radius:999px;background:#fff;color:#52625f;padding:7px 11px;font-size:12px;font-weight:750;cursor:pointer}
+.boardFilter.active{background:#dff3ef;color:#0f6b62;border-color:#9ed8ce}
+.boardRefresh{margin-left:auto}
+.boardState{padding:28px 14px;text-align:center;color:#7b8794;font-size:13px;border:1px dashed #d8e0e6;border-radius:15px;background:#fbfcfd}
+.boardList{display:grid;gap:9px}.boardPostCard{width:100%;text-align:left;border:1px solid #e0e6e8;border-radius:15px;background:#fff;padding:14px;cursor:pointer;box-shadow:0 3px 11px rgba(15,23,42,.035)}
+.boardPostCard:hover{border-color:#a9d9d1;background:#fbfffe}.boardPostTop{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:7px}
+.boardBadge{display:inline-flex;align-items:center;border-radius:999px;padding:3px 7px;font-size:10px;font-weight:850;background:#eef3f5;color:#53626e}
+.boardBadge.notice{background:#fff0d0;color:#8a5700}.boardBadge.news{background:#e7f3ff;color:#1f67a5}.boardBadge.info{background:#e7f7ef;color:#287050}.boardBadge.opinion{background:#f2ebff;color:#6d45a3}.boardBadge.pin{background:#fff2cf;color:#8a5d00}.boardBadge.public{background:#e8f7ed;color:#247044}.boardBadge.draft{background:#fff0ec;color:#9a3b24}
+.boardPostTitle{font-size:15px;font-weight:850;color:#172033;line-height:1.45}.boardPostMeta{margin-top:7px;color:#7c8794;font-size:11px;line-height:1.5}
+.boardView{background:#fff;border:1px solid #dfe6e8;border-radius:17px;padding:18px}.boardViewHead{border-bottom:1px solid #edf0f2;padding-bottom:13px;margin-bottom:15px}
+.boardViewTitle{font-size:21px;line-height:1.4;margin:7px 0;color:#172033}.boardViewMeta{font-size:11.5px;color:#7b8794}.boardContent{font-size:14px;line-height:1.85;color:#26343f;white-space:pre-wrap;word-break:break-word;min-height:80px}
+.boardActionRow{display:flex;gap:7px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px}.boardAttachments{display:grid;gap:7px;margin-top:18px}.boardAttachment{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #e1e7e9;border-radius:11px;padding:10px 11px;background:#fafcfc;font-size:12px}.boardAttachment a{color:#0f6f67;font-weight:750;text-decoration:none;overflow-wrap:anywhere}
+.boardComments{margin-top:22px;padding-top:17px;border-top:1px solid #e8edef}.boardComments h3{font-size:15px;margin:0 0 11px}.boardComment{padding:11px 2px;border-bottom:1px solid #edf0f2}.boardCommentHead{display:flex;justify-content:space-between;gap:8px;color:#7c8794;font-size:11px}.boardCommentBody{margin-top:6px;font-size:13px;line-height:1.65;white-space:pre-wrap}.boardCommentDelete{border:0;background:none;color:#b42318;font-size:11px;cursor:pointer}
+.boardCommentForm{display:flex;gap:7px;margin-top:12px}.boardCommentForm textarea{flex:1;min-height:62px;border:1px solid #d7dfe2;border-radius:11px;padding:10px;font:inherit;resize:vertical}.boardLoginNote{margin-top:12px;padding:10px;border-radius:11px;background:#f5f7f8;color:#687580;font-size:12px;text-align:center}
+.boardEditor{background:#fff;border:1px solid #dfe6e8;border-radius:17px;padding:18px}.boardEditor h3{margin:0 0 15px;font-size:19px}.boardFormGrid{display:grid;grid-template-columns:1fr 1fr;gap:11px}.boardField{display:grid;gap:6px}.boardField.full{grid-column:1/-1}.boardField label{font-size:12px;font-weight:800;color:#44534f}.boardField input,.boardField select,.boardField textarea{width:100%;border:1px solid #d6dfe1;border-radius:11px;background:#fff;padding:11px;font:inherit;color:#172033}.boardField textarea{min-height:260px;resize:vertical;line-height:1.65}.boardCheck{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:750;color:#46534f}.boardFilesHint{font-size:11px;color:#7b8794;line-height:1.5}.boardMessage{min-height:18px;margin-top:9px;font-size:12px;color:#b42318}.boardBack{margin-bottom:10px}
+@media(max-width:560px){.boardHero{padding:16px;display:block}.boardHero .boardPrimary{margin-top:12px;width:100%}.boardFormGrid{grid-template-columns:1fr}.boardField.full{grid-column:auto}.boardView,.boardEditor{padding:15px}.boardViewTitle{font-size:19px}.boardCommentForm{display:grid}.boardToolbar{gap:5px}.boardRefresh{margin-left:0}.boardField textarea{min-height:220px}}
+</style>
+
 </head><body><div class="authShell" id="authShell" hidden aria-hidden="true">
   <div class="authWrap">
     <button class="authModalClose" id="authModalClose" type="button" aria-label="로그인 창 닫기">×</button>
@@ -2315,12 +2439,13 @@ window.SAEJEONGI_AUTH_CONFIG={
         <h2 class="authTitle">회원가입 신청</h2>
         <p class="authDesc">아래 정보를 모두 입력하면 관리자에게 승인 메일이 발송됩니다. 관리자 승인 후 로그인할 수 있습니다.</p>
         <form class="authForm" id="signupForm">
+          <div class="authField"><label for="signupMemberRole">회원 구분</label><select id="signupMemberRole" name="membershipRole" required><option value="resident">새정이마을주민</option><option value="landowner">일반토지주</option></select></div>
           <div class="authField"><label for="signupName">성명</label><input id="signupName" name="fullName" autocomplete="name" required placeholder="성명"/></div>
-          <div class="authField"><label for="signupParcel">새정이마을 소유 주택 지번</label><input id="signupParcel" name="parcelNo" required placeholder="예: 신원동 00-0"/></div>
+          <div class="authField"><label for="signupParcel">소유 토지·주택 지번</label><input id="signupParcel" name="parcelNo" required placeholder="예: 신원동 00-0"/></div>
           <div class="authField"><label for="signupPhone">핸드폰번호</label><input id="signupPhone" name="phone" type="tel" autocomplete="tel" inputmode="numeric" required placeholder="숫자만 입력 (예: 01012345678)"/></div>
           <div class="authField"><label for="signupUsername">아이디</label><input id="signupUsername" name="username" autocomplete="username" minlength="4" maxlength="30" pattern="[A-Za-z0-9._-]{4,30}" required placeholder="영문·숫자 4~30자"/><div class="authHint">영문, 숫자, 마침표(.), 밑줄(_), 하이픈(-)만 사용할 수 있습니다.</div></div>
-          <div class="authField"><label for="signupPassword">비밀번호</label><input id="signupPassword" name="password" type="password" autocomplete="new-password" minlength="4" required placeholder="4자 이상"/></div>
-          <div class="authField"><label for="signupPassword2">비밀번호 확인</label><input id="signupPassword2" name="password2" type="password" autocomplete="new-password" minlength="4" required placeholder="비밀번호 다시 입력"/></div>
+          <div class="authField"><label for="signupPassword">비밀번호</label><input id="signupPassword" name="password" type="password" autocomplete="new-password" minlength="8" required placeholder="8자 이상"/></div>
+          <div class="authField"><label for="signupPassword2">비밀번호 확인</label><input id="signupPassword2" name="password2" type="password" autocomplete="new-password" minlength="8" required placeholder="비밀번호 다시 입력"/></div>
           <button class="authBtn primary" type="submit">가입 승인 신청</button>
         </form>
         <div class="authLinks"><button class="authLink" data-auth-view="loginView" type="button">로그인으로 돌아가기</button></div>
@@ -2334,8 +2459,8 @@ window.SAEJEONGI_AUTH_CONFIG={
           <div class="authField"><label for="resetName">성명</label><input id="resetName" name="fullName" autocomplete="name" required placeholder="성명"/></div>
           <div class="authField"><label for="resetParcel">주택 소유 지번</label><input id="resetParcel" name="parcelNo" required placeholder="회원가입 시 입력한 지번"/></div>
           <div class="authField"><label for="resetPhone">연락처</label><input id="resetPhone" name="phone" type="tel" autocomplete="tel" inputmode="numeric" required placeholder="회원가입 시 입력한 연락처"/></div>
-          <div class="authField"><label for="resetPassword">새 비밀번호</label><input id="resetPassword" name="newPassword" type="password" autocomplete="new-password" minlength="4" required placeholder="4자 이상"/></div>
-          <div class="authField"><label for="resetPassword2">새 비밀번호 확인</label><input id="resetPassword2" name="newPassword2" type="password" autocomplete="new-password" minlength="4" required placeholder="새 비밀번호 다시 입력"/></div>
+          <div class="authField"><label for="resetPassword">새 비밀번호</label><input id="resetPassword" name="newPassword" type="password" autocomplete="new-password" minlength="8" required placeholder="8자 이상"/></div>
+          <div class="authField"><label for="resetPassword2">새 비밀번호 확인</label><input id="resetPassword2" name="newPassword2" type="password" autocomplete="new-password" minlength="8" required placeholder="새 비밀번호 다시 입력"/></div>
           <button class="authBtn primary" type="submit">비밀번호 재설정</button>
         </form>
         <div class="authLinks"><button class="authLink" data-auth-view="loginView" type="button">로그인으로 돌아가기</button></div>
@@ -2370,10 +2495,10 @@ window.SAEJEONGI_AUTH_CONFIG={
     </button>
     <button class="memberLogout" id="memberLogout" type="button">로그인</button>
   </div>
-</div><header class="header"><p class="mainIntroNotice" id="mainIntroNotice"><span>현재 확인된 자료와 분석을 바탕으로 정리한 참고자료입니다. 실제 결정 전에는 최신 기준과 공식 자료를 다시 확인해 주세요.</span></p><div class="currentMenuTitle" id="currentMenuTitle">
+</div><header class="header"><p class="mainIntroNotice" id="mainIntroNotice"><span>현재 확인된 자료와 분석을 바탕으로 정리한 참고자료입니다. 실제 결정 전에는 최신 기준과 공식 자료를 다시 확인해 주세요.</span></p><div class="currentMenuTitle homeHidden" id="currentMenuTitle" hidden>
   <span class="currentMenuParent" id="currentMenuParent"></span>
   <span class="currentMenuSep" id="currentMenuSep" aria-hidden="true" style="display:none;">&gt;</span>
-  <span class="currentMenuChild" id="currentMenuChild">주요 예상 일정</span>
+  <span class="currentMenuChild" id="currentMenuChild">소식 및 주요 예상 일정</span>
 </div></header>
 
 
@@ -2402,6 +2527,7 @@ window.SAEJEONGI_AUTH_CONFIG={
     <section class="menuGroup" aria-labelledby="saejeongiMenuTitle">
       <h2 class="menuGroupTitle" id="saejeongiMenuTitle">새정이마을</h2>
       <nav class="menuGroupTabs" aria-label="새정이마을 메뉴" role="tablist">
+        <button aria-controls="boardPanel" aria-selected="false" class="tabBtn" data-tab="boardPanel" id="boardTab" role="tab" type="button">최근 소식과 검토사항</button>
         <button aria-controls="activityPanel" aria-selected="false" class="tabBtn" data-tab="activityPanel" id="activityTab" role="tab" type="button">대책위원회 활동기록</button>
         <button aria-controls="lawsuitPanel" aria-selected="false" class="tabBtn" data-tab="lawsuitPanel" id="lawsuitTab" role="tab" type="button">행정소송</button>
         <button aria-controls="lawsuitScenarioPanel" aria-selected="false" class="tabBtn" data-tab="lawsuitScenarioPanel" id="lawsuitScenarioTab" role="tab" type="button">행정소송 대응 시나리오</button>
@@ -2426,7 +2552,19 @@ window.SAEJEONGI_AUTH_CONFIG={
 
 
 <section class="tabPanel active" id="homePanel" role="tabpanel" aria-label="전체 메뉴">
-<section class="homeScheduleSection" id="homeScheduleSection" aria-label="주요 예상 일정">
+<section class="homeBoardShortcut" aria-label="최근 소식과 검토사항">
+  <div class="homeBoardHeader">
+    <h2 class="homeBoardTitle">최근 소식과 검토사항</h2>
+    <button class="homeBoardMore" id="homeBoardMore" type="button">전체보기 ›</button>
+  </div>
+  <div class="homeBoardList" id="homeBoardList" role="list">
+    <div class="homeBoardEmpty">최신 글을 불러오는 중입니다.</div>
+  </div>
+</section>
+<section class="homeScheduleSection" id="homeScheduleSection" aria-label="주요 일정">
+  <div class="homeScheduleHeader">
+    <h2 class="homeScheduleTitle">주요 일정</h2>
+  </div>
   <div class="homeScheduleList" role="list">
     <article class="homeScheduleItem" role="listitem">
       <div class="homeScheduleTop"><div class="homeScheduleWhen"><span class="homeScheduleBadge comp">보상절차</span><span class="homeScheduleDate">2026. 10. 15.</span></div></div>
@@ -3626,18 +3764,69 @@ window.SAEJEONGI_AUTH_CONFIG={
   </div>
 </section>
 
+<section aria-labelledby="boardTab" class="tabPanel" hidden id="boardPanel" role="tabpanel">
+  <div class="boardShell">
+    <div class="boardHero">
+      <div>
+        <h2>최근 소식과 검토사항</h2>
+        <p>최근 진행상황을 공유하고 필요한 내용을 함께 논의합니다. 글마다 전체공개 또는 회원공개를 선택할 수 있습니다.</p>
+      </div>
+      <button class="boardPrimary" id="boardWriteBtn" type="button" hidden>글쓰기</button>
+    </div>
+
+    <div id="boardListView">
+      <div class="boardToolbar" aria-label="게시글 분류">
+        <button class="boardFilter active" data-board-filter="all" type="button">전체</button>
+        <button class="boardFilter" data-board-filter="notice" type="button">공지사항</button>
+        <button class="boardFilter" data-board-filter="news" type="button">최근뉴스</button>
+        <button class="boardFilter" data-board-filter="info" type="button">정보공유</button>
+        <button class="boardFilter" data-board-filter="opinion" type="button">개인의견</button>
+        <button class="boardSecondary boardRefresh" id="boardRefreshBtn" type="button">새로고침</button>
+      </div>
+      <div class="boardList" id="boardPostList"><div class="boardState">게시글을 불러오는 중입니다.</div></div>
+    </div>
+
+    <div id="boardDetailView" hidden>
+      <button class="boardSecondary boardBack" id="boardDetailBack" type="button">목록으로</button>
+      <article class="boardView" id="boardDetailCard"></article>
+    </div>
+
+    <div id="boardEditorView" hidden>
+      <button class="boardSecondary boardBack" id="boardEditorBack" type="button">목록으로</button>
+      <form class="boardEditor" id="boardEditorForm">
+        <h3 id="boardEditorTitle">새 글 작성</h3>
+        <input id="boardPostId" type="hidden"/>
+        <div class="boardFormGrid">
+          <div class="boardField"><label for="boardCategory">분류</label><select id="boardCategory"><option id="boardNoticeOption" value="notice">공지사항</option><option value="news">최근뉴스</option><option value="info">정보공유</option><option value="opinion">개인의견</option></select></div>
+          <div class="boardField"><label for="boardVisibility">공개 범위</label><select id="boardVisibility"><option value="members">회원 공개</option><option value="public">전체공개</option></select></div>
+          <div class="boardField full"><label for="boardTitleInput">제목</label><input id="boardTitleInput" maxlength="150" required placeholder="제목을 입력하세요"/></div>
+          <div class="boardField full"><label for="boardContentInput">내용</label><textarea id="boardContentInput" maxlength="30000" placeholder="내용을 입력하세요"></textarea></div>
+          <div class="boardField full"><label for="boardFileInput">이미지·PDF 첨부</label><input id="boardFileInput" type="file" accept="image/jpeg,image/png,image/webp,image/gif,application/pdf" multiple/><div class="boardFilesHint">파일당 10MB 이하의 JPG·PNG·WEBP·GIF·PDF를 첨부할 수 있습니다. 새 파일은 글을 저장할 때 업로드됩니다.</div><div id="boardExistingFiles"></div></div>
+          <div class="boardField full" id="boardPinWrap" hidden><label class="boardCheck"><input id="boardPinnedInput" type="checkbox"/> 중요글로 상단 고정</label></div>
+        </div>
+        <div class="boardActionRow">
+          <button class="boardSecondary" id="boardSaveDraftBtn" type="button">임시저장</button>
+          <button class="boardPrimary" id="boardPublishBtn" type="submit">게시하기</button>
+        </div>
+        <div class="boardMessage" id="boardEditorMessage" role="status"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
 <section aria-labelledby="memberAdminTab" class="tabPanel" hidden id="memberAdminPanel" role="tabpanel">
   <div class="adminManageCard">
     <div class="adminManageHead">
       <div>
         <h2 class="adminManageTitle">회원관리</h2>
-        <p class="adminManageDesc">회원등급은 관리자 · 일반회원 · 승인대기로 구분됩니다. 최근 접속 정보는 로그인 또는 저장된 세션으로 앱을 다시 열고 활성화한 시각을 기준으로 하며 한국시간으로 표시됩니다.</p>
+        <p class="adminManageDesc">회원등급은 관리자 · 새정이마을주민 · 일반토지주로 구분됩니다. 승인대기 회원은 신청 등급을 확인하거나 변경한 뒤 승인할 수 있습니다.</p>
       </div>
       <button class="adminRefreshBtn" id="adminRefreshBtn" type="button">새로고침</button>
     </div>
     <div class="adminSummary" aria-label="회원 현황">
       <div class="adminSummaryBox"><div class="k">관리자</div><div class="v" id="adminCountAdmin">-</div></div>
-      <div class="adminSummaryBox"><div class="k">일반회원</div><div class="v" id="adminCountMember">-</div></div>
+      <div class="adminSummaryBox"><div class="k">새정이마을주민</div><div class="v" id="adminCountMember">-</div></div>
+      <div class="adminSummaryBox"><div class="k">일반토지주</div><div class="v" id="adminCountLandowner">-</div></div>
       <div class="adminSummaryBox"><div class="k">승인대기</div><div class="v" id="adminCountPending">-</div></div>
     </div>
     <div class="adminAccessOverview" aria-label="최근 접속 현황">
@@ -3722,6 +3911,7 @@ window.SAEJEONGI_AUTH_CONFIG={
   const adminInlineMsg=document.getElementById('adminInlineMsg');
   const adminCountAdmin=document.getElementById('adminCountAdmin');
   const adminCountMember=document.getElementById('adminCountMember');
+  const adminCountLandowner=document.getElementById('adminCountLandowner');
   const adminCountPending=document.getElementById('adminCountPending');
   const adminLatestAccess=document.getElementById('adminLatestAccess');
   const adminLatestAccessTime=document.getElementById('adminLatestAccessTime');
@@ -3735,6 +3925,7 @@ window.SAEJEONGI_AUTH_CONFIG={
   const adminGuestList=document.getElementById('adminGuestList');
   const memberWatermark=document.getElementById('memberWatermark');
   let currentSignedInProfile=null;
+  let currentAdminId='';
   let authSessionResolved=false;
   const memberWatermarkGrid=document.getElementById('memberWatermarkGrid');
   const memberWatermarkBadge=document.getElementById('memberWatermarkBadge');
@@ -4067,9 +4258,12 @@ window.SAEJEONGI_AUTH_CONFIG={
 
   const roleLabel=(m)=>{
     if(m.membership_role==='admin') return {text:'관리자',cls:'admin'};
-    if(m.status==='pending'||m.membership_role==='pending') return {text:'승인대기',cls:'pending'};
-    return {text:'일반회원',cls:'member'};
+    if(m.status==='pending') return {text:'승인대기',cls:'pending'};
+    if(m.membership_role==='landowner') return {text:'일반토지주',cls:'landowner'};
+    return {text:'새정이마을주민',cls:'resident'};
   };
+
+  const membershipRoleText=(role)=>role==='admin'?'관리자':role==='landowner'?'일반토지주':'새정이마을주민';
 
   const escHtml=(v)=>String(v??'')
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
@@ -4088,18 +4282,20 @@ window.SAEJEONGI_AUTH_CONFIG={
   };
 
   const renderAdminMembers=(members=[])=>{
-    const count={admin:0,member:0,pending:0};
+    const count={admin:0,resident:0,landowner:0,pending:0};
     members.forEach(m=>{
-      if(m.membership_role==='admin') count.admin++;
-      else if(m.status==='pending'||m.membership_role==='pending') count.pending++;
-      else count.member++;
+      if(m.status==='pending') count.pending++;
+      else if(m.membership_role==='admin') count.admin++;
+      else if(m.membership_role==='landowner') count.landowner++;
+      else count.resident++;
     });
     if(adminCountAdmin) adminCountAdmin.textContent=String(count.admin);
-    if(adminCountMember) adminCountMember.textContent=String(count.member);
+    if(adminCountMember) adminCountMember.textContent=String(count.resident);
+    if(adminCountLandowner) adminCountLandowner.textContent=String(count.landowner);
     if(adminCountPending) adminCountPending.textContent=String(count.pending);
 
     const now=Date.now();
-    const approved=members.filter(m=>!(m.status==='pending'||m.membership_role==='pending'));
+    const approved=members.filter(m=>m.status!=='pending');
     const accessed=approved.filter(m=>accessTimeValue(m)>0);
     const latest=[...accessed].sort((a,b)=>accessTimeValue(b)-accessTimeValue(a))[0]||null;
     const countWithin=(ms)=>accessed.filter(m=>(now-accessTimeValue(m))>=0&&(now-accessTimeValue(m))<=ms).length;
@@ -4123,8 +4319,8 @@ window.SAEJEONGI_AUTH_CONFIG={
     }
 
     const sorted=[...members].sort((a,b)=>{
-      const aPending=a.status==='pending'||a.membership_role==='pending';
-      const bPending=b.status==='pending'||b.membership_role==='pending';
+      const aPending=a.status==='pending';
+      const bPending=b.status==='pending';
       if(aPending!==bPending) return aPending?1:-1;
       const byAccess=accessTimeValue(b)-accessTimeValue(a);
       if(byAccess!==0) return byAccess;
@@ -4134,13 +4330,23 @@ window.SAEJEONGI_AUTH_CONFIG={
     adminMemberList.innerHTML=sorted.map(m=>{
       const role=roleLabel(m);
       const isAdmin=m.membership_role==='admin';
-      const isPending=m.status==='pending'||m.membership_role==='pending';
+      const isPending=m.status==='pending';
+      const isSelf=m.user_id===currentAdminId;
+      const selectedRole=['admin','resident','landowner'].includes(m.membership_role)?m.membership_role:'resident';
+      const roleSelect=`<select class="adminRoleSelect" aria-label="${escHtml(m.full_name)} 회원 등급"${isSelf?' disabled':''}>
+        <option value="admin"${selectedRole==='admin'?' selected':''}>관리자</option>
+        <option value="resident"${selectedRole==='resident'?' selected':''}>새정이마을주민</option>
+        <option value="landowner"${selectedRole==='landowner'?' selected':''}>일반토지주</option>
+      </select>`;
       const approveBtn=isPending
         ? `<button class="adminActionBtn approve" type="button" data-admin-action="approve" data-user-id="${escHtml(m.user_id)}" data-member-name="${escHtml(m.full_name)}">승인</button>`
         : '';
-      const deleteBtn=!isAdmin
+      const roleBtn=!isPending&&!isSelf
+        ? `<button class="adminActionBtn" type="button" data-admin-action="set_role" data-user-id="${escHtml(m.user_id)}" data-member-name="${escHtml(m.full_name)}">등급 변경</button>`
+        : '';
+      const deleteBtn=!isAdmin&&!isSelf
         ? `<button class="adminActionBtn delete" type="button" data-admin-action="delete" data-user-id="${escHtml(m.user_id)}" data-member-name="${escHtml(m.full_name)}">회원탈퇴</button>`
-        : '<span class="adminMemberMeta">관리자 보호</span>';
+        : (isSelf?'<span class="adminMemberMeta">내 관리자 계정 보호</span>':'');
       const lastAccess=memberLastAccess(m);
       const ago=formatAccessAgo(lastAccess);
 
@@ -4149,9 +4355,9 @@ window.SAEJEONGI_AUTH_CONFIG={
           <div class="name">${escHtml(m.full_name)}</div>
           <div class="id">${escHtml(m.username)}</div>
         </div>
-        <span class="memberRoleBadge ${role.cls}">${role.text}</span>
+        <div class="adminRoleControl"><span class="memberRoleBadge ${role.cls}">${role.text}</span>${roleSelect}</div>
         <div class="adminMemberMeta"><b>최근 접속</b><span class="adminAccessTime">${escHtml(formatAdminDate(lastAccess))}</span><span class="adminAccessRelative${ago.recent?' recent':''}">${escHtml(ago.text)}</span></div>
-        <div class="adminMemberActions">${approveBtn}${deleteBtn}</div>
+        <div class="adminMemberActions">${approveBtn}${roleBtn}${deleteBtn}</div>
       </div>`;
     }).join('');
   };
@@ -4202,6 +4408,7 @@ window.SAEJEONGI_AUTH_CONFIG={
       const token=await getAccessToken();
       if(!token) throw new Error('관리자 로그인 세션을 확인할 수 없습니다.');
       const result=await callPublicFunction('member-admin',{action:'list'},token);
+      currentAdminId=result.current_admin_id||currentSignedInProfile?.user_id||'';
       renderAdminMembers(result.members||[]);
       renderAdminGuests(result.guest_visitors||[],result.guest_stats||{});
     }catch(err){
@@ -4221,20 +4428,27 @@ window.SAEJEONGI_AUTH_CONFIG={
     const action=btn.dataset.adminAction;
     const userId=btn.dataset.userId||'';
     const name=btn.dataset.memberName||'해당 회원';
+    const row=btn.closest('.adminMemberRow');
+    const membershipRole=row?.querySelector('.adminRoleSelect')?.value||'resident';
+    const selectedRoleText=membershipRoleText(membershipRole);
 
     if(action==='approve'){
-      if(!confirm(`${name} 님의 가입을 승인하시겠습니까?`)) return;
+      if(!confirm(`${name} 님을 ${selectedRoleText} 등급으로 승인하시겠습니까?`)) return;
+    }else if(action==='set_role'){
+      if(!confirm(`${name} 님의 등급을 ${selectedRoleText}(으)로 변경하시겠습니까?`)) return;
     }else if(action==='delete'){
       if(!confirm(`${name} 님을 회원탈퇴 처리하시겠습니까?\n\n계정과 회원정보가 삭제되며 되돌릴 수 없습니다.`)) return;
     }else return;
 
     btn.disabled=true;
-    setAdminMsg(action==='approve'?'승인 처리 중입니다.':'회원탈퇴 처리 중입니다.');
+    setAdminMsg(action==='approve'?'승인 처리 중입니다.':action==='set_role'?'등급 변경 중입니다.':'회원탈퇴 처리 중입니다.');
     try{
       const token=await getAccessToken();
       if(!token) throw new Error('관리자 로그인 세션을 확인할 수 없습니다.');
-      await callPublicFunction('member-admin',{action,user_id:userId},token);
-      setAdminMsg(action==='approve'?`${name} 님을 일반회원으로 승인했습니다.`:`${name} 님의 회원탈퇴 처리가 완료되었습니다.`,'success');
+      const payload={action,user_id:userId};
+      if(action==='approve'||action==='set_role') payload.membership_role=membershipRole;
+      await callPublicFunction('member-admin',payload,token);
+      setAdminMsg(action==='approve'?`${name} 님을 ${selectedRoleText} 등급으로 승인했습니다.`:action==='set_role'?`${name} 님의 등급을 ${selectedRoleText}(으)로 변경했습니다.`:`${name} 님의 회원탈퇴 처리가 완료되었습니다.`,'success');
       await loadAdminMembers();
     }catch(err){
       setAdminMsg(err.message||'회원관리 처리 중 오류가 발생했습니다.','error');
@@ -4247,7 +4461,7 @@ window.SAEJEONGI_AUTH_CONFIG={
     appMain.hidden=false;
     appMain.style.display='block';
     currentSignedInProfile=profile||null;
-    const grade=profile?.membership_role==='admin'?'관리자':'일반회원';
+    const grade=membershipRoleText(profile?.membership_role);
     if(memberBarName) memberBarName.textContent=profile?.full_name?`${profile.full_name}님 · ${grade}`:grade;
     if(memberLogout) memberLogout.textContent='로그아웃';
     setAdminMenuVisibility(profile);
@@ -4439,12 +4653,12 @@ window.SAEJEONGI_AUTH_CONFIG={
     if(!hasAuthConfig){showMessage('signupMessage','인증 서버 설정이 필요합니다. Supabase 설정 후 실제 신청이 접수됩니다.','info');return;}
     const fd=new FormData(signupForm); const username=normalizeUsername(fd.get('username')); const rawPassword=String(fd.get('password')||''); const password2=String(fd.get('password2')||'');
     if(!/^[a-z0-9._-]{4,30}$/.test(username)){showMessage('signupMessage','아이디는 영문·숫자·마침표·밑줄·하이픈으로 4~30자 입력해 주세요.','error');return;}
-    if(rawPassword.length<4){showMessage('signupMessage','비밀번호는 4자 이상 입력해 주세요.','error');return;}
+    if(rawPassword.length<8){showMessage('signupMessage','비밀번호는 8자 이상 입력해 주세요.','error');return;}
     if(rawPassword!==password2){showMessage('signupMessage','비밀번호 확인이 일치하지 않습니다.','error');return;}
     const password=toAuthPassword(rawPassword);
     const btn=signupForm.querySelector('button[type="submit"]'); btn.disabled=true;
     try{
-      await callPublicFunction('member-signup',{full_name:String(fd.get('fullName')||'').trim(),parcel_number:String(fd.get('parcelNo')||'').trim(),phone:normalizePhone(fd.get('phone')),username,password});
+      await callPublicFunction('member-signup',{full_name:String(fd.get('fullName')||'').trim(),parcel_number:String(fd.get('parcelNo')||'').trim(),phone:normalizePhone(fd.get('phone')),username,password,membership_role:String(fd.get('membershipRole')||'resident')});
       signupForm.reset(); showAuthView('pendingView');
     }catch(err){showMessage('signupMessage',err.message||'가입 신청에 실패했습니다.','error');}
     finally{btn.disabled=false;}
@@ -4455,7 +4669,7 @@ window.SAEJEONGI_AUTH_CONFIG={
     e.preventDefault(); clearMessage('resetMessage');
     if(!hasAuthConfig){showMessage('resetMessage','인증 서버 설정이 필요합니다. Supabase 설정 후 비밀번호 재설정이 작동합니다.','info');return;}
     const fd=new FormData(resetForm); const p1=String(fd.get('newPassword')||''); const p2=String(fd.get('newPassword2')||'');
-    if(p1.length<4){showMessage('resetMessage','새 비밀번호는 4자 이상 입력해 주세요.','error');return;}
+    if(p1.length<8){showMessage('resetMessage','새 비밀번호는 8자 이상 입력해 주세요.','error');return;}
     if(p1!==p2){showMessage('resetMessage','새 비밀번호 확인이 일치하지 않습니다.','error');return;}
     const authPassword=toAuthPassword(p1);
     const btn=resetForm.querySelector('button[type="submit"]');btn.disabled=true;
@@ -4606,10 +4820,11 @@ window.SAEJEONGI_AUTH_CONFIG={
     buttons.forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false');});
     districtButtons.forEach(b=>b.classList.remove('active'));
     panels.forEach(p=>{const on=p.id==='homePanel';p.classList.toggle('active',on);p.hidden=!on;});
+    if(currentMenuTitle){currentMenuTitle.hidden=true;currentMenuTitle.classList.add('homeHidden');}
     if(currentMenuParent) currentMenuParent.textContent='';
     if(currentMenuSep) currentMenuSep.style.display='none';
     if(currentMenuChild){
-      currentMenuChild.textContent='주요 예상 일정';
+      currentMenuChild.textContent='소식 및 주요 예상 일정';
       currentMenuChild.classList.remove('saejeongiMenuChild');
     }
     clearActiveWatermark();
@@ -4765,6 +4980,7 @@ window.SAEJEONGI_AUTH_CONFIG={
     districtButtons.forEach(b=>b.classList.remove('active'));
     buttons.forEach(b=>{const on=b===btn;b.classList.toggle('active',on);b.setAttribute('aria-selected',on?'true':'false');});
     panels.forEach(p=>{const on=p.id===target;p.classList.toggle('active',on);p.hidden=!on;});
+    if(currentMenuTitle){currentMenuTitle.hidden=false;currentMenuTitle.classList.remove('homeHidden');}
     if(currentMenuParent) currentMenuParent.textContent=target==='memberAdminPanel'?'관리자':'새정이마을';
     if(currentMenuSep) currentMenuSep.style.display='';
     if(currentMenuChild){
@@ -4786,6 +5002,7 @@ window.SAEJEONGI_AUTH_CONFIG={
     buttons.forEach(b=>{b.classList.remove('active');b.setAttribute('aria-selected','false');});
     districtButtons.forEach(b=>b.classList.toggle('active',b===btn));
     panels.forEach(p=>{const on=p.id==='seoripulPanel';p.classList.toggle('active',on);p.hidden=!on;});
+    if(currentMenuTitle){currentMenuTitle.hidden=false;currentMenuTitle.classList.remove('homeHidden');}
     if(currentMenuParent) currentMenuParent.textContent='서리풀1지구';
     if(currentMenuSep) currentMenuSep.style.display='';
     if(currentMenuChild){
@@ -5219,6 +5436,196 @@ window.SAEJEONGI_AUTH_CONFIG={
       });
     }
   });
+})();
+</script>
+
+<script>
+(function(){
+  const panel=document.getElementById('boardPanel');
+  if(!panel||!window.supabase||!window.SAEJEONGI_AUTH_CONFIG) return;
+  const cfg=window.SAEJEONGI_AUTH_CONFIG;
+  const boardSb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false}});
+  const listView=document.getElementById('boardListView');
+  const detailView=document.getElementById('boardDetailView');
+  const editorView=document.getElementById('boardEditorView');
+  const postList=document.getElementById('boardPostList');
+  const homeBoardList=document.getElementById('homeBoardList');
+  const homeBoardMore=document.getElementById('homeBoardMore');
+  const writeBtn=document.getElementById('boardWriteBtn');
+  const refreshBtn=document.getElementById('boardRefreshBtn');
+  const detailCard=document.getElementById('boardDetailCard');
+  const editorForm=document.getElementById('boardEditorForm');
+  const editorMessage=document.getElementById('boardEditorMessage');
+  const postIdInput=document.getElementById('boardPostId');
+  const categoryInput=document.getElementById('boardCategory');
+  const noticeOption=document.getElementById('boardNoticeOption');
+  const visibilityInput=document.getElementById('boardVisibility');
+  const titleInput=document.getElementById('boardTitleInput');
+  const contentInput=document.getElementById('boardContentInput');
+  const fileInput=document.getElementById('boardFileInput');
+  const pinWrap=document.getElementById('boardPinWrap');
+  const pinnedInput=document.getElementById('boardPinnedInput');
+  const existingFiles=document.getElementById('boardExistingFiles');
+  let posts=[];
+  let filter='all';
+  let member=false;
+  let isAdmin=false;
+  let currentDetail=null;
+
+  const esc=(value)=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const authorName=(item)=>Array.isArray(item?.author)?item.author[0]?.full_name:item?.author?.full_name;
+  const fmtDate=(value)=>{
+    if(!value) return '-';
+    try{return new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(value));}catch{return '-';}
+  };
+  const getToken=async()=>{
+    const {data}=await boardSb.auth.getSession();
+    return data?.session?.access_token||'';
+  };
+  const call=async(payload,needsLogin=false)=>{
+    const token=await getToken();
+    if(needsLogin&&!token) throw new Error('로그인이 필요합니다.');
+    const headers={'Content-Type':'application/json','apikey':cfg.supabaseAnonKey};
+    if(token) headers.Authorization=`Bearer ${token}`;
+    const res=await fetch(`${cfg.supabaseUrl}/functions/v1/board-api`,{method:'POST',headers,body:JSON.stringify(payload)});
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok) throw new Error(data.error||'게시판 요청을 처리할 수 없습니다.');
+    return data;
+  };
+  const show=(view)=>{
+    listView.hidden=view!=='list';
+    detailView.hidden=view!=='detail';
+    editorView.hidden=view!=='editor';
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+  const badges=(p)=>{
+    const list=[];
+    if(p.is_pinned) list.push('<span class="boardBadge pin">중요</span>');
+    const categoryLabels={notice:'공지사항',news:'최근뉴스',info:'정보공유',opinion:'개인의견'};
+    const category=categoryLabels[p.category]?p.category:'opinion';
+    list.push(`<span class="boardBadge ${category}">${categoryLabels[category]}</span>`);
+    list.push(`<span class="boardBadge ${p.visibility==='public'?'public':''}">${p.visibility==='public'?'전체공개':'회원공개'}</span>`);
+    if(p.status==='draft') list.push('<span class="boardBadge draft">임시저장</span>');
+    return list.join('');
+  };
+  const renderList=()=>{
+    const shown=posts.filter(p=>filter==='all'||p.category===filter);
+    if(!shown.length){postList.innerHTML='<div class="boardState">등록된 게시글이 없습니다.</div>';return;}
+    postList.innerHTML=shown.map(p=>`<button class="boardPostCard" data-board-post="${esc(p.id)}" type="button"><div class="boardPostTop">${badges(p)}</div><div class="boardPostTitle">${esc(p.title)}</div><div class="boardPostMeta">${esc(authorName(p)||'작성자')} · ${esc(fmtDate(p.published_at||p.updated_at||p.created_at))} · 조회 ${Number(p.view_count||0)}</div></button>`).join('');
+  };
+  const renderHomeLatest=()=>{
+    if(!homeBoardList) return;
+    const latest=posts
+      .filter(p=>p.status==='published')
+      .sort((a,b)=>new Date(b.published_at||b.created_at||0)-new Date(a.published_at||a.created_at||0))
+      .slice(0,2);
+    if(!latest.length){homeBoardList.innerHTML='<div class="homeBoardEmpty">등록된 게시글이 없습니다.</div>';return;}
+    const categoryLabels={notice:'공지사항',news:'최근뉴스',info:'정보공유',opinion:'개인의견'};
+    homeBoardList.innerHTML=latest.map(p=>`<button class="homeBoardPost" data-home-board-post="${esc(p.id)}" type="button" role="listitem"><span class="homeBoardPostTitle">${esc(p.title)}</span><span class="homeBoardPostMeta">${categoryLabels[p.category]||'개인의견'} · ${esc(fmtDate(p.published_at||p.created_at))} · 조회 ${Number(p.view_count||0)} · 댓글 ${Number(p.comment_count||0)}</span></button>`).join('');
+  };
+  const loadPosts=async()=>{
+    postList.innerHTML='<div class="boardState">게시글을 불러오는 중입니다.</div>';
+    try{
+      const data=await call({action:'list'});
+      posts=data.posts||[];member=Boolean(data.member);isAdmin=Boolean(data.is_admin);
+      writeBtn.hidden=!member;
+      pinWrap.hidden=!isAdmin;
+      if(noticeOption){noticeOption.hidden=!isAdmin;noticeOption.disabled=!isAdmin;}
+      renderList();
+      renderHomeLatest();
+    }catch(e){postList.innerHTML=`<div class="boardState">${esc(e.message)}</div>`;if(homeBoardList) homeBoardList.innerHTML='<div class="homeBoardEmpty">최신 글을 불러오지 못했습니다.</div>';}
+  };
+  window.loadBoardPosts=loadPosts;
+
+  const renderAttachments=(items,editable=false)=>{
+    if(!items?.length) return '';
+    return `<div class="boardAttachments">${items.map(a=>`<div class="boardAttachment"><a href="${esc(a.url||'#')}" target="_blank" rel="noopener"${a.url?'':' aria-disabled="true"'}>${esc(a.file_name)} · ${(Number(a.file_size||0)/1024/1024).toFixed(1)}MB</a>${editable?`<button class="boardCommentDelete" data-remove-attachment="${esc(a.id)}" type="button">삭제</button>`:''}</div>`).join('')}</div>`;
+  };
+  const renderDetail=(data)=>{
+    currentDetail=data;
+    const p=data.post;
+    const comments=data.comments||[];
+    const actions=data.can_edit?`<div class="boardActionRow"><button class="boardSecondary" data-edit-post type="button">수정</button><button class="boardDanger" data-delete-post type="button">삭제</button></div>`:'';
+    const commentItems=comments.length?comments.map(c=>{
+      const canDelete=data.is_admin||data.viewer_id===c.author_id;
+      return `<div class="boardComment"><div class="boardCommentHead"><span>${esc(authorName(c)||'회원')} · ${esc(fmtDate(c.created_at))}</span>${canDelete?`<button class="boardCommentDelete" data-delete-comment="${esc(c.id)}" type="button">삭제</button>`:''}</div><div class="boardCommentBody">${esc(c.content)}</div></div>`;
+    }).join(''):'<div class="boardState">등록된 댓글이 없습니다.</div>';
+    const commentForm=data.member&&p.status==='published'?`<form class="boardCommentForm" id="boardCommentForm"><textarea id="boardCommentInput" maxlength="3000" required placeholder="댓글을 입력하세요"></textarea><button class="boardPrimary" type="submit">댓글 등록</button></form>`:'<div class="boardLoginNote">댓글은 로그인한 승인회원만 작성할 수 있습니다.</div>';
+    detailCard.innerHTML=`<div class="boardViewHead"><div class="boardPostTop">${badges(p)}</div><h2 class="boardViewTitle">${esc(p.title)}</h2><div class="boardViewMeta">${esc(authorName(p)||'작성자')} · ${esc(fmtDate(p.published_at||p.created_at))} · 조회 ${Number(p.view_count||0)}</div></div><div class="boardContent">${esc(p.content)}</div>${renderAttachments(data.attachments||[])}${actions}<section class="boardComments"><h3>댓글 ${comments.length}</h3>${commentItems}${commentForm}</section>`;
+  };
+  const openDetail=async(id)=>{
+    show('detail');detailCard.innerHTML='<div class="boardState">게시글을 불러오는 중입니다.</div>';
+    try{renderDetail(await call({action:'detail',post_id:id}));}catch(e){detailCard.innerHTML=`<div class="boardState">${esc(e.message)}</div>`;}
+  };
+  const openBoardFromHome=(id=null)=>{
+    document.getElementById('boardTab')?.click();
+    if(id) setTimeout(()=>openDetail(id),0);
+  };
+  const resetEditor=()=>{
+    editorForm.reset();postIdInput.value='';categoryInput.value='opinion';visibilityInput.value='members';pinnedInput.checked=false;existingFiles.innerHTML='';editorMessage.textContent='';document.getElementById('boardEditorTitle').textContent='새 글 작성';
+  };
+  const openEditor=(data=null)=>{
+    resetEditor();
+    if(data){
+      const p=data.post;postIdInput.value=p.id;categoryInput.value=p.category;visibilityInput.value=p.visibility;titleInput.value=p.title;contentInput.value=p.content;pinnedInput.checked=Boolean(p.is_pinned);document.getElementById('boardEditorTitle').textContent='게시글 수정';existingFiles.innerHTML=renderAttachments(data.attachments||[],true);
+    }
+    show('editor');titleInput.focus();
+  };
+  const uploadFiles=async(postId)=>{
+    for(const file of [...(fileInput.files||[])]){
+      const prepared=await call({action:'prepare_upload',post_id:postId,file_name:file.name,mime_type:file.type,file_size:file.size},true);
+      const uploaded=await boardSb.storage.from('board-attachments').uploadToSignedUrl(prepared.path,prepared.token,file,{contentType:file.type});
+      if(uploaded.error){
+        await call({action:'remove_attachment',attachment_id:prepared.attachment_id},true).catch(()=>{});
+        throw uploaded.error;
+      }
+    }
+  };
+  const savePost=async(status)=>{
+    editorMessage.textContent='저장하는 중입니다.';
+    const controls=[...editorForm.querySelectorAll('button,input,select,textarea')];controls.forEach(el=>el.disabled=true);
+    try{
+      const saved=await call({action:'save_post',post_id:postIdInput.value||null,category:categoryInput.value,visibility:visibilityInput.value,title:titleInput.value,content:contentInput.value,is_pinned:pinnedInput.checked,status},true);
+      await uploadFiles(saved.post_id);
+      fileInput.value='';
+      await loadPosts();
+      await openDetail(saved.post_id);
+    }catch(e){editorMessage.textContent=e.message||'저장하지 못했습니다.';}
+    finally{controls.forEach(el=>el.disabled=false);}
+  };
+
+  postList.addEventListener('click',e=>{const card=e.target.closest('[data-board-post]');if(card) openDetail(card.dataset.boardPost);});
+  homeBoardList?.addEventListener('click',e=>{const card=e.target.closest('[data-home-board-post]');if(card) openBoardFromHome(card.dataset.homeBoardPost);});
+  homeBoardMore?.addEventListener('click',()=>openBoardFromHome());
+  writeBtn.addEventListener('click',()=>openEditor());
+  refreshBtn.addEventListener('click',loadPosts);
+  document.getElementById('boardDetailBack').addEventListener('click',()=>{show('list');loadPosts();});
+  document.getElementById('boardEditorBack').addEventListener('click',()=>{show('list');loadPosts();});
+  document.getElementById('boardSaveDraftBtn').addEventListener('click',()=>savePost('draft'));
+  editorForm.addEventListener('submit',e=>{e.preventDefault();savePost('published');});
+  document.querySelectorAll('[data-board-filter]').forEach(btn=>btn.addEventListener('click',()=>{filter=btn.dataset.boardFilter;document.querySelectorAll('[data-board-filter]').forEach(b=>b.classList.toggle('active',b===btn));renderList();}));
+  detailCard.addEventListener('submit',async e=>{
+    if(e.target.id!=='boardCommentForm') return;e.preventDefault();
+    const input=document.getElementById('boardCommentInput');
+    try{await call({action:'save_comment',post_id:currentDetail.post.id,content:input.value},true);await openDetail(currentDetail.post.id);}catch(err){alert(err.message);}
+  });
+  detailCard.addEventListener('click',async e=>{
+    if(e.target.closest('[data-edit-post]')){openEditor(currentDetail);return;}
+    if(e.target.closest('[data-delete-post]')){
+      if(!confirm('이 게시글을 삭제하시겠습니까?')) return;
+      try{await call({action:'delete_post',post_id:currentDetail.post.id},true);show('list');await loadPosts();}catch(err){alert(err.message);}return;
+    }
+    const commentBtn=e.target.closest('[data-delete-comment]');
+    if(commentBtn&&confirm('이 댓글을 삭제하시겠습니까?')){try{await call({action:'delete_comment',comment_id:commentBtn.dataset.deleteComment},true);await openDetail(currentDetail.post.id);}catch(err){alert(err.message);}}
+  });
+  existingFiles.addEventListener('click',async e=>{
+    const btn=e.target.closest('[data-remove-attachment]');if(!btn||!confirm('이 첨부파일을 삭제하시겠습니까?')) return;
+    try{await call({action:'remove_attachment',attachment_id:btn.dataset.removeAttachment},true);currentDetail=await call({action:'detail',post_id:postIdInput.value});openEditor(currentDetail);}catch(err){alert(err.message);}
+  });
+  document.getElementById('boardTab')?.addEventListener('click',()=>setTimeout(loadPosts,0));
+  document.querySelector('[data-target-tab="boardPanel"]')?.addEventListener('click',()=>setTimeout(loadPosts,0));
+  boardSb.auth.onAuthStateChange(()=>setTimeout(loadPosts,0));
+  loadPosts();
 })();
 </script>
 
