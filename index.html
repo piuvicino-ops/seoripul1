@@ -1139,11 +1139,11 @@
 .memberHome svg{width:16px;height:16px}
 .memberLogout{
   min-height:34px;
-  padding:6px 9px;
+  padding:6px 7px;
   border-radius:9px;
-  font-size:10px;
+  font-size:9.6px;
 }
-.memberBarActions{gap:5px}
+.memberBarActions{gap:4px}
 
 /* iPhone 홈 화면 설치 앱에서만 표시하는 내부 뒤로가기 */
 .iosHistoryBack{
@@ -1181,13 +1181,14 @@ body.iphonePwa.appCanGoBack .appTopBar{
   min-width:0;display:flex;align-items:center;gap:7px;
 }
 .memberBrandLogo{
-  width:38px;height:38px;flex:0 0 auto;display:block;
-  object-fit:contain;border-radius:9px;
+  width:42px;height:42px;flex:0 0 auto;display:block;
+  object-fit:contain;border-radius:10px;background:transparent;
+  border:0;box-shadow:none;
 }
-.memberBrandText{min-width:0;line-height:1.05}
+.memberBrandText{min-width:0;line-height:1.03}
 .memberBrandTitle{
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-  color:#344054;font-size:13.4px;font-weight:900;letter-spacing:-.025em;
+  color:#344054;font-size:14.2px;font-weight:900;letter-spacing:-.03em;
 }
 .memberBrandBy{
   margin-top:3px;color:#98a2b3;font-size:8.8px;font-weight:600;
@@ -1198,8 +1199,8 @@ body.iphonePwa.appCanGoBack .appTopBar{
   .memberStatusName{font-size:10.3px}
   .memberStatusGrade{font-size:8.6px;padding:3px 6px}
   .memberBrandInfo{gap:7px}
-  .memberBrandLogo{width:34px;height:34px;border-radius:8px}
-  .memberBrandTitle{font-size:12.2px}
+  .memberBrandLogo{width:38px;height:38px;border-radius:9px}
+  .memberBrandTitle{font-size:13px}
   .memberBrandBy{font-size:8.2px;margin-top:2px}
 }
 
@@ -2474,7 +2475,37 @@ window.SAEJEONGI_AUTH_CONFIG={
   border-color:#dcefeb !important;
 }
 </style>
-</head><body><div class="authShell" id="authShell" hidden aria-hidden="true">
+
+<script>
+(function(){
+  try{
+    const standalone = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
+    if(standalone) document.documentElement.classList.add('standaloneApp');
+  }catch(e){}
+})();
+</script>
+<style>
+/* 설치 앱(PWA) 실행 시 표시되는 브랜드 스플래시 */
+.appSplash{
+  display:none;
+  position:fixed;inset:0;z-index:20000;
+  align-items:center;justify-content:center;
+  background:#f8fbfa;
+  opacity:1;visibility:visible;
+  transition:opacity .28s ease,visibility .28s ease;
+}
+html.standaloneApp .appSplash{display:flex}
+.appSplash.hide{opacity:0;visibility:hidden;pointer-events:none}
+.appSplashLogo{
+  width:148px;height:148px;max-width:38vw;max-height:38vw;
+  object-fit:contain;border-radius:28px;
+  filter:drop-shadow(0 8px 18px rgba(15,118,110,.10));
+}
+@media(max-width:560px){
+  .appSplashLogo{width:138px;height:138px;border-radius:25px}
+}
+</style>
+</head><body><div class="appSplash" id="appSplash" aria-hidden="true"><img class="appSplashLogo" src="app-logo.png" alt="서울서리풀1 씹어먹기" width="512" height="512"/></div><div class="authShell" id="authShell" hidden aria-hidden="true">
   <div class="authWrap">
     <button class="authModalClose" id="authModalClose" type="button" aria-label="로그인 창 닫기">×</button>
     <div class="authBrand">
@@ -6064,6 +6095,27 @@ window.SAEJEONGI_AUTH_CONFIG={
 })();
 </script>
 
+
+<script>
+(function(){
+  const splash=document.getElementById('appSplash');
+  if(!splash || !document.documentElement.classList.contains('standaloneApp')) return;
+  const started=performance.now();
+  let closed=false;
+  function closeSplash(){
+    if(closed) return;
+    closed=true;
+    const wait=Math.max(0,650-(performance.now()-started));
+    setTimeout(()=>{
+      splash.classList.add('hide');
+      setTimeout(()=>{ splash.remove(); },320);
+    },wait);
+  }
+  if(document.readyState==='complete') closeSplash();
+  else window.addEventListener('load',closeSplash,{once:true});
+  setTimeout(closeSplash,2400);
+})();
+</script>
 </body></html>
 
 <style>
@@ -6177,7 +6229,7 @@ body.authModalOpen{overflow:hidden !important;}
 
 /* 로그인 전 상단바를 미리보기 상태로 자연스럽게 표시 */
 body:not(.authModalOpen) .memberLogout{transition:background .15s ease,border-color .15s ease,color .15s ease;}
-.memberLogout{min-width:58px;}
+.memberLogout{min-width:50px;}
 
 @media(max-width:560px){
   .authShell{padding:12px !important;align-items:center !important;}
