@@ -654,8 +654,8 @@
 #homePanel .homeBoardList{display:grid;gap:7px;}
 #homePanel .homeBoardPost{
   width:100%;
-  min-height:62px;
-  padding:10px 46px 9px 13px;
+  height:62px;
+  padding:6px 46px 6px 13px;
   background:linear-gradient(135deg,#dff3ef 0%,#edf9f7 100%);
   border:1px solid rgba(15,118,110,.16);
   border-radius:13px;
@@ -663,6 +663,7 @@
   position:relative;
   text-align:left;
   cursor:pointer;
+  overflow:hidden;
 }
 #homePanel .homeBoardPost::after{
   content:'›';
@@ -682,8 +683,10 @@
   font-size:18px;
   font-weight:700;
 }
-#homePanel .homeBoardPostTitle{display:block;color:#174b45;font-size:13px;font-weight:800;line-height:1.35;}
-#homePanel .homeBoardPostMeta{display:block;margin-top:3px;color:#52716d;font-size:10.5px;line-height:1.35;} .boardMetaNoWrap{white-space:nowrap;}
+#homePanel .homeBoardPostTopMeta{display:flex;align-items:center;gap:8px;color:#65807c;font-size:9.5px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#homePanel .homeBoardPostTitle{display:block;margin-top:2px;color:#174b45;font-size:13px;font-weight:800;line-height:1.22;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#homePanel .homeBoardPostStats{display:block;margin-top:6px;color:#52716d;font-size:9.7px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.boardMetaNoWrap{white-space:nowrap;}
 #homePanel .homeBoardEmpty{padding:18px 10px;text-align:center;color:#758581;font-size:12px;}
 #homePanel .homeScheduleHeader{
   display:flex;
@@ -5639,6 +5642,19 @@ window.SAEJEONGI_AUTH_CONFIG={
     if(!value) return '-';
     try{return new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).format(new Date(value));}catch{return '-';}
   };
+  const fmtHomeDate=(value)=>{
+    if(!value) return '-';
+    try{
+      const d=new Date(value);
+      const parts=Object.fromEntries(new Intl.DateTimeFormat('en-US',{
+        timeZone:'Asia/Seoul',year:'numeric',month:'numeric',day:'numeric',
+        hour:'2-digit',minute:'2-digit',hour12:false
+      }).formatToParts(d).filter(p=>p.type!=='literal').map(p=>[p.type,p.value]));
+      const currentYear=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Seoul',year:'numeric'}).format(new Date());
+      const datePart=parts.year===currentYear?`${parts.month}.${parts.day}`:`${parts.year}. ${parts.month}.${parts.day}`;
+      return `${datePart} ${parts.hour}:${parts.minute}`;
+    }catch{return '-';}
+  };
   const getToken=async()=>{
     const {data}=await boardSb.auth.getSession();
     return data?.session?.access_token||'';
@@ -5682,7 +5698,7 @@ window.SAEJEONGI_AUTH_CONFIG={
       .slice(0,2);
     if(!latest.length){homeBoardList.innerHTML='<div class="homeBoardEmpty">등록된 게시글이 없습니다.</div>';return;}
     const categoryLabels={notice:'공지사항',news:'최근뉴스',info:'정보공유',opinion:'개인의견'};
-    homeBoardList.innerHTML=latest.map(p=>`<button class="homeBoardPost" data-home-board-post="${esc(p.id)}" type="button" role="listitem"><span class="homeBoardPostTitle">${esc(p.title)}</span><span class="homeBoardPostMeta">${categoryLabels[p.category]||'개인의견'} · ${esc(fmtDate(p.published_at||p.created_at))} · <span class="boardMetaNoWrap">조회 ${Number(p.view_count||0)}</span> · <span class="boardMetaNoWrap">댓글 ${Number(p.comment_count||0)}</span> · <span class="boardMetaNoWrap">좋아요 ${Number(p.like_count||0)}</span></span></button>`).join('');
+    homeBoardList.innerHTML=latest.map(p=>`<button class="homeBoardPost" data-home-board-post="${esc(p.id)}" type="button" role="listitem"><span class="homeBoardPostTopMeta"><span>${categoryLabels[p.category]||'개인의견'}</span><span>${esc(fmtHomeDate(p.published_at||p.created_at))}</span></span><span class="homeBoardPostTitle">${esc(p.title)}</span><span class="homeBoardPostStats"><span class="boardMetaNoWrap">조회 ${Number(p.view_count||0)}</span> · <span class="boardMetaNoWrap">댓글 ${Number(p.comment_count||0)}</span> · <span class="boardMetaNoWrap">좋아요 ${Number(p.like_count||0)}</span></span></button>`).join('');
   };
   const loadPosts=async()=>{
     postList.innerHTML='<div class="boardState">게시글을 불러오는 중입니다.</div>';
