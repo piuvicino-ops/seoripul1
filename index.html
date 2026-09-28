@@ -1157,6 +1157,10 @@ body.iphonePwa.appCanGoBack .iosHistoryBack[hidden]{display:flex!important}
 body.iphonePwa.appCanGoBack .appTopBar{
   grid-template-columns:auto auto minmax(0,1fr) auto!important;
 }
+body.iphonePwa.appCanGoBack .memberBrandLogo{
+  height:40px;
+  margin-right:-2px;
+}
 .iosHistoryBack:active{transform:translateY(1px)}
 
 /* 회원명/등급을 내비게이션 바 위의 얇은 상태줄로 분리 */
@@ -1178,12 +1182,13 @@ body.iphonePwa.appCanGoBack .appTopBar{
 
 /* 브랜드는 내비게이션 바 중앙에, 제작자 표시는 제목 아래에 가볍게 */
 .memberBrandInfo{
-  min-width:0;display:flex;align-items:center;gap:7px;
+  min-width:0;display:flex;align-items:center;gap:0;
 }
 .memberBrandLogo{
-  width:42px;height:42px;flex:0 0 auto;display:block;
-  object-fit:contain;border-radius:10px;background:transparent;
+  width:auto;height:50px;flex:0 0 auto;display:block;
+  object-fit:contain;background:transparent;
   border:0;box-shadow:none;
+  margin-right:-3px;
 }
 .memberBrandText{min-width:0;line-height:1.03}
 .memberBrandTitle{
@@ -1198,9 +1203,9 @@ body.iphonePwa.appCanGoBack .appTopBar{
   .memberStatusRow{margin-bottom:4px;padding:0 5px;min-height:22px}
   .memberStatusName{font-size:10.3px}
   .memberStatusGrade{font-size:8.6px;padding:3px 6px}
-  .memberBrandInfo{gap:7px}
-  .memberBrandLogo{width:38px;height:38px;border-radius:9px}
-  .memberBrandTitle{font-size:13px}
+  .memberBrandInfo{gap:0}
+  .memberBrandLogo{width:auto;height:46px;margin-right:-3px}
+  .memberBrandTitle{font-size:13.2px}
   .memberBrandBy{font-size:8.2px;margin-top:2px}
 }
 
@@ -2505,7 +2510,7 @@ html.standaloneApp .appSplash{display:flex}
   .appSplashLogo{width:138px;height:138px;border-radius:25px}
 }
 </style>
-</head><body><div class="appSplash" id="appSplash" aria-hidden="true"><img class="appSplashLogo" src="app-logo.png?v=20260928v45" alt="서울서리풀1 씹어먹기" width="512" height="512"/></div><div class="authShell" id="authShell" hidden aria-hidden="true">
+</head><body><div class="appSplash" id="appSplash" aria-hidden="true"><img class="appSplashLogo" src="internal-logo.png?v=20260929v46" alt="서울서리풀1 씹어먹기" width="512" height="512"/></div><div class="authShell" id="authShell" hidden aria-hidden="true">
   <div class="authWrap">
     <button class="authModalClose" id="authModalClose" type="button" aria-label="로그인 창 닫기">×</button>
     <div class="authBrand">
@@ -2600,7 +2605,7 @@ html.standaloneApp .appSplash{display:flex}
   <button class="iosHistoryBack" id="iosHistoryBack" type="button" aria-label="이전 화면" title="이전" hidden>←</button>
   <button class="sideMenuOpen" id="sideMenuOpen" type="button" aria-label="메뉴 열기" aria-controls="sideMenuDrawer" aria-expanded="false">☰</button>
   <div class="memberBrandInfo">
-    <img class="memberBrandLogo" src="app-logo.png?v=20260928v45" alt="서울서리풀1 씹어먹기 로고" width="512" height="512"/>
+    <img class="memberBrandLogo" src="internal-logo.png?v=20260929v46" alt="서울서리풀1 씹어먹기 로고" width="512" height="512"/>
     <div class="memberBrandText">
       <div class="memberBrandTitle">서울서리풀1 씹어먹기</div>
       <div class="memberBrandBy">by 김민철</div>
