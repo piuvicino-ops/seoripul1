@@ -5068,12 +5068,20 @@ window.SAEJEONGI_AUTH_CONFIG={
     districtButtons.forEach(b=>b.classList.remove('active'));
     buttons.forEach(b=>{const on=b===btn;b.classList.toggle('active',on);b.setAttribute('aria-selected',on?'true':'false');});
     panels.forEach(p=>{const on=p.id===target;p.classList.toggle('active',on);p.hidden=!on;});
-    if(currentMenuTitle){currentMenuTitle.hidden=false;currentMenuTitle.classList.remove('homeHidden');}
-    if(currentMenuParent) currentMenuParent.textContent=target==='memberAdminPanel'?'관리자':(target==='incentivePanel'||target==='aptPanel'||target==='lhPolicyPanel')?'서리풀1지구':'새정이마을';
-    if(currentMenuSep) currentMenuSep.style.display='';
-    if(currentMenuChild){
-      currentMenuChild.textContent=(btn.dataset.menuLabel||btn.textContent||'').trim();
-      currentMenuChild.classList.toggle('saejeongiMenuChild',target!=='memberAdminPanel'&&target!=='incentivePanel'&&target!=='aptPanel'&&target!=='lhPolicyPanel');
+    if(target==='boardPanel'){
+      // 최근 소식과 검토사항은 별도 상단 경로표시 없이 바로 본문만 보여줍니다.
+      if(currentMenuTitle){currentMenuTitle.hidden=true;currentMenuTitle.classList.add('homeHidden');}
+      if(currentMenuParent) currentMenuParent.textContent='';
+      if(currentMenuSep) currentMenuSep.style.display='none';
+      if(currentMenuChild){currentMenuChild.textContent='';currentMenuChild.classList.remove('saejeongiMenuChild');}
+    }else{
+      if(currentMenuTitle){currentMenuTitle.hidden=false;currentMenuTitle.classList.remove('homeHidden');}
+      if(currentMenuParent) currentMenuParent.textContent=target==='memberAdminPanel'?'관리자':(target==='incentivePanel'||target==='aptPanel'||target==='lhPolicyPanel')?'서리풀1지구':'새정이마을';
+      if(currentMenuSep) currentMenuSep.style.display='';
+      if(currentMenuChild){
+        currentMenuChild.textContent=(btn.dataset.menuLabel||btn.textContent||'').trim();
+        currentMenuChild.classList.toggle('saejeongiMenuChild',target!=='memberAdminPanel'&&target!=='incentivePanel'&&target!=='aptPanel'&&target!=='lhPolicyPanel');
+      }
     }
 
     const watermarkTargets=['lawsuitPanel','lawsuitScenarioPanel','lawsuitUsePanel','relocationPanel','aptPanel'];
@@ -5778,6 +5786,82 @@ window.SAEJEONGI_AUTH_CONFIG={
   document.querySelector('[data-target-tab="boardPanel"]')?.addEventListener('click',()=>setTimeout(loadPosts,0));
   boardSb.auth.onAuthStateChange(()=>setTimeout(loadPosts,0));
   loadPosts();
+})();
+</script>
+
+
+<style id="approvalFlowStyle">
+.approvalShell{position:fixed;inset:0;z-index:10050;background:rgba(15,23,42,.52);display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px)}
+.approvalShell[hidden]{display:none!important}
+.approvalCard{width:min(520px,100%);max-height:calc(100dvh - 32px);overflow:auto;background:#fff;border:1px solid #dfe5e8;border-radius:20px;padding:22px;box-shadow:0 22px 60px rgba(15,23,42,.24);color:#172033}
+.approvalBrand{font-size:12px;font-weight:850;color:#087f6b;margin-bottom:7px}.approvalTitle{font-size:23px;line-height:1.25;font-weight:900;margin:0 0 8px}.approvalDesc{font-size:13px;line-height:1.6;color:#667085;margin:0 0 17px}
+.approvalInfo{background:#f6faf9;border:1px solid #dfeae6;border-radius:14px;padding:13px 14px;line-height:1.75;font-size:13px;margin-bottom:16px}.approvalInfo b{display:inline-block;min-width:86px;color:#344054}
+.approvalLabel{display:block;font-size:13px;font-weight:850;margin:0 0 7px}.approvalSelect{width:100%;min-height:46px;border:1px solid #cfd8dc;border-radius:11px;background:#fff;padding:9px 12px;font-size:15px;color:#172033;outline:none}.approvalSelect:focus{border-color:#087f6b;box-shadow:0 0 0 3px rgba(8,127,107,.11)}
+.approvalBtn{width:100%;min-height:46px;border:0;border-radius:11px;background:#087f6b;color:#fff;font-size:14px;font-weight:850;margin-top:13px;cursor:pointer}.approvalBtn:disabled{opacity:.55;cursor:default}.approvalNote{font-size:11px;line-height:1.55;color:#667085;margin:12px 0 0}
+.approvalStatus{border-radius:12px;padding:12px 13px;font-size:13px;line-height:1.55}.approvalStatus.info{background:#f5f7fa;border:1px solid #e4e7ec;color:#475467}.approvalStatus.error{background:#fff4f4;border:1px solid #ffd6d6;color:#b42318}.approvalStatus.success{background:#effaf6;border:1px solid #ccebe0;color:#06705f}
+.approvalBack{display:inline-flex;margin-top:13px;color:#087f6b;font-size:12px;font-weight:800;text-decoration:none}
+@media(max-width:560px){.approvalShell{padding:12px}.approvalCard{padding:18px 16px;border-radius:18px}.approvalTitle{font-size:21px}.approvalInfo b{min-width:80px}}
+</style>
+<div class="approvalShell" id="approvalShell" hidden aria-hidden="true">
+  <div class="approvalCard">
+    <div class="approvalBrand">새정이마을</div>
+    <h2 class="approvalTitle">회원가입 승인</h2>
+    <p class="approvalDesc">신청인의 정보를 확인하고 승인할 회원등급을 선택해 주세요.</p>
+    <div id="approvalLoading" class="approvalStatus info">가입신청 정보를 확인하고 있습니다.</div>
+    <section id="approvalArea" hidden>
+      <div class="approvalInfo" id="approvalMemberInfo"></div>
+      <label class="approvalLabel" for="approvalRoleSelect">승인할 회원등급</label>
+      <select class="approvalSelect" id="approvalRoleSelect">
+        <option value="resident">새정이마을주민</option>
+        <option value="landowner">일반토지주</option>
+        <option value="admin">관리자</option>
+      </select>
+      <button class="approvalBtn" id="approvalSubmitBtn" type="button">선택한 등급으로 승인</button>
+      <p class="approvalNote">신청인의 신원과 신청 등급을 확인한 뒤 승인해 주세요. 승인 후에는 이 링크를 다시 사용할 수 없습니다.</p>
+    </section>
+    <div id="approvalMessage" hidden></div>
+    <a class="approvalBack" id="approvalBackLink" href="./" hidden>앱으로 돌아가기</a>
+  </div>
+</div>
+<script id="approvalFlowScript">
+(()=>{
+  const token=new URLSearchParams(location.search).get('approval_token')||'';
+  if(!token) return;
+  const shell=document.getElementById('approvalShell');
+  const loading=document.getElementById('approvalLoading');
+  const area=document.getElementById('approvalArea');
+  const info=document.getElementById('approvalMemberInfo');
+  const role=document.getElementById('approvalRoleSelect');
+  const btn=document.getElementById('approvalSubmitBtn');
+  const msg=document.getElementById('approvalMessage');
+  const back=document.getElementById('approvalBackLink');
+  const api='https://kymtpgsqdvvoapkvmcnj.supabase.co/functions/v1/member-approve';
+  let approvalToken=token;
+  const esc=(v)=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const roleLabel=(v)=>v==='resident'?'새정이마을주민':v==='landowner'?'일반토지주':v==='admin'?'관리자':'-';
+  const show=(text,type='info')=>{msg.hidden=false;msg.className='approvalStatus '+type;msg.textContent=text;};
+  const call=async(payload)=>{const r=await fetch(api,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const d=await r.json().catch(()=>({}));if(!r.ok)throw new Error(d.error||'요청 처리 중 오류가 발생했습니다.');return d;};
+  shell.hidden=false;shell.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';
+  (async()=>{
+    try{
+      const d=await call({action:'preview',token:approvalToken});
+      const p=d.profile;
+      info.innerHTML='<b>성명</b> '+esc(p.full_name)+'<br><b>아이디</b> '+esc(p.username)+'<br><b>소유 지번</b> '+esc(p.parcel_number)+'<br><b>연락처</b> '+esc(p.phone)+'<br><b>신청 등급</b> '+esc(p.membership_role_label||roleLabel(p.membership_role));
+      if(['resident','landowner','admin'].includes(p.membership_role)) role.value=p.membership_role;
+      loading.hidden=true;area.hidden=false;
+      try{history.replaceState({},document.title,location.pathname);}catch(e){}
+    }catch(e){loading.hidden=true;show(e.message||'가입신청 정보를 확인할 수 없습니다.','error');back.hidden=false;}
+  })();
+  btn.addEventListener('click',async()=>{
+    if(!approvalToken)return;
+    btn.disabled=true;msg.hidden=true;
+    try{
+      const d=await call({action:'approve',token:approvalToken,membership_role:role.value});
+      area.hidden=true;approvalToken='';
+      show('회원가입 승인이 완료되었습니다. '+(d.membership_role_label||roleLabel(role.value))+' 등급으로 승인했습니다.','success');
+      back.hidden=false;
+    }catch(e){show(e.message||'승인 처리 중 오류가 발생했습니다.','error');btn.disabled=false;}
+  });
 })();
 </script>
 
