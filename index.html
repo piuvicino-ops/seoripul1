@@ -683,7 +683,7 @@
   font-weight:700;
 }
 #homePanel .homeBoardPostTitle{display:block;color:#174b45;font-size:13px;font-weight:800;line-height:1.35;}
-#homePanel .homeBoardPostMeta{display:block;margin-top:3px;color:#52716d;font-size:10.5px;line-height:1.35;}
+#homePanel .homeBoardPostMeta{display:block;margin-top:3px;color:#52716d;font-size:10.5px;line-height:1.35;} .boardMetaNoWrap{white-space:nowrap;}
 #homePanel .homeBoardEmpty{padding:18px 10px;text-align:center;color:#758581;font-size:12px;}
 #homePanel .homeScheduleHeader{
   display:flex;
@@ -2388,6 +2388,7 @@ window.SAEJEONGI_AUTH_CONFIG={
 .boardPostTitle{font-size:15px;font-weight:850;color:#172033;line-height:1.45}.boardPostMeta{margin-top:7px;color:#7c8794;font-size:11px;line-height:1.5}
 .boardView{background:#fff;border:1px solid #dfe6e8;border-radius:17px;padding:18px}.boardViewHead{border-bottom:1px solid #edf0f2;padding-bottom:13px;margin-bottom:15px}
 .boardViewTitle{font-size:21px;line-height:1.4;margin:7px 0;color:#172033}.boardViewMeta{font-size:11.5px;color:#7b8794}.boardContent{font-size:14px;line-height:1.85;color:#26343f;white-space:pre-wrap;word-break:break-word;min-height:80px}
+.boardLikeRow{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:18px;padding-top:14px;border-top:1px solid #edf0f2}.boardLikeBtn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:38px;padding:7px 12px;border:1px solid #dfe5e8;border-radius:999px;background:#fff;color:#53626e;font-size:12px;font-weight:850;cursor:pointer}.boardLikeBtn:hover{border-color:#e6b7bd;background:#fff9fa}.boardLikeBtn.active{border-color:#efb6bd;background:#fff1f3;color:#c83349}.boardLikeBtn:disabled{cursor:default;opacity:1;background:#f8fafb;color:#667085}.boardLikeHint{font-size:11px;color:#8a94a1}
 .boardActionRow{display:flex;gap:7px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px}.boardAttachments{display:grid;gap:7px;margin-top:18px}.boardAttachment{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid #e1e7e9;border-radius:11px;padding:10px 11px;background:#fafcfc;font-size:12px}.boardAttachment a{color:#0f6f67;font-weight:750;text-decoration:none;overflow-wrap:anywhere}
 .boardComments{margin-top:22px;padding-top:17px;border-top:1px solid #e8edef}.boardComments h3{font-size:15px;margin:0 0 11px}.boardComment{padding:11px 2px;border-bottom:1px solid #edf0f2}.boardCommentHead{display:flex;justify-content:space-between;gap:8px;color:#7c8794;font-size:11px}.boardCommentBody{margin-top:6px;font-size:13px;line-height:1.65;white-space:pre-wrap}.boardCommentDelete{border:0;background:none;color:#b42318;font-size:11px;cursor:pointer}
 .boardCommentForm{display:flex;gap:7px;margin-top:12px}.boardCommentForm textarea{flex:1;min-height:62px;border:1px solid #d7dfe2;border-radius:11px;padding:10px;font:inherit;resize:vertical}.boardLoginNote{margin-top:12px;padding:10px;border-radius:11px;background:#f5f7f8;color:#687580;font-size:12px;text-align:center}
@@ -5671,7 +5672,7 @@ window.SAEJEONGI_AUTH_CONFIG={
   const renderList=()=>{
     const shown=posts.filter(p=>filter==='all'||p.category===filter);
     if(!shown.length){postList.innerHTML='<div class="boardState">등록된 게시글이 없습니다.</div>';return;}
-    postList.innerHTML=shown.map(p=>`<button class="boardPostCard" data-board-post="${esc(p.id)}" type="button"><div class="boardPostTop">${badges(p)}</div><div class="boardPostTitle">${esc(p.title)}</div><div class="boardPostMeta">${esc(authorName(p)||'작성자')} · ${esc(fmtDate(p.published_at||p.updated_at||p.created_at))} · 조회 ${Number(p.view_count||0)}</div></button>`).join('');
+    postList.innerHTML=shown.map(p=>`<button class="boardPostCard" data-board-post="${esc(p.id)}" type="button"><div class="boardPostTop">${badges(p)}</div><div class="boardPostTitle">${esc(p.title)}</div><div class="boardPostMeta">${esc(authorName(p)||'작성자')} · ${esc(fmtDate(p.published_at||p.updated_at||p.created_at))} · <span class="boardMetaNoWrap">조회 ${Number(p.view_count||0)}</span> · <span class="boardMetaNoWrap">좋아요 ${Number(p.like_count||0)}</span></div></button>`).join('');
   };
   const renderHomeLatest=()=>{
     if(!homeBoardList) return;
@@ -5681,7 +5682,7 @@ window.SAEJEONGI_AUTH_CONFIG={
       .slice(0,2);
     if(!latest.length){homeBoardList.innerHTML='<div class="homeBoardEmpty">등록된 게시글이 없습니다.</div>';return;}
     const categoryLabels={notice:'공지사항',news:'최근뉴스',info:'정보공유',opinion:'개인의견'};
-    homeBoardList.innerHTML=latest.map(p=>`<button class="homeBoardPost" data-home-board-post="${esc(p.id)}" type="button" role="listitem"><span class="homeBoardPostTitle">${esc(p.title)}</span><span class="homeBoardPostMeta">${categoryLabels[p.category]||'개인의견'} · ${esc(fmtDate(p.published_at||p.created_at))} · 조회 ${Number(p.view_count||0)} · 댓글 ${Number(p.comment_count||0)}</span></button>`).join('');
+    homeBoardList.innerHTML=latest.map(p=>`<button class="homeBoardPost" data-home-board-post="${esc(p.id)}" type="button" role="listitem"><span class="homeBoardPostTitle">${esc(p.title)}</span><span class="homeBoardPostMeta">${categoryLabels[p.category]||'개인의견'} · ${esc(fmtDate(p.published_at||p.created_at))} · <span class="boardMetaNoWrap">조회 ${Number(p.view_count||0)}</span> · <span class="boardMetaNoWrap">댓글 ${Number(p.comment_count||0)}</span> · <span class="boardMetaNoWrap">좋아요 ${Number(p.like_count||0)}</span></span></button>`).join('');
   };
   const loadPosts=async()=>{
     postList.innerHTML='<div class="boardState">게시글을 불러오는 중입니다.</div>';
@@ -5711,7 +5712,10 @@ window.SAEJEONGI_AUTH_CONFIG={
       return `<div class="boardComment"><div class="boardCommentHead"><span>${esc(authorName(c)||'회원')} · ${esc(fmtDate(c.created_at))}</span>${canDelete?`<button class="boardCommentDelete" data-delete-comment="${esc(c.id)}" type="button">삭제</button>`:''}</div><div class="boardCommentBody">${esc(c.content)}</div></div>`;
     }).join(''):'<div class="boardState">등록된 댓글이 없습니다.</div>';
     const commentForm=data.member&&p.status==='published'?`<form class="boardCommentForm" id="boardCommentForm"><textarea id="boardCommentInput" maxlength="3000" required placeholder="댓글을 입력하세요"></textarea><button class="boardPrimary" type="submit">댓글 등록</button></form>`:'<div class="boardLoginNote">댓글은 로그인한 승인회원만 작성할 수 있습니다.</div>';
-    detailCard.innerHTML=`<div class="boardViewHead"><div class="boardPostTop">${badges(p)}</div><h2 class="boardViewTitle">${esc(p.title)}</h2><div class="boardViewMeta">${esc(authorName(p)||'작성자')} · ${esc(fmtDate(p.published_at||p.created_at))} · 조회 ${Number(p.view_count||0)}</div></div><div class="boardContent">${esc(p.content)}</div>${renderAttachments(data.attachments||[])}${actions}<section class="boardComments"><h3>댓글 ${comments.length}</h3>${commentItems}${commentForm}</section>`;
+    const likeCount=Number(p.like_count||0);
+    const liked=Boolean(p.liked_by_me);
+    const likeRow=`<div class="boardLikeRow"><button class="boardLikeBtn${liked?' active':''}" data-toggle-like type="button" aria-pressed="${liked?'true':'false'}"${data.member?'':' disabled'}>${liked?'♥':'♡'} 좋아요 <span>${likeCount}</span></button>${data.member?'':'<span class="boardLikeHint">로그인 후 좋아요를 표시할 수 있습니다.</span>'}</div>`;
+    detailCard.innerHTML=`<div class="boardViewHead"><div class="boardPostTop">${badges(p)}</div><h2 class="boardViewTitle">${esc(p.title)}</h2><div class="boardViewMeta">${esc(authorName(p)||'작성자')} · ${esc(fmtDate(p.published_at||p.created_at))} · <span class="boardMetaNoWrap">조회 ${Number(p.view_count||0)}</span> · <span class="boardMetaNoWrap">좋아요 ${likeCount}</span></div></div><div class="boardContent">${esc(p.content)}</div>${renderAttachments(data.attachments||[])}${likeRow}${actions}<section class="boardComments"><h3>댓글 ${comments.length}</h3>${commentItems}${commentForm}</section>`;
   };
   const openDetail=async(id)=>{
     show('detail');detailCard.innerHTML='<div class="boardState">게시글을 불러오는 중입니다.</div>';
@@ -5770,6 +5774,21 @@ window.SAEJEONGI_AUTH_CONFIG={
     try{await call({action:'save_comment',post_id:currentDetail.post.id,content:input.value},true);await openDetail(currentDetail.post.id);}catch(err){alert(err.message);}
   });
   detailCard.addEventListener('click',async e=>{
+    const likeBtn=e.target.closest('[data-toggle-like]');
+    if(likeBtn){
+      if(likeBtn.disabled||!currentDetail?.post?.id) return;
+      likeBtn.disabled=true;
+      try{
+        const result=await call({action:'toggle_like',post_id:currentDetail.post.id},true);
+        currentDetail.post.like_count=Number(result.like_count||0);
+        currentDetail.post.liked_by_me=Boolean(result.liked);
+        posts=posts.map(p=>p.id===currentDetail.post.id?{...p,like_count:currentDetail.post.like_count,liked_by_me:currentDetail.post.liked_by_me}:p);
+        renderDetail(currentDetail);
+        renderList();
+        renderHomeLatest();
+      }catch(err){alert(err.message||'좋아요를 처리하지 못했습니다.');likeBtn.disabled=false;}
+      return;
+    }
     if(e.target.closest('[data-edit-post]')){openEditor(currentDetail);return;}
     if(e.target.closest('[data-delete-post]')){
       if(!confirm('이 게시글을 삭제하시겠습니까?')) return;
