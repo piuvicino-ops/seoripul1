@@ -620,32 +620,6 @@
 
 /* 첫 화면 게시판 — 주요 예상 일정과 동일한 섹션 레벨 */
 
-/* 2026-09-28: 서울서리풀1 씹어먹기 홈 브랜드 로고 */
-#homePanel .homeBrandLogo{
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  margin:0 auto 14px;
-  padding:3px 0 1px;
-}
-#homePanel .homeBrandLogo img{
-  display:block;
-  width:158px;
-  height:158px;
-  max-width:44vw;
-  max-height:44vw;
-  object-fit:contain;
-}
-@media(max-width:560px){
-  #homePanel .homeBrandLogo{margin-bottom:12px;}
-  #homePanel .homeBrandLogo img{
-    width:142px;
-    height:142px;
-    max-width:42vw;
-    max-height:42vw;
-  }
-}
-
 #homePanel .homeBoardShortcut{
   width:100%;
   margin:2px 0 12px;
@@ -1184,7 +1158,50 @@ body.iphonePwa.appCanGoBack .appTopBar{
   grid-template-columns:auto auto minmax(0,1fr) auto!important;
 }
 .iosHistoryBack:active{transform:translateY(1px)}
-.memberBarInfo{flex:1;min-width:0}
+
+/* 회원명/등급을 내비게이션 바 위의 얇은 상태줄로 분리 */
+.memberStatusRow{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  margin:0 2px 5px;padding:0 6px;
+  min-height:24px;color:#475467;
+}
+.memberStatusName{
+  min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-size:10.8px;font-weight:850;color:#344054;
+}
+.memberStatusGrade{
+  flex:0 0 auto;
+  padding:3px 7px;border-radius:999px;
+  background:#eef8f5;border:1px solid #cfe7e1;
+  color:#0f766e;font-size:9px;font-weight:850;line-height:1.2;
+}
+
+/* 브랜드는 내비게이션 바 중앙에, 제작자 표시는 제목 아래에 가볍게 */
+.memberBrandInfo{
+  min-width:0;display:flex;align-items:center;gap:7px;
+}
+.memberBrandLogo{
+  width:30px;height:30px;flex:0 0 auto;display:block;
+  object-fit:contain;border-radius:8px;
+}
+.memberBrandText{min-width:0;line-height:1.05}
+.memberBrandTitle{
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  color:#344054;font-size:10.8px;font-weight:900;letter-spacing:-.02em;
+}
+.memberBrandBy{
+  margin-top:3px;color:#98a2b3;font-size:8.3px;font-weight:600;
+  letter-spacing:.01em;
+}
+@media(max-width:560px){
+  .memberStatusRow{margin-bottom:4px;padding:0 5px;min-height:22px}
+  .memberStatusName{font-size:10.3px}
+  .memberStatusGrade{font-size:8.6px;padding:3px 6px}
+  .memberBrandInfo{gap:6px}
+  .memberBrandLogo{width:28px;height:28px;border-radius:7px}
+  .memberBrandTitle{font-size:10.2px}
+  .memberBrandBy{font-size:8px;margin-top:2px}
+}
 
 /* 2. 첫 화면 참고 안내 — 경고문이 아닌 차분한 정보 바 */
 .mainIntroNotice{
@@ -2544,12 +2561,19 @@ window.SAEJEONGI_AUTH_CONFIG={
 </div>
 
 <main class="wrap" id="appMain">
+<div class="memberStatusRow" id="memberStatusRow">
+  <div class="memberStatusName" id="memberBarName">로그인 전</div>
+  <span class="memberStatusGrade" id="memberBarGrade">비회원</span>
+</div>
 <div class="memberBar appTopBar" id="memberBar">
   <button class="iosHistoryBack" id="iosHistoryBack" type="button" aria-label="이전 화면" title="이전" hidden>←</button>
   <button class="sideMenuOpen" id="sideMenuOpen" type="button" aria-label="메뉴 열기" aria-controls="sideMenuDrawer" aria-expanded="false">☰</button>
-  <div class="memberBarInfo">
-    <div class="memberBarName" id="memberBarName">로그인 전 미리보기</div>
-    <div class="memberBarSub">서울서리풀1 씹어먹기 · by 김민철</div>
+  <div class="memberBrandInfo">
+    <img class="memberBrandLogo" src="app-logo.png" alt="서울서리풀1 씹어먹기 로고" width="512" height="512"/>
+    <div class="memberBrandText">
+      <div class="memberBrandTitle">서울서리풀1 씹어먹기</div>
+      <div class="memberBrandBy">by 김민철</div>
+    </div>
   </div>
   <div class="memberBarActions">
     <button class="memberHome" id="memberHome" type="button" aria-label="전체 메뉴로 이동" title="홈">
@@ -2620,9 +2644,6 @@ window.SAEJEONGI_AUTH_CONFIG={
 
 
 <section class="tabPanel active" id="homePanel" role="tabpanel" aria-label="전체 메뉴">
-<div class="homeBrandLogo" aria-label="서울서리풀1 씹어먹기">
-  <img src="app-logo.png" alt="서울서리풀1 씹어먹기 로고" width="512" height="512" loading="eager"/>
-</div>
 <section class="homeBoardShortcut" aria-label="최근 소식과 검토사항">
   <div class="homeBoardHeader">
     <h2 class="homeBoardTitle">최근 소식과 검토사항</h2>
@@ -4002,6 +4023,7 @@ window.SAEJEONGI_AUTH_CONFIG={
   const authShell=document.getElementById('authShell');
   const appMain=document.getElementById('appMain');
   const memberBarName=document.getElementById('memberBarName');
+  const memberBarGrade=document.getElementById('memberBarGrade');
   const adminMenuGroup=document.getElementById('adminMenuGroup');
   const adminHomeSection=document.getElementById('adminHomeSection');
   const adminMemberList=document.getElementById('adminMemberList');
@@ -4572,7 +4594,8 @@ window.SAEJEONGI_AUTH_CONFIG={
     appMain.style.display='block';
     currentSignedInProfile=profile||null;
     const grade=membershipRoleText(profile?.membership_role);
-    if(memberBarName) memberBarName.textContent=profile?.full_name?`${profile.full_name}님 · ${grade}`:grade;
+    if(memberBarName) memberBarName.textContent=profile?.full_name?`${profile.full_name}님`:'회원';
+    if(memberBarGrade) memberBarGrade.textContent=grade;
     if(memberLogout) memberLogout.textContent='로그아웃';
     setAdminMenuVisibility(profile);
     setResidentScheduleVisibility(profile);
@@ -4608,7 +4631,8 @@ window.SAEJEONGI_AUTH_CONFIG={
     try{ districtFrame?.contentWindow?.setMemberAccess?.(false); }catch{}
     appMain.hidden=false;
     appMain.style.display='block';
-    if(memberBarName) memberBarName.textContent='로그인 전 미리보기';
+    if(memberBarName) memberBarName.textContent='로그인 전';
+    if(memberBarGrade) memberBarGrade.textContent='비회원';
     if(memberLogout) memberLogout.textContent='로그인';
     closeAuthModal();
     showAuthView('loginView');
@@ -4814,7 +4838,8 @@ window.SAEJEONGI_AUTH_CONFIG={
   // 비로그인 상태에서도 첫 화면을 미리 보여줍니다.
   if(appMain){appMain.hidden=false;appMain.style.display='block';}
   if(authShell){authShell.hidden=true;authShell.style.display='none';authShell.setAttribute('aria-hidden','true');}
-  if(memberBarName) memberBarName.textContent='로그인 전 미리보기';
+  if(memberBarName) memberBarName.textContent='로그인 전';
+  if(memberBarGrade) memberBarGrade.textContent='비회원';
   if(memberLogout) memberLogout.textContent='로그인';
   restoreRememberedUsername();
 
