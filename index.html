@@ -2456,18 +2456,18 @@ window.SAEJEONGI_AUTH_CONFIG={
 
       <section class="authView" id="signupView" hidden>
         <h2 class="authTitle">회원가입 신청</h2>
-        <p class="authDesc">아래 정보를 모두 입력하면 관리자에게 승인 메일이 발송됩니다. 관리자 승인 후 로그인할 수 있습니다.</p>
+        <p class="authDesc">가입 신청 후 관리자 승인이 완료되면 로그인할 수 있습니다.</p>
         <form class="authForm" id="signupForm">
-          <div class="authField"><label for="signupMemberRole">회원 구분</label><select id="signupMemberRole" name="membershipRole" required><option value="resident">새정이마을주민</option><option value="landowner">일반토지주</option></select></div>
+          <div class="authField"><label for="signupMemberRole">회원 구분</label><select id="signupMemberRole" name="membershipRole" required><option value="" selected disabled>회원 구분을 선택하세요</option><option value="landowner">일반토지주</option><option value="resident">새정이마을주민</option></select><div class="authHint roleHint">새정이마을주민은 마을 전용 메뉴를 이용할 수 있습니다.</div></div>
           <div class="authField"><label for="signupName">성명</label><input id="signupName" name="fullName" autocomplete="name" required placeholder="성명"/></div>
-          <div class="authField"><label for="signupParcel">소유 토지·주택 지번</label><input id="signupParcel" name="parcelNo" required placeholder="예: 신원동 00-0"/></div>
-          <div class="authField"><label for="signupPhone">핸드폰번호</label><input id="signupPhone" name="phone" type="tel" autocomplete="tel" inputmode="numeric" required placeholder="숫자만 입력 (예: 01012345678)"/></div>
+          <div class="authField"><label for="signupParcel">소유 토지 또는 주택 지번</label><input id="signupParcel" name="parcelNo" required placeholder="예: 신원동 00-0"/></div>
+          <div class="authField"><label for="signupPhone">휴대폰번호</label><input id="signupPhone" name="phone" type="tel" autocomplete="tel" inputmode="numeric" required placeholder="숫자만 입력 (예: 01012345678)"/></div>
           <div class="authField"><label for="signupUsername">아이디</label><input id="signupUsername" name="username" autocomplete="username" minlength="4" maxlength="30" pattern="[A-Za-z0-9._-]{4,30}" required placeholder="영문·숫자 4~30자"/><div class="authHint">영문, 숫자, 마침표(.), 밑줄(_), 하이픈(-)만 사용할 수 있습니다.</div></div>
-          <div class="authField"><label for="signupPassword">비밀번호</label><input id="signupPassword" name="password" type="password" autocomplete="new-password" minlength="8" required placeholder="8자 이상"/></div>
-          <div class="authField"><label for="signupPassword2">비밀번호 확인</label><input id="signupPassword2" name="password2" type="password" autocomplete="new-password" minlength="8" required placeholder="비밀번호 다시 입력"/></div>
-          <button class="authBtn primary" type="submit">가입 승인 신청</button>
+          <div class="authField"><label for="signupPassword">비밀번호</label><input id="signupPassword" name="password" type="password" autocomplete="new-password" minlength="4" required placeholder="4자 이상"/><div class="authHint">4자 이상 입력해 주세요.</div></div>
+          <div class="authField"><label for="signupPassword2">비밀번호 확인</label><input id="signupPassword2" name="password2" type="password" autocomplete="new-password" minlength="4" required placeholder="비밀번호 다시 입력"/></div>
+          <button class="authBtn primary" type="submit">가입 신청</button>
         </form>
-        <div class="authLinks"><button class="authLink" data-auth-view="loginView" type="button">로그인으로 돌아가기</button></div>
+        <div class="authLinks signupLoginLink"><span class="authReturnText">이미 가입하셨나요?</span><button class="authLink" data-auth-view="loginView" type="button">로그인</button></div>
         <div class="authMessage" id="signupMessage" role="status"></div>
       </section>
 
@@ -2478,8 +2478,8 @@ window.SAEJEONGI_AUTH_CONFIG={
           <div class="authField"><label for="resetName">성명</label><input id="resetName" name="fullName" autocomplete="name" required placeholder="성명"/></div>
           <div class="authField"><label for="resetParcel">주택 소유 지번</label><input id="resetParcel" name="parcelNo" required placeholder="회원가입 시 입력한 지번"/></div>
           <div class="authField"><label for="resetPhone">연락처</label><input id="resetPhone" name="phone" type="tel" autocomplete="tel" inputmode="numeric" required placeholder="회원가입 시 입력한 연락처"/></div>
-          <div class="authField"><label for="resetPassword">새 비밀번호</label><input id="resetPassword" name="newPassword" type="password" autocomplete="new-password" minlength="8" required placeholder="8자 이상"/></div>
-          <div class="authField"><label for="resetPassword2">새 비밀번호 확인</label><input id="resetPassword2" name="newPassword2" type="password" autocomplete="new-password" minlength="8" required placeholder="새 비밀번호 다시 입력"/></div>
+          <div class="authField"><label for="resetPassword">새 비밀번호</label><input id="resetPassword" name="newPassword" type="password" autocomplete="new-password" minlength="4" required placeholder="4자 이상"/></div>
+          <div class="authField"><label for="resetPassword2">새 비밀번호 확인</label><input id="resetPassword2" name="newPassword2" type="password" autocomplete="new-password" minlength="4" required placeholder="새 비밀번호 다시 입력"/></div>
           <button class="authBtn primary" type="submit">비밀번호 재설정</button>
         </form>
         <div class="authLinks"><button class="authLink" data-auth-view="loginView" type="button">로그인으로 돌아가기</button></div>
@@ -4717,12 +4717,14 @@ window.SAEJEONGI_AUTH_CONFIG={
     if(!hasAuthConfig){showMessage('signupMessage','인증 서버 설정이 필요합니다. Supabase 설정 후 실제 신청이 접수됩니다.','info');return;}
     const fd=new FormData(signupForm); const username=normalizeUsername(fd.get('username')); const rawPassword=String(fd.get('password')||''); const password2=String(fd.get('password2')||'');
     if(!/^[a-z0-9._-]{4,30}$/.test(username)){showMessage('signupMessage','아이디는 영문·숫자·마침표·밑줄·하이픈으로 4~30자 입력해 주세요.','error');return;}
-    if(rawPassword.length<8){showMessage('signupMessage','비밀번호는 8자 이상 입력해 주세요.','error');return;}
+    const membershipRole=String(fd.get('membershipRole')||'');
+    if(!membershipRole){showMessage('signupMessage','회원 구분을 선택해 주세요.','error');return;}
+    if(rawPassword.length<4){showMessage('signupMessage','비밀번호는 4자 이상 입력해 주세요.','error');return;}
     if(rawPassword!==password2){showMessage('signupMessage','비밀번호 확인이 일치하지 않습니다.','error');return;}
     const password=toAuthPassword(rawPassword);
     const btn=signupForm.querySelector('button[type="submit"]'); btn.disabled=true;
     try{
-      await callPublicFunction('member-signup',{full_name:String(fd.get('fullName')||'').trim(),parcel_number:String(fd.get('parcelNo')||'').trim(),phone:normalizePhone(fd.get('phone')),username,password,membership_role:String(fd.get('membershipRole')||'resident')});
+      await callPublicFunction('member-signup',{full_name:String(fd.get('fullName')||'').trim(),parcel_number:String(fd.get('parcelNo')||'').trim(),phone:normalizePhone(fd.get('phone')),username,password,membership_role:membershipRole});
       signupForm.reset(); showAuthView('pendingView');
     }catch(err){showMessage('signupMessage',err.message||'가입 신청에 실패했습니다.','error');}
     finally{btn.disabled=false;}
@@ -4733,7 +4735,7 @@ window.SAEJEONGI_AUTH_CONFIG={
     e.preventDefault(); clearMessage('resetMessage');
     if(!hasAuthConfig){showMessage('resetMessage','인증 서버 설정이 필요합니다. Supabase 설정 후 비밀번호 재설정이 작동합니다.','info');return;}
     const fd=new FormData(resetForm); const p1=String(fd.get('newPassword')||''); const p2=String(fd.get('newPassword2')||'');
-    if(p1.length<8){showMessage('resetMessage','새 비밀번호는 8자 이상 입력해 주세요.','error');return;}
+    if(p1.length<4){showMessage('resetMessage','새 비밀번호는 4자 이상 입력해 주세요.','error');return;}
     if(p1!==p2){showMessage('resetMessage','새 비밀번호 확인이 일치하지 않습니다.','error');return;}
     const authPassword=toAuthPassword(p1);
     const btn=resetForm.querySelector('button[type="submit"]');btn.disabled=true;
@@ -5896,5 +5898,31 @@ body:not(.authModalOpen) .memberLogout{transition:background .15s ease,border-co
   .authShell .authWrap{max-height:calc(100dvh - 24px);}
   .authShell .authCard{padding:18px 16px 16px !important;border-radius:18px !important;}
   .authModalClose{top:8px;right:8px;width:30px;height:30px;font-size:20px;}
+}
+
+/* 회원가입 화면 컴팩트 디자인 */
+.authField select{
+  width:100%;border:1px solid #d0d5dd;border-radius:12px;background:#fff;color:#172033;
+  padding:8px 36px 8px 12px;font:inherit;font-size:13px;min-height:39px;outline:none;
+  appearance:auto;
+}
+.authField select:focus{border-color:#087f6b;box-shadow:0 0 0 3px rgba(8,127,107,.11)}
+#signupView .authDesc{margin-bottom:11px;}
+#signupForm{gap:7px;}
+#signupForm .authField{gap:4px;}
+#signupForm .authField input,#signupForm .authField select{min-height:39px;padding-top:7px;padding-bottom:7px;}
+#signupForm .authField label{font-size:11.2px;}
+#signupForm .authField input::placeholder{font-size:14px;color:#8a919b;opacity:1;}
+#signupForm .authHint{font-size:9.7px;line-height:1.4;margin-top:0;color:#737d8c;}
+#signupForm .roleHint{color:#7a8492;}
+#signupForm .authBtn{min-height:41px;padding:9px 14px;margin-top:3px;font-size:12.7px;}
+.signupLoginLink{margin-top:9px;align-items:center;padding-bottom:calc(8px + env(safe-area-inset-bottom));}
+.authReturnText{font-size:10.6px;color:#7a8492;font-weight:650;}
+.signupLoginLink .authLink{padding:3px 1px;font-size:11.1px;}
+@media(max-width:560px){
+  #signupForm .authField input,#signupForm .authField select{font-size:16px;min-height:40px;}
+  #signupForm .authField input::placeholder{font-size:14px;}
+  #signupForm{gap:7px;}
+  .authShell .authWrap{padding-bottom:env(safe-area-inset-bottom);}
 }
 </style>
