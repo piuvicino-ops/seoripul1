@@ -4815,17 +4815,17 @@ window.SAEJEONGI_AUTH_CONFIG={
   const homeMainButtons=[...document.querySelectorAll('.mainHomeBtn')];
   const homeDistrictButtons=[...document.querySelectorAll('.districtHomeBtn')];
 
-  // 공개 범위: 전체 일정, 토지이용계획, 필지정보, 새정이마을의 대책위원회 활동기록·건축물 보상 방법
-  // 새정이마을 하위 메뉴 중 공개정보를 제외한 메뉴는 새정이마을주민과 관리자만 접근합니다.
+  // 공개 범위: 전체 일정, 토지이용계획, 필지정보, 새정이마을의 건축물 보상 방법
+  // 대책위원회 활동기록을 포함한 새정이마을 비공개 메뉴는 새정이마을주민과 관리자만 접근합니다.
   const RESIDENT_ONLY_MAIN_TABS=new Set([
-    'boardPanel','lawsuitPanel','lawsuitScenarioPanel','lawsuitUsePanel',
+    'activityPanel','boardPanel','lawsuitPanel','lawsuitScenarioPanel','lawsuitUsePanel',
     'preparationPanel','relocationPanel'
   ]);
   const MEMBER_ONLY_MAIN_TABS=new Set([
     ...RESIDENT_ONLY_MAIN_TABS,'lhPolicyPanel','incentivePanel','aptPanel'
   ]);
   const MEMBER_ONLY_DISTRICT_TABS=new Set(['basicPane','hopePane','costPane']);
-  const PUBLIC_MAIN_TABS=new Set(['activityPanel','compensationPanel']);
+  const PUBLIC_MAIN_TABS=new Set(['compensationPanel']);
   const PUBLIC_DISTRICT_TABS=new Set(['landUsePane','infoPane']);
   const addPublicInfoBadge=(el)=>{
     if(!el||el.querySelector?.('.publicInfoBadge')) return;
@@ -4836,6 +4836,9 @@ window.SAEJEONGI_AUTH_CONFIG={
     el.appendChild(badge);
   };
   const markAccessMenus=()=>{
+    // 권한 변경 후 이전에 붙어 있던 공개정보 뱃지가 남지 않도록 모두 초기화한 뒤,
+    // 현재 공개 대상 메뉴에만 다시 표시합니다.
+    document.querySelectorAll('.publicInfoBadge').forEach(badge=>badge.remove());
     buttons.forEach(btn=>{
       const target=btn.dataset.tab||'';
       btn.dataset.menuLabel=(btn.dataset.menuLabel||btn.textContent||'').trim();
