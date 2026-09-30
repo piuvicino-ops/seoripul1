@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const VERSION = '20261001p2';
+  const VERSION = '20261001p5';
   const cfg = window.SAEJEONGI_AUTH_CONFIG;
   if (!cfg?.supabaseUrl || !cfg?.supabaseAnonKey || !window.supabase) return;
 
@@ -24,11 +24,15 @@
   const css = `
     #webPushBellBtn{
       appearance:none;border:1px solid #cbd5e1;background:#fff;color:#334155;
-      border-radius:10px;padding:8px 11px;font-size:12px;font-weight:800;
-      cursor:pointer;display:none;align-items:center;gap:5px;line-height:1.1
+      border-radius:50%;padding:0;width:44px;height:44px;font-size:12px;font-weight:800;
+      cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:0;line-height:1
     }
     #webPushBellBtn:hover{background:#f8fafc}
-    #webPushBellBtn .dot{width:7px;height:7px;border-radius:50%;background:#94a3b8}
+    #webPushBellBtn{position:fixed}
+    #webPushBellBtn .dot{
+      position:absolute;right:6px;top:6px;width:8px;height:8px;border-radius:50%;
+      background:#94a3b8;border:2px solid #fff;box-sizing:content-box
+    }
     #webPushBellBtn.on .dot{background:#22c55e}
     #webPushModal{
       position:fixed;inset:0;z-index:2147483600;background:rgba(15,23,42,.48);
@@ -166,25 +170,24 @@
   const bell = document.createElement('button');
   bell.id = 'webPushBellBtn';
   bell.type = 'button';
-  bell.innerHTML = '<span class="dot"></span><span>알림</span>';
+  bell.setAttribute('aria-label', '알림 설정');
+  bell.title = '알림 설정';
+  bell.innerHTML = `
+    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+      <path d="M12 22a2.4 2.4 0 0 0 2.3-1.7h-4.6A2.4 2.4 0 0 0 12 22Zm7-5.2-1.5-1.9V10a5.6 5.6 0 0 0-4.2-5.4V4a1.3 1.3 0 1 0-2.6 0v.6A5.6 5.6 0 0 0 6.5 10v4.9L5 16.8a1 1 0 0 0 .8 1.7h12.4a1 1 0 0 0 .8-1.7Z" fill="currentColor"/>
+    </svg>
+    <span class="dot" aria-hidden="true"></span>
+  `;
 
   const placeBell = () => {
     if (bell.isConnected) return;
-    const logout = document.getElementById('memberLogout');
-    if (logout?.parentElement) {
-      logout.parentElement.insertBefore(bell, logout);
-      return;
-    }
-    const memberBar = document.querySelector('.memberBar, #memberBar, .memberBarActions');
-    if (memberBar) {
-      memberBar.appendChild(bell);
-      return;
-    }
     Object.assign(bell.style, {
       position: 'fixed',
       right: '14px',
-      bottom: '14px',
-      zIndex: '2147483500'
+      bottom: '18px',
+      zIndex: '2147483500',
+      display: 'inline-flex',
+      boxShadow: '0 8px 24px rgba(15,23,42,.16)'
     });
     document.body.appendChild(bell);
   };
@@ -347,32 +350,41 @@
         throw new Error('이 브라우저는 웹 푸시를 지원하지 않습니다.');
       }
 
-      const c = pushConfig || await loadConfig();
-
       const before = Notification.permission;
+
       if (before === 'denied') {
         throw new Error('알림 권한이 이미 차단되어 있어 팝업이 다시 뜨지 않습니다. 브라우저 사이트 설정에서 알림을 "허용"으로 바꾼 뒤 새로고침해 주세요.');
       }
 
+      // 중요: 모바일 브라우저는 사용자 클릭 직후에 권한 요청을 해야 합니다.
+      // 서버 호출이나 service worker await 전에 먼저 requestPermission()을 호출합니다.
       if (before === 'default') {
-        statusEl.textContent = '브라우저 알림 허용 팝업을 표시합니다. "허용"을 선택해 주세요.';
+        const active = navigator.userActivation ? navigator.userActivation.isActive : true;
+        statusEl.textContent = active
+          ? '브라우저 알림 허용 팝업을 요청합니다. "허용"을 선택해 주세요.'
+          : '사용자 클릭 상태를 확인하지 못했습니다. 다시 한 번 "알림 받기"를 눌러 주세요.';
+
         const permission = await Notification.requestPermission();
 
         if (permission === 'denied') {
           throw new Error('알림이 차단되었습니다. 이후에는 브라우저 사이트 설정에서 직접 허용해야 합니다.');
         }
+
         if (permission !== 'granted') {
-          throw new Error('알림 권한이 허용되지 않았습니다.');
+          throw new Error(`알림 권한 결과: ${permission}. 브라우저에서 허용이 완료되지 않았습니다.`);
         }
-      } else if (before === 'granted') {
-        statusEl.textContent = '브라우저 알림 권한은 이미 허용되어 있습니다. 푸시 구독을 등록합니다.';
       }
 
-      statusEl.textContent = '서비스워커를 확인하고 푸시 구독을 등록하는 중입니다.';
+      statusEl.textContent = '알림 권한이 허용되었습니다. 푸시 등록을 계속합니다.';
+
+      // 권한 팝업 처리 후에 서버 설정을 불러옵니다.
+      const c = pushConfig || await loadConfig();
+
       const reg = await ensureRegistration();
       await navigator.serviceWorker.ready;
 
       let sub = await reg.pushManager.getSubscription();
+
       if (!sub) {
         sub = await reg.pushManager.subscribe({
           userVisibleOnly: true,
@@ -381,6 +393,7 @@
       }
 
       statusEl.textContent = '푸시 구독을 서버에 저장하는 중입니다.';
+
       await call({
         action: 'subscribe',
         subscription: sub.toJSON(),
@@ -389,6 +402,7 @@
 
       statusEl.textContent = '알림 수신 설정이 완료되었습니다.';
       await refreshSubscriptionUi();
+
     } catch (e) {
       statusEl.textContent = `알림 설정 실패: ${e.message || e}`;
       subscribeBtn.disabled = false;
@@ -504,12 +518,23 @@
   };
 
   const openModal = async () => {
-    modal.classList.add('open');
-    modal.setAttribute('aria-hidden', 'false');
     try {
+      const token = await getToken();
+      if (!token) {
+        alert('로그인 후 알림 설정을 이용할 수 있습니다.');
+        return;
+      }
+
+      modal.classList.add('open');
+      modal.setAttribute('aria-hidden', 'false');
+
       await loadConfig();
       await refreshSubscriptionUi();
-      if (pushConfig?.is_admin) loadHistory();
+      if (pushConfig?.is_admin) {
+        adminSection.hidden = false;
+        historySection.hidden = false;
+        loadHistory();
+      }
     } catch (e) {
       modal.classList.remove('open');
       modal.setAttribute('aria-hidden', 'true');
@@ -550,22 +575,26 @@
   });
 
   const syncLoginVisibility = async () => {
+    bell.style.display = 'inline-flex';
     try {
       const token = await getToken();
       if (!token) {
-        bell.style.display = 'none';
         pushConfig = null;
+        bell.classList.remove('on');
+        bell.title = '로그인 후 알림을 설정할 수 있습니다.';
         return;
       }
+
       const data = await call({ action: 'config' });
       pushConfig = data;
-      bell.style.display = 'inline-flex';
       adminSection.hidden = !data.is_admin;
       historySection.hidden = !data.is_admin;
+      bell.title = data.is_admin ? '알림 설정 및 관리자 푸시 발송' : '알림 설정';
       refreshSubscriptionUi();
     } catch {
-      bell.style.display = 'none';
       pushConfig = null;
+      bell.classList.remove('on');
+      bell.title = '로그인 후 알림을 설정할 수 있습니다.';
     }
   };
 
