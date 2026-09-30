@@ -2118,6 +2118,32 @@ body #appMain .currentMenuChild.saejeongiMenuChild{
 .landCompStatRowPlain .landCompStatText{width:100%}
 .landCompStatRowPlain .landCompStatSub b{font-weight:inherit;color:inherit}
 
+
+
+/* 관리자 전용: 주거용 건축물 보상과 재결 */
+.adminContentOnly[hidden]{display:none!important}
+.buildingReconsiderHero{margin-bottom:14px;padding:18px;border-radius:18px;border:1px solid #d7e3ee;background:linear-gradient(135deg,#f3f8ff 0%,#fff 56%,#eef8f4 100%);box-shadow:var(--shadow)}
+.buildingReconsiderHero .eyebrow{font-size:11px;font-weight:950;color:#3159a8;margin-bottom:6px}
+.buildingReconsiderHero h2{margin:0 0 8px;font-size:20px;line-height:1.38;letter-spacing:-.35px;color:#172033}
+.buildingReconsiderHero p{margin:0;font-size:12.5px;line-height:1.72;color:#475467}
+.buildingReconsiderCore{margin-top:12px;padding:13px 14px;border-radius:13px;background:#eef4ff;border:1px solid #d6e2f7;font-size:12.3px;line-height:1.72;color:#405273}
+.buildingReconsiderCore b{color:#172033}
+.buildingReconsiderFlow{margin-top:12px;padding:13px 14px;border-radius:13px;background:#f8fafc;border:1px solid #e4e7ec;font-size:12px;line-height:1.8;text-align:center;color:#344054}
+.buildingReconsiderFlow b{color:#173d9c}
+.buildingReconsiderList{display:grid;gap:9px;margin-top:10px}
+.buildingReconsiderItem{border:1px solid #e1e6ed;border-radius:13px;background:#fbfcfe;padding:12px 13px}
+.buildingReconsiderItem .t{font-size:12.5px;font-weight:950;line-height:1.45;color:#1d2939;margin-bottom:4px}
+.buildingReconsiderItem .d{font-size:11.8px;line-height:1.68;color:#667085}
+.buildingCheckGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:11px}
+.buildingCheck{display:grid;grid-template-columns:31px minmax(0,1fr);gap:9px;align-items:flex-start;border:1px solid #e1e6ed;border-radius:13px;background:#fff;padding:11px 12px}
+.buildingCheck .n{width:27px;height:27px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#eef2ff;color:#2347d9;font-size:10.5px;font-weight:950}
+.buildingCheck .t{font-size:11.8px;font-weight:950;line-height:1.42;color:#1d2939;margin-bottom:3px}
+.buildingCheck .d{font-size:10.9px;line-height:1.58;color:#667085}
+.buildingReconsiderNote{margin-top:12px;padding:12px 13px;border-radius:13px;background:#fff8e8;border:1px solid #efdca4;font-size:11.5px;line-height:1.7;color:#66531c}
+@media(max-width:560px){.buildingReconsiderHero{padding:16px}.buildingReconsiderHero h2{font-size:18px}.buildingReconsiderHero p{font-size:11.8px}.buildingCheckGrid{grid-template-columns:1fr}.buildingReconsiderItem .d{font-size:11.4px}}
+
+#homePanel .homeMenuSection:not(.adminOnly):nth-of-type(2) .homeMenuBtn[data-target-tab="buildingReconsiderationPanel"]{background:linear-gradient(135deg,#b8e2f6 0%,#c9eaf9 100%) !important;border-color:#cfedf9 !important;}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
@@ -2733,6 +2759,7 @@ html.standaloneApp .appSplash{display:flex}
         <button aria-controls="lawsuitScenarioPanel" aria-selected="false" class="tabBtn" data-tab="lawsuitScenarioPanel" id="lawsuitScenarioTab" role="tab" type="button">행정소송 대응 시나리오</button>
         <button aria-controls="lawsuitUsePanel" aria-selected="false" class="tabBtn" data-tab="lawsuitUsePanel" id="lawsuitUseTab" role="tab" type="button">행정소송 활용 전략</button>
         <button aria-controls="compensationPanel" aria-selected="false" class="tabBtn" data-tab="compensationPanel" id="compensationTab" role="tab" type="button">건축물 보상 방법</button>
+        <button aria-controls="buildingReconsiderationPanel" aria-selected="false" class="tabBtn adminContentOnly" data-tab="buildingReconsiderationPanel" id="buildingReconsiderationTab" role="tab" type="button" hidden>주거용 건축물 보상과 재결</button>
         <button aria-controls="preparationPanel" aria-selected="false" class="tabBtn" data-tab="preparationPanel" id="preparationTab" role="tab" type="button">우리집 보상 준비</button>
         
         <button aria-controls="relocationPanel" aria-selected="false" class="tabBtn" data-tab="relocationPanel" id="relocationTab" role="tab" type="button">이주자택지 분석</button>
@@ -2932,6 +2959,10 @@ html.standaloneApp .appSplash{display:flex}
         <button class="homeMenuBtn mainHomeBtn" data-target-tab="compensationPanel" type="button">
       <span class="homeMenuBtnTitle">건축물 보상 방법</span>
       <span class="homeMenuBtnDesc">주택과 건축물 보상평가의 기본 구조와 보상금 산정에 영향을 주는 항목을 정리합니다.</span>
+    </button>
+        <button class="homeMenuBtn mainHomeBtn adminContentOnly" data-target-tab="buildingReconsiderationPanel" type="button" hidden>
+      <span class="homeMenuBtnTitle">주거용 건축물 보상과 재결</span>
+      <span class="homeMenuBtnDesc">협의감정평가서를 받은 뒤 재결에서 다시 확인해야 할 평가쟁점과 20가지 점검요소를 정리합니다.</span>
     </button>
         <button class="homeMenuBtn mainHomeBtn" data-target-tab="preparationPanel" type="button">
       <span class="homeMenuBtnTitle">우리집 보상 준비<span class="importantStarBadge" aria-label="중요" title="중요">★</span></span>
@@ -3508,7 +3539,81 @@ html.standaloneApp .appSplash{display:flex}
     · 평당 금액은 1㎡ = 0.3025평(1평 = 3.305785㎡) 기준 단순 환산값입니다.
   </div>
 </div>
-</section><section aria-labelledby="preparationTab" class="tabPanel" hidden="" id="preparationPanel" role="tabpanel">
+</section>
+<section aria-labelledby="buildingReconsiderationTab" class="tabPanel" hidden id="buildingReconsiderationPanel" role="tabpanel">
+  <div class="buildingReconsiderHero">
+    <div class="eyebrow">관리자 전용 · 주거용 건축물 보상평가 재검토</div>
+    <h2>주거용 건축물 보상과 재결</h2>
+    <p>재결의 핵심은 일정한 상승률을 기대하는 것이 아니라, <b>최초 협의감정평가에서 적용한 건물유형·시공등급·재조달원가·마감과 설비·층별 단가·감가수정이 적정했는지 다시 검증하는 것</b>입니다.</p>
+    <div class="buildingReconsiderCore"><b>기본 구조</b> — 건축물은 원칙적으로 <b>재조달원가에서 감가수정을 반영하는 원가법</b>으로 평가하고, 주거용 건축물은 <b>거래사례비교법에 의한 금액이 더 큰 경우 그 금액을 적용</b>하는 구조를 함께 확인해야 합니다.</div>
+  </div>
+
+  <div class="keySummaryGrid" aria-label="핵심 요약">
+    <div class="keySummaryBox confirmed">
+      <div class="keySummaryLabel"><span class="keySummaryDot"></span>가장 먼저 볼 것</div>
+      <div class="keySummaryText"><b>어떤 건물유형과 시공등급을 적용했는지</b>, 그리고 그 결과 최종 ㎡당 재조달원가가 얼마로 결정됐는지를 먼저 확인합니다.</div>
+    </div>
+    <div class="keySummaryBox pending">
+      <div class="keySummaryLabel"><span class="keySummaryDot"></span>신축·고급주택</div>
+      <div class="keySummaryText">최근 신축 또는 고급주택은 작은 감가율 차이보다 <b>처음 적용한 재조달원가 자체가 적정한지</b>가 더 큰 쟁점이 될 수 있습니다.</div>
+    </div>
+    <div class="keySummaryBox action">
+      <div class="keySummaryLabel"><span class="keySummaryDot"></span>재결 준비</div>
+      <div class="keySummaryText">단순히 더 높은 금액을 요구하기보다 <b>기존 평가의 오류·누락을 산식과 객관적 자료로 특정</b>하는 방식으로 준비합니다.</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">재결에서 주요하게 참고할 사항</div>
+    <div class="buildingReconsiderList">
+      <div class="buildingReconsiderItem"><div class="t">1. 표준단가는 상한선이 아님</div><div class="d">자료집의 표준단가를 기계적으로 적용하는 것이 아니라 구조, 시공의 질, 상태, 이용상황, 규모, 사용자재와 부대설비 등을 종합해 최종 적용단가를 결정했는지 확인합니다.</div></div>
+      <div class="buildingReconsiderItem"><div class="t">2. 실제 공사비는 ‘보상액’이 아니라 ‘시공수준의 증거’</div><div class="d">공사도급계약서, 공종별 내역서, 설계·감리계약서, 주요 자재·설비 계약서와 준공사진은 실제 시공수준을 입증하는 자료로 활용합니다.</div></div>
+      <div class="buildingReconsiderItem"><div class="t">3. 같은 주택 안에서도 부분별 가치가 다를 수 있음</div><div class="d">지하층·지상층·옥탑·부속건물처럼 구조, 용재, 이용상태와 설비가 다른 부분을 하나의 단가로 일률 평가했는지 확인합니다.</div></div>
+      <div class="buildingReconsiderItem"><div class="t">4. 마감과 설비가 최종 단가에 충분히 반영됐는지 확인</div><div class="d">외장재, 창호, 내부마감, 주방·욕실, 냉난방·환기, 전기·통신, 특수설비가 별도 보정 또는 최종 재조달원가에 충분히 포함됐는지 봅니다.</div></div>
+      <div class="buildingReconsiderItem"><div class="t">5. 감가수정은 연식만의 문제가 아님</div><div class="d">내용연수, 경과연수, 잔존율 계산뿐 아니라 실제 관리·수선상태에 따른 관찰감가가 적정한지도 확인합니다.</div></div>
+      <div class="buildingReconsiderItem"><div class="t">6. 높은 후속 감정액만으로는 부족</div><div class="d">재결이나 소송에서는 왜 기존 평가가 부적정한지를 구체적인 산출근거로 설명해야 하며, 근거가 부족한 높은 감정액은 그대로 채택되지 않을 수 있습니다.</div></div>
+    </div>
+    <div class="buildingReconsiderFlow"><b>검토 순서</b><br/>건물유형 → 시공등급 → ㎡당 재조달원가 → 실제 마감·설비 → 층별 단가 → 감가수정 → 거래사례비교법</div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">협의감정평가서를 받으면 확인할 20가지 요소</div>
+    <div class="activityIntro">재결 여부를 판단하기 전에 아래 항목을 하나씩 대조해 <b>최초 평가의 오류·누락·과소반영 가능성</b>을 구체적으로 찾습니다.</div>
+    <div class="buildingCheckGrid">
+    <div class="buildingCheck"><div class="n">①</div><div><div class="t">건물용도</div><div class="d">일반주택·고급주택·다가구 등 어떤 유형을 적용했는가</div></div></div>
+    <div class="buildingCheck"><div class="n">②</div><div><div class="t">시공등급</div><div class="d">1급·2급·3급 등 어떤 시공수준을 적용했는가</div></div></div>
+    <div class="buildingCheck"><div class="n">③</div><div><div class="t">㎡당 재조달원가</div><div class="d">최종 적용단가는 얼마인가</div></div></div>
+    <div class="buildingCheck"><div class="n">④</div><div><div class="t">단가자료 연도</div><div class="d">평가기준시점에 맞는 자료를 사용했는가</div></div></div>
+    <div class="buildingCheck"><div class="n">⑤</div><div><div class="t">실제 공사비</div><div class="d">도급계약·내역서·설계자료 등을 검토했는가</div></div></div>
+    <div class="buildingCheck"><div class="n">⑥</div><div><div class="t">구조</div><div class="d">RC·철골·목조 등 실제 구조가 정확한가</div></div></div>
+    <div class="buildingCheck"><div class="n">⑦</div><div><div class="t">외장재</div><div class="d">석재·벽돌·금속 등 외장 수준을 반영했는가</div></div></div>
+    <div class="buildingCheck"><div class="n">⑧</div><div><div class="t">창호</div><div class="d">시스템창호·고성능유리 등 수준을 반영했는가</div></div></div>
+    <div class="buildingCheck"><div class="n">⑨</div><div><div class="t">내부마감</div><div class="d">바닥·벽·천장·목공 등 마감 수준을 반영했는가</div></div></div>
+    <div class="buildingCheck"><div class="n">⑩</div><div><div class="t">주방·욕실</div><div class="d">주방가구·위생기구·타일 등의 수준을 반영했는가</div></div></div>
+    <div class="buildingCheck"><div class="n">⑪</div><div><div class="t">냉난방·환기</div><div class="d">시스템에어컨·난방·전열교환기 등을 반영했는가</div></div></div>
+    <div class="buildingCheck"><div class="n">⑫</div><div><div class="t">전기·통신</div><div class="d">조명·통신·보안·홈오토메이션 등을 반영했는가</div></div></div>
+    <div class="buildingCheck"><div class="n">⑬</div><div><div class="t">특수설비</div><div class="d">승강기·태양광 등 특수설비의 처리방법이 적정한가</div></div></div>
+    <div class="buildingCheck"><div class="n">⑭</div><div><div class="t">부대시설</div><div class="d">담장·대문·테라스·데크 등 누락이 없는가</div></div></div>
+    <div class="buildingCheck"><div class="n">⑮</div><div><div class="t">층별 단가</div><div class="d">지하·지상·옥탑 등을 일률 단가로 처리하지 않았는가</div></div></div>
+    <div class="buildingCheck"><div class="n">⑯</div><div><div class="t">부속건물</div><div class="d">차고·별동·창고 등의 구조·용도 차이를 반영했는가</div></div></div>
+    <div class="buildingCheck"><div class="n">⑰</div><div><div class="t">내용연수</div><div class="d">경제적 내용연수를 몇 년으로 적용했는가</div></div></div>
+    <div class="buildingCheck"><div class="n">⑱</div><div><div class="t">경과연수·잔존율</div><div class="d">사용승인일과 기준시점, 잔존율 산식이 정확한가</div></div></div>
+    <div class="buildingCheck"><div class="n">⑲</div><div><div class="t">관찰감가</div><div class="d">실제 관리·수선상태에 맞는 추가 감가인가</div></div></div>
+    <div class="buildingCheck"><div class="n">⑳</div><div><div class="t">거래사례비교법</div><div class="d">원가법보다 높은 비교평가액이 있는지 검토했는가</div></div></div>
+    </div>
+    <div class="buildingReconsiderNote">특히 최근 신축·고급 단독주택은 “몇 % 더 받을 수 있는가”보다 <b>적정한 재조달원가와 감가수정을 다시 계산했을 때 최초 협의평가액과 실제로 얼마의 차이가 발생하는지</b>를 기준으로 재결 실익을 판단하는 것이 중요합니다.</div>
+  </div>
+
+  <div class="reportDownload">
+    <div class="rdText">
+      <div class="rdTitle">주거용 건축물 보상금 증액 수준에 관한 실증적 검토</div>
+      <div class="rdSub">공개 재결자료·연구자료·판례 및 감정평가 사례의 연결 분석 · 작성자: 새정이마을 김민철</div>
+    </div>
+    <a class="rdBtn" href="assets/documents/주거용_건축물_보상과_재결.pdf" target="_blank" rel="noopener">전체 보고서 보기</a>
+  </div>
+</section>
+
+<section aria-labelledby="preparationTab" class="tabPanel" hidden="" id="preparationPanel" role="tabpanel">
 
 <div class="keySummaryGrid" aria-label="핵심 요약">
   <div class="keySummaryBox confirmed">
@@ -3998,7 +4103,7 @@ html.standaloneApp .appSplash{display:flex}
   <div class="keySummaryBox pending">
     <div class="keySummaryLabel"><span class="keySummaryDot"></span>아직 미확정</div>
     <div class="keySummaryText">서리풀1지구에 실제 적용될 최종 이주대책 세부기준, 공급조건, 중복공급 제한 등은 사업시행자의 확정 안내가 필요합니다.</div>
-  </div>
+</div>
   <div class="keySummaryBox action">
     <div class="keySummaryLabel"><span class="keySummaryDot"></span>지금 할 일</div>
     <div class="keySummaryText">소유구분을 먼저 선택한 뒤 필요한 소유시점·면적 또는 소유·거주 정보를 입력해 1차 자격을 확인합니다.</div>
@@ -4560,6 +4665,7 @@ html.standaloneApp .appSplash{display:flex}
     if(adminMenuGroup) adminMenuGroup.hidden=!visible;
     if(adminHomeSection) adminHomeSection.hidden=!visible;
     document.querySelectorAll('.lawsuitAdminOnly').forEach(el=>{ el.hidden=!visible; });
+    document.querySelectorAll('.adminContentOnly').forEach(el=>{ el.hidden=!visible; });
   };
 
   const isResidentOrAdmin=(profile=currentSignedInProfile)=>profile?.membership_role==='resident'||profile?.membership_role==='admin';
@@ -4998,8 +5104,7 @@ html.standaloneApp .appSplash{display:flex}
       }catch(sessionErr){
         console.warn('세션 저장 경고:',sessionErr);
       }
-
-      try{
+try{
         if(rememberUsernameInput?.checked) localStorage.setItem(REMEMBER_ID_KEY,username);
         else localStorage.removeItem(REMEMBER_ID_KEY);
       }catch{}
@@ -5162,6 +5267,7 @@ html.standaloneApp .appSplash{display:flex}
   const MEMBER_ONLY_MAIN_TABS=new Set([
     ...RESIDENT_ONLY_MAIN_TABS,'lhPolicyPanel','incentivePanel','landCompIncreasePanel','aptPanel'
   ]);
+  const ADMIN_ONLY_MAIN_TABS=new Set(['buildingReconsiderationPanel','memberAdminPanel']);
   const MEMBER_ONLY_DISTRICT_TABS=new Set(['basicPane','hopePane','costPane']);
   const PUBLIC_MAIN_TABS=new Set(['compensationPanel']);
   const PUBLIC_DISTRICT_TABS=new Set(['landUsePane','infoPane']);
@@ -5400,7 +5506,7 @@ const target=btn.dataset.embeddedTab||'';
       openHomePanel();
       return;
     }
-    if(target==='memberAdminPanel'&&!isCurrentAdmin()){
+    if(ADMIN_ONLY_MAIN_TABS.has(target)&&!isCurrentAdmin()){
       openHomePanel();
       return;
     }
@@ -5423,7 +5529,7 @@ const target=btn.dataset.embeddedTab||'';
       }
     }
 
-    const watermarkTargets=['lawsuitPanel','lawsuitScenarioPanel','lawsuitUsePanel','relocationPanel','aptPanel'];
+    const watermarkTargets=['lawsuitPanel','lawsuitScenarioPanel','lawsuitUsePanel','relocationPanel','aptPanel','buildingReconsiderationPanel'];
     if(watermarkTargets.includes(target)) activateMainWatermark();
     else clearActiveWatermark();
 
@@ -5998,7 +6104,7 @@ const target=btn.dataset.embeddedTab||'';
   let filter='all';
   let member=false;
   let isAdmin=false;
-  let currentDetail=null;
+let currentDetail=null;
 
   const esc=(value)=>String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const authorName=(item)=>Array.isArray(item?.author)?item.author[0]?.full_name:item?.author?.full_name;
