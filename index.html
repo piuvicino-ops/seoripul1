@@ -4211,7 +4211,7 @@ html.standaloneApp .appSplash{display:flex}
   </div>
 </section>
 
-<section aria-labelledby="boardTab" class="tabPanel residentContentOnly" hidden id="boardPanel" role="tabpanel">
+<section aria-labelledby="boardTab" class="tabPanel" hidden id="boardPanel" role="tabpanel">
   <div class="boardShell">
     <div class="boardHero">
       <div>
@@ -5259,13 +5259,13 @@ try{
   const homeDistrictButtons=[...document.querySelectorAll('.districtHomeBtn')];
 
   // 공개 범위: 전체 일정, 토지이용계획, 필지정보, 새정이마을의 건축물 보상 방법
-  // 대책위원회 활동기록을 포함한 새정이마을 비공개 메뉴는 새정이마을주민과 관리자만 접근합니다.
+  // 최근 소식과 검토사항은 모든 승인회원이 접근하며, 그 외 새정이마을 비공개 메뉴는 새정이마을주민과 관리자만 접근합니다.
   const RESIDENT_ONLY_MAIN_TABS=new Set([
-    'activityPanel','boardPanel','lawsuitPanel','lawsuitScenarioPanel','lawsuitUsePanel',
+    'activityPanel','lawsuitPanel','lawsuitScenarioPanel','lawsuitUsePanel',
     'preparationPanel','relocationPanel'
   ]);
   const MEMBER_ONLY_MAIN_TABS=new Set([
-    ...RESIDENT_ONLY_MAIN_TABS,'lhPolicyPanel','incentivePanel','landCompIncreasePanel','aptPanel'
+    ...RESIDENT_ONLY_MAIN_TABS,'boardPanel','lhPolicyPanel','incentivePanel','landCompIncreasePanel','aptPanel'
   ]);
   const ADMIN_ONLY_MAIN_TABS=new Set(['buildingReconsiderationPanel','memberAdminPanel']);
   const MEMBER_ONLY_DISTRICT_TABS=new Set(['basicPane','hopePane','costPane']);
