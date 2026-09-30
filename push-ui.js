@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const VERSION = '20261001p6';
+  const VERSION = '20261001p7';
   const cfg = window.SAEJEONGI_AUTH_CONFIG;
   if (!cfg?.supabaseUrl || !cfg?.supabaseAnonKey || !window.supabase) return;
 
@@ -22,6 +22,13 @@
   let membersLoaded = false;
   let inboxItems = [];
   let isInboxOpen = false;
+
+  const PUSH_OPT_OUT_KEY = 'seoripul1_push_opt_out';
+  const isPushOptedOut = () => localStorage.getItem(PUSH_OPT_OUT_KEY) === '1';
+  const setPushOptOut = (value) => {
+    if (value) localStorage.setItem(PUSH_OPT_OUT_KEY, '1');
+    else localStorage.removeItem(PUSH_OPT_OUT_KEY);
+  };
 
   const esc = (s = '') => String(s)
     .replace(/&/g, '&amp;')
@@ -338,7 +345,7 @@
     let sub = null;
     try { sub = await getSubscription(); } catch {}
 
-    if (Notification.permission === 'granted' && sub) {
+    if (Notification.permission === 'granted' && sub && !isPushOptedOut()) {
       status.textContent = '이 기기에서 푸시 알림을 받고 있습니다.';
       onBtn.disabled = true;
       offBtn.disabled = false;
@@ -349,21 +356,31 @@
       status.textContent = '브라우저에서 이 사이트의 알림이 차단되어 있습니다. 사이트 설정에서 알림을 허용해 주세요.';
       onBtn.disabled = true;
       offBtn.disabled = !sub;
-      bannerText.textContent = '푸시 알림이 차단되어 있습니다.';
+      bannerText.textContent = '브라우저에서 알림이 차단되어 있습니다.';
       bannerAction.textContent = '설정';
       banner.classList.add('show');
       return;
     }
 
+    if (isPushOptedOut()) {
+      status.textContent = '이 기기에서 푸시 알림을 직접 꺼둔 상태입니다.';
+      onBtn.disabled = false;
+      offBtn.disabled = true;
+      return;
+    }
+
     status.textContent = Notification.permission === 'granted'
-      ? '알림 권한은 허용되어 있지만 이 기기의 푸시 구독이 꺼져 있습니다.'
-      : '푸시 알림이 꺼져 있습니다.';
+      ? '알림은 기본 허용 상태입니다. 이 기기의 푸시 구독을 연결하는 중입니다.'
+      : '알림은 기본 사용으로 설정되어 있습니다. 브라우저 권한만 한 번 허용해 주세요.';
 
     onBtn.disabled = false;
     offBtn.disabled = !sub;
-    bannerText.textContent = '푸시 알림이 꺼져 있습니다.';
-    bannerAction.textContent = '켜기';
-    banner.classList.add('show');
+
+    if (Notification.permission === 'default') {
+      bannerText.textContent = '알림을 받으려면 브라우저 권한 허용이 필요합니다.';
+      bannerAction.textContent = '허용';
+      banner.classList.add('show');
+    }
   };
 
   const subscribePush = async () => {
@@ -403,6 +420,7 @@
         user_agent: navigator.userAgent
       });
 
+      setPushOptOut(false);
       status.textContent = '알림 수신 설정이 완료되었습니다.';
       await refreshPushState();
     } catch (e) {
@@ -422,6 +440,7 @@
           await sub.unsubscribe();
         }
       }
+      setPushOptOut(true);
       status.textContent = '푸시 알림이 꺼졌습니다.';
       await refreshPushState();
     } catch (e) {
@@ -529,6 +548,34 @@
     }
   };
 
+  const ensureDefaultPushOn = async () => {
+    if (isPushOptedOut()) return;
+    if (!window.isSecureContext) return;
+    if (!('Notification' in window) || !('PushManager' in window) || !('serviceWorker' in navigator)) return;
+    if (Notification.permission !== 'granted') return;
+
+    try {
+      const reg = await ensureRegistration();
+      let sub = await reg.pushManager.getSubscription();
+      if (!sub) {
+        const c = pushConfig || await call({ action: 'config' });
+        pushConfig = c;
+        sub = await reg.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: urlBase64ToUint8Array(c.public_key)
+        });
+      }
+
+      await call({
+        action: 'subscribe',
+        subscription: sub.toJSON(),
+        user_agent: navigator.userAgent
+      });
+    } catch (e) {
+      console.warn('자동 푸시 구독 연결 실패:', e);
+    }
+  };
+
   const syncLogin = async () => {
     try {
       const token = await getToken();
@@ -541,6 +588,7 @@
 
       const data = await call({ action: 'config' });
       pushConfig = data;
+      await ensureDefaultPushOn();
       bell.style.display = 'flex';
       el('pushAdminToggle').style.display = data.is_admin ? 'block' : 'none';
       if (!data.is_admin) el('pushAdminPanel').classList.remove('open');
