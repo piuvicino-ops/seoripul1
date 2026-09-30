@@ -2070,7 +2070,53 @@ body #appMain .currentMenuChild.saejeongiMenuChild{
 .landCompCheck{margin:0;padding-left:18px;font-size:12px;line-height:1.7;color:#475467}
 .landCompCheck li{margin:3px 0}
 .landCompConclusion{margin-top:12px;font-size:12.2px;line-height:1.72;color:#344054;background:#f8fafc}
+
+/* 수용재결 통계 카드 - 모바일 가독성 개선 */
+.landCompStatsCard{padding:18px!important}
+.landCompStatsHead{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:13px}
+.landCompStatsHead .section-title{margin:2px 0 0;font-size:17px;line-height:1.4}
+.landCompStatsEyebrow{font-size:10.5px;font-weight:900;color:#2879aa;letter-spacing:.01em}
+.landCompStatsPeriod{flex:0 0 auto;margin-top:2px;padding:5px 8px;border-radius:999px;background:#f2f4f7;color:#667085;font-size:10px;font-weight:850}
+.landCompStatRows{border-top:1px solid #e8ecf1;border-bottom:1px solid #e8ecf1}
+.landCompStatRow{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 2px}
+.landCompStatRow+.landCompStatRow{border-top:1px solid #eef1f4}
+.landCompStatText{min-width:0;flex:1}
+.landCompStatLabel{font-size:13px;font-weight:950;color:#1d2939;line-height:1.4}
+.landCompStatSub{margin-top:4px;font-size:10.8px;line-height:1.55;color:#667085}
+.landCompStatRate{flex:0 0 auto;white-space:nowrap;font-size:13px;font-weight:850;color:#475467}
+.landCompStatRate strong{font-size:25px;line-height:1;color:#173d9c;letter-spacing:-.6px}
+.landCompStatsNote{display:flex;gap:8px;align-items:flex-start;margin-top:12px;padding:10px 11px;border-radius:11px;background:#fff9eb;border:1px solid #f3dfaa;color:#6b5314;font-size:10.8px;line-height:1.55}
+.landCompStatsNote b{flex:0 0 auto;white-space:nowrap}
+.landCompStatsNote span{min-width:0}
+@media(max-width:560px){
+  .landCompStatsCard{padding:16px!important}
+  .landCompStatsHead .section-title{font-size:16px}
+  .landCompStatRow{gap:10px;padding:13px 0}
+  .landCompStatLabel{font-size:12.5px}
+  .landCompStatSub{font-size:10.4px}
+  .landCompStatRate{font-size:11.5px}
+  .landCompStatRate strong{font-size:23px}
+  .landCompStatsNote{display:block}
+  .landCompStatsNote b{display:block;margin-bottom:3px}
+}
 @media(max-width:560px){#landCompIncreasePanel .landCompHero h2{font-size:19px}.landCompMetricCard .v{font-size:19px}.landCompCaseGrid{grid-template-columns:1fr}}
+
+.landCompCoreMessage{margin:0 0 14px;padding:15px 16px;border-radius:15px;background:#eef4ff;border:1px solid #cad8ff;color:#253858;font-size:12.5px;line-height:1.72}
+.landCompCoreMessage .coreTitle{display:block;font-size:14px;font-weight:950;color:#173d9c;margin-bottom:6px}
+.landCompCoreMessage strong{color:#173d9c}
+.landCompCompareTableWrap{margin-top:12px;overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:#fff}
+.landCompCompareTable{width:100%;border-collapse:collapse;min-width:620px;font-size:11.5px}
+.landCompCompareTable th,.landCompCompareTable td{padding:10px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;line-height:1.45}
+.landCompCompareTable th{background:#f8fafc;color:#475467;font-weight:900;white-space:nowrap}
+.landCompCompareTable td.rate{text-align:right;white-space:nowrap;font-weight:950;color:#173d9c}
+.landCompCompareTable tr:last-child td{border-bottom:0}
+.landCompCompareTable tr.topCase td{background:#f3f7ff}
+.landCompCompareNote{margin-top:8px;font-size:10.8px;line-height:1.6;color:#667085}
+
+
+.landCompStatRowPlain{display:block}
+.landCompStatRowPlain .landCompStatText{width:100%}
+.landCompStatRowPlain .landCompStatSub b{font-weight:inherit;color:inherit}
 
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2847,7 +2893,7 @@ html.standaloneApp .appSplash{display:flex}
     </button>
         <button class="homeMenuBtn mainHomeBtn" data-target-tab="landCompIncreasePanel" type="button">
       <span class="homeMenuBtnTitle">수용재결로 토지보상금 얼마나 올라갈까?<span class="importantStarBadge" aria-label="중요" title="중요">★</span></span>
-      <span class="homeMenuBtnDesc">중토위 통계와 연구자료, 공공택지 판례로 재결 단계의 토지보상금 증액 수준을 살펴봅니다.</span>
+      <span class="homeMenuBtnDesc">재결은 신청 자체보다 어떤 평가쟁점을 근거로 다투느냐에 따라 결과가 달라집니다. 중토위 통계와 공공택지 판례로 확인합니다.</span>
     </button>
         <button class="homeMenuBtn mainHomeBtn" data-target-tab="aptPanel" type="button">
       <span class="homeMenuBtnTitle">이주자주택 및 협의양도인주택 분석</span>
@@ -3741,36 +3787,116 @@ html.standaloneApp .appSplash{display:flex}
 </div>
 </section>
 <section aria-labelledby="landCompIncreaseTab" class="tabPanel" hidden="" id="landCompIncreasePanel" role="tabpanel">
-<div class="keySummaryGrid" aria-label="핵심 요약">
-  <div class="keySummaryBox confirmed">
-    <div class="keySummaryLabel"><span class="keySummaryDot"></span>전체 통계에서 보이는 기준점</div>
-    <div class="keySummaryText"><b>협의 → 수용재결은 약 5%대</b>입니다. 2019~2023년 중토위 연평균은 5.61%, 5년 총액 기준은 약 5.27%입니다.</div>
+  <div class="landCompCoreMessage">
+    <span class="coreTitle">핵심 메시지 — 재결은 “신청하면 몇 % 오르는가”의 문제가 아닙니다</span>
+    같은 수용재결이라도 <strong>어떤 평가오류·평가쟁점을 특정하여 신청하느냐</strong>에 따라 결과가 달라질 수 있습니다. 비교표준지, 개별요인, 현실·법적 이용상황, 거래사례, 그 밖의 요인 등에서 무엇을 다투는지와 이를 뒷받침하는 자료가 핵심입니다.
   </div>
-  <div class="keySummaryBox estimate">
-    <div class="keySummaryLabel"><span class="keySummaryDot"></span>개별 사건은 크게 다를 수 있음</div>
-    <div class="keySummaryText">공공택지 판례에서는 수용재결 대비 최종 인정액의 차이가 <b>+1.32%에서 +12.24%</b>까지 확인됩니다. 평가쟁점의 종류와 강도에 따라 결과가 달라집니다.</div>
+
+  <div class="card landCompStatsCard">
+    <div class="landCompStatsHead">
+      <div>
+        <div class="landCompStatsEyebrow">중앙토지수용위원회 공식 통계</div>
+        <div class="section-title">전체 통계는 ‘참고선’으로만 봅니다</div>
+      </div>
+      <div class="landCompStatsPeriod">2019–2023</div>
+    </div>
+
+    <div class="landCompStatRows">
+      <div class="landCompStatRow landCompStatRowPlain">
+        <div class="landCompStatText">
+          <div class="landCompStatLabel">협의 → 수용재결</div>
+          <div class="landCompStatSub">연도별 전체 보상금 총액 비교 평균 5.61% · 5개년 총액 가중 약 5.27%</div>
+        </div>
+      </div>
+
+      <div class="landCompStatRow landCompStatRowPlain">
+        <div class="landCompStatText">
+          <div class="landCompStatLabel">수용재결 → 이의재결</div>
+          <div class="landCompStatSub">연도별 평균 2.30% · 수용재결 통계와는 별도 모집단</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="landCompStatsNote">
+      <b>이 숫자가 핵심은 아닙니다</b>
+      <span>위 수치는 전체적인 경향을 보여주는 참고자료일 뿐입니다. 실제 증액 결과는 재결신청에서 어떤 평가쟁점을 특정하고 어떤 근거자료로 다투는지에 따라 달라질 수 있습니다.</span>
+    </div>
   </div>
-</div>
-<div class="landCompHero">
-  <div class="eyebrow">중토위 공식통계 · 연구자료 · 공공택지 판례</div>
-  <h2>수용재결로 토지보상금 얼마나 올라갈까?</h2>
-  <p class="moveLead">수용재결의 증액 수준을 하나의 숫자로 단정하지 않고, 전체 통계와 실제 평가쟁점, 공공택지 판례를 함께 놓고 살펴봅니다.</p>
+
+  <div class="card">
+    <div class="section-title">어떤 유형의 쟁점이 큰 차이를 만들었나</div>
+    <div class="activityIntro">
+      보고서에 수록된 공공택지 판례를 비교하면, 단순히 “재결을 신청했다”는 사실보다 <b>무엇을 잘못 평가했다고 다투었는지</b>에 따라 증액폭이 크게 달랐습니다.
+    </div>
+
+    <div class="landCompCompareTableWrap">
+      <table class="landCompCompareTable">
+        <thead>
+          <tr>
+            <th>재결·소송에서 다툰 핵심 유형</th>
+            <th>공공택지 사례</th>
+            <th>확인된 증액률</th>
+            <th>의미</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="topCase">
+            <td><b>현실 이용상황 + 개별요인</b></td>
+            <td>광교</td>
+            <td class="rate">+12.24%</td>
+            <td>보고서 수록 사례 중 가장 큰 증액폭</td>
+          </tr>
+          <tr>
+            <td><b>개별요인 비교</b></td>
+            <td>용인구성</td>
+            <td class="rate">+12.11%</td>
+            <td>개별 조건 비교가 평가액 차이로 연결</td>
+          </tr>
+          <tr>
+            <td><b>법적 이용상황 판단</b></td>
+            <td>양주옥정</td>
+            <td class="rate">+3.75%</td>
+            <td>이용상황 판단 차이가 보상액에 반영</td>
+          </tr>
+          <tr>
+            <td><b>비교표준지 선정</b></td>
+            <td>화성동탄2</td>
+            <td class="rate">+1.32%</td>
+            <td>표준지 선정 쟁점은 있었지만 증액폭은 상대적으로 작았던 사례</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="landCompCompareNote">
+      ※ 위 수치는 각 유형의 평균 상승률이 아니라 보고서에 수록된 개별 판례의 결과입니다. 따라서 “현실 이용상황 유형이면 항상 12.24% 오른다”는 뜻은 아닙니다. 다만 사례상 어떤 평가쟁점이 큰 금액 차이로 이어질 수 있는지는 보여줍니다.
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">재결신청 전에 확인할 평가쟁점</div>
+    <div class="landCompChecklist">
+      <div><b>1. 비교표준지</b><span>입지·용도지역·이용상황 등이 더 유사한 표준지가 있는지</span></div>
+      <div><b>2. 시점수정</b><span>기준시점까지의 지가변동 반영이 적정한지</span></div>
+      <div><b>3. 지역요인</b><span>접근성·생활권·개발여건의 비교가 맞는지</span></div>
+      <div><b>4. 개별요인</b><span>도로조건·형상·고저·접근성 등 개별 특성이 정확히 반영됐는지</span></div>
+      <div><b>5. 그 밖의 요인</b><span>보상선례·거래사례를 이용한 보정 근거가 객관적으로 설명되는지</span></div>
+      <div><b>6. 거래사례·보상선례</b><span>더 적합한 사례가 배제되거나 비정상·노후 사례가 채택되지 않았는지</span></div>
+      <div><b>7. 현실·법적 이용상황</b><span>실제 이용상황과 법적 이용가능성이 적절히 평가되었는지</span></div>
+    </div>
+  </div>
+
+  <div class="card landCompConclusion">
+    <b>정리하면</b><br/>
+    수용재결에서 “평균적으로 몇 % 오르는가”만 보는 것보다 <b>내 토지의 감정평가에서 무엇을 구체적으로 다툴 수 있는가</b>를 찾는 것이 더 중요합니다. 공식 통계상 약 5%대는 전체적인 참고선이지만, 실제 결과는 재결신청의 쟁점과 근거에 따라 크게 달라질 수 있습니다.
+  </div>
+
   <div class="reportDownload">
-    <div class="rdText"><div class="rdTitle">공공택지 토지보상금 증액 수준에 관한 실증적 검토</div><div class="rdSub">중앙토지수용위원회 통계·연구자료·공공택지 판례의 연결 분석</div></div>
-    <a aria-label="공공택지 토지보상금 증액 수준 전체 보고서 보기" class="rdBtn" href="assets/documents/land-compensation-increase-report-20260930.pdf" rel="noopener" target="_blank">전체 보고서 보기</a>
+    <div class="rdText">
+      <div class="rdTitle">전체 분석보고서 PDF</div>
+      <div class="rdSub">중앙토지수용위원회 통계·연구자료·공공택지 판례의 연결 분석</div>
+    </div>
+    <a class="rdBtn" href="assets/documents/land-compensation-increase-report-20260930.pdf" target="_blank" rel="noopener">전체 보고서 보기</a>
   </div>
-</div>
-<div class="landCompMetricGrid">
-  <div class="landCompMetricCard"><div class="k">협의 → 수용재결</div><div class="v">약 5%대</div><div class="s">2019~2023년 연평균 5.61% · 5년 총액 기준 약 5.27%</div></div>
-  <div class="landCompMetricCard"><div class="k">수용재결 → 이의재결</div><div class="v">약 2%대</div><div class="s">2019~2023년 연평균 2.30%</div></div>
-</div>
-<div class="landCompCaution"><b>해석할 때 주의</b> — 두 단계의 사건 모집단은 동일하지 않으므로 5.61%와 2.30%를 단순히 더해 “재결하면 평균 약 8% 오른다”고 해석하면 안 됩니다. 또한 5.61%는 7,434개 개별 사건 증액률의 평균이나 중앙값이 아닙니다.</div>
-<div class="landCompCard"><div class="landCompSectionTitle">실제 공공택지 사례</div><div class="landCompCaseGrid">
-<div class="landCompCase"><span>화성동탄2</span><b>+1.32%</b></div><div class="landCompCase"><span>양주옥정</span><b>+3.75%</b></div><div class="landCompCase"><span>용인구성</span><b>+12.11%</b></div><div class="landCompCase"><span>광교</span><b>+12.24%</b></div>
-</div><div class="landCompFoot">같은 보상금 증액 절차라도 결과는 비교표준지, 개별요인, 이용상황 등 실제 평가쟁점에 따라 크게 달라질 수 있습니다.</div></div>
-<div class="landCompCard"><div class="landCompSectionTitle">내 토지에서는 무엇을 확인해야 하나?</div><ul class="landCompCheck">
-<li>비교표준지가 가장 유사한 토지로 선정됐는지</li><li>시점수정과 지역요인이 적정한지</li><li>도로조건·접근조건·형상·면적 등 개별요인이 제대로 반영됐는지</li><li>그 밖의 요인 산정에 사용된 거래사례·보상선례가 적절한지</li><li>더 유리하고 비교 가능한 인근 거래사례가 합리적 이유 없이 빠지지 않았는지</li><li>현실 이용상황과 법적 이용상황 판단이 적정한지</li></ul></div>
-<div class="landCompCard landCompConclusion"><b>보고서에서 제시하는 해석</b><br>약 5%는 전체 공공사업에서 관찰되는 현실적인 중심 기준점으로 참고할 수 있지만, 개별 토지의 실제 증액 가능성은 감정평가의 구체적인 쟁점에 따라 5%보다 훨씬 낮을 수도 있고, 명확한 평가차이가 있는 경우 10% 이상이 발생한 판례도 있습니다.</div>
 </section>
 <section aria-labelledby="aptTab" class="tabPanel" hidden="" id="aptPanel" role="tabpanel">
 <div class="keySummaryGrid" aria-label="핵심 요약">
@@ -5297,7 +5423,7 @@ const target=btn.dataset.embeddedTab||'';
       }
     }
 
-    const watermarkTargets=['lawsuitPanel','lawsuitScenarioPanel','lawsuitUsePanel','relocationPanel','landCompIncreasePanel','aptPanel'];
+    const watermarkTargets=['lawsuitPanel','lawsuitScenarioPanel','lawsuitUsePanel','relocationPanel','aptPanel'];
     if(watermarkTargets.includes(target)) activateMainWatermark();
     else clearActiveWatermark();
 
