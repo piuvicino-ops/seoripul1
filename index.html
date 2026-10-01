@@ -3347,6 +3347,30 @@ body:has(#lawReferencePanel.active) .header{
 }
 </style>
 
+
+<style id="floating-bell-match-top-20261002">
+/* 알림 종 버튼을 맨 위로 버튼과 동일한 크기로 통일 */
+#pushBellBtn{
+  width:32px !important;
+  height:32px !important;
+  min-width:32px !important;
+  min-height:32px !important;
+  right:12px !important;
+  bottom:max(18px, env(safe-area-inset-bottom)) !important;
+  padding:0 !important;
+}
+#pushBellBtn svg{
+  width:16px !important;
+  height:16px !important;
+}
+#pushBellBadge{
+  min-width:15px !important;
+  height:15px !important;
+  font-size:9px !important;
+  line-height:15px !important;
+}
+</style>
+
 </head><body><div aria-hidden="true" class="appSplash" id="appSplash"><img alt="서울서리풀1 씹어먹기" class="appSplashLogo" height="512" src="internal-logo.png?v=20260929v47" width="512"/></div><div aria-hidden="true" class="authShell" hidden="" id="authShell">
 <div class="authWrap">
 <button aria-label="로그인 창 닫기" class="authModalClose" id="authModalClose" type="button">×</button>
