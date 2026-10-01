@@ -3983,6 +3983,118 @@ body:has(#lawReferencePanel.active) .wrap{
 }
 </style>
 
+
+<style id="cheolsu-app-recommend-menu-cards-20261002">
+/* 철수 이야기 상세: 앱 연결을 '사용해보면 좋은 앱 메뉴' 카드로 재구성 */
+#lawReferencePanel .lawAppRecommend{
+  margin-top:14px;
+  padding-top:12px;
+  border-top:1px solid #edf2f4;
+}
+#lawReferencePanel .lawAppRecommendTitle{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin:0 0 8px;
+  color:#4f7182;
+  font-size:12px;
+  line-height:1.3;
+  font-weight:900;
+  letter-spacing:-.01em;
+}
+#lawReferencePanel .lawAppRecommendTitle::before{
+  content:"▦";
+  width:22px;
+  height:22px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 22px;
+  border:1px solid #c8e1ec;
+  border-radius:7px;
+  background:#f3faff;
+  color:#4f91ad;
+  font-size:12px;
+  font-weight:800;
+}
+#lawReferencePanel .lawAppRecommendList{
+  display:grid;
+  gap:7px;
+}
+#lawReferencePanel .lawAppMenuCard{
+  position:relative;
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 31px;
+  align-items:center;
+  gap:9px;
+  width:100%;
+  min-height:58px;
+  margin:0!important;
+  padding:9px 9px 9px 12px!important;
+  border:1px solid #dce8ee!important;
+  border-radius:12px!important;
+  background:linear-gradient(135deg,#ffffff 0%,#f8fcfe 100%)!important;
+  color:#344b5a!important;
+  text-decoration:none!important;
+  box-shadow:0 1px 4px rgba(15,23,42,.025)!important;
+}
+#lawReferencePanel .lawAppMenuCardText{
+  min-width:0;
+}
+#lawReferencePanel .lawAppMenuCardName{
+  display:block;
+  margin:0 0 3px;
+  color:#304b5b;
+  font-size:12.6px;
+  line-height:1.35;
+  font-weight:900;
+  letter-spacing:-.01em;
+}
+#lawReferencePanel .lawAppMenuCardDesc{
+  display:block;
+  color:#74818c;
+  font-size:10.8px;
+  line-height:1.48;
+  font-weight:500;
+  word-break:keep-all;
+}
+#lawReferencePanel .lawAppMenuCardArrow{
+  width:30px;
+  height:30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #cfe4ed;
+  border-radius:50%;
+  background:#f0f8fb;
+  color:#4f8ea7;
+  font-size:21px;
+  line-height:1;
+  font-weight:500;
+}
+#lawReferencePanel .lawAppMenuCard:active{
+  background:#eef8fc!important;
+  transform:translateY(1px);
+}
+/* 앱 링크를 별도 카드로 옮긴 뒤 법령/보고서 링크만 기존 행에 남김 */
+#lawReferencePanel .lawRefLinks:empty{display:none!important;}
+#lawReferencePanel .lawRefLinks:not(:empty){margin-top:10px!important;}
+
+@media(max-width:560px){
+  #lawReferencePanel .lawAppRecommend{margin-top:12px;padding-top:10px;}
+  #lawReferencePanel .lawAppRecommendTitle{font-size:11.5px;margin-bottom:7px;}
+  #lawReferencePanel .lawAppMenuCard{
+    min-height:56px;
+    grid-template-columns:minmax(0,1fr) 29px;
+    padding:8px 8px 8px 11px!important;
+    border-radius:11px!important;
+  }
+  #lawReferencePanel .lawAppMenuCardName{font-size:12.2px;}
+  #lawReferencePanel .lawAppMenuCardDesc{font-size:10.5px;line-height:1.45;}
+  #lawReferencePanel .lawAppMenuCardArrow{width:28px;height:28px;font-size:20px;}
+}
+</style>
+
 </head><body><div aria-hidden="true" class="appSplash" id="appSplash"><img alt="서울서리풀1 씹어먹기" class="appSplashLogo" height="512" src="internal-logo.png?v=20260929v47" width="512"/></div><div aria-hidden="true" class="authShell" hidden="" id="authShell">
 <div class="authWrap">
 <button aria-label="로그인 창 닫기" class="authModalClose" id="authModalClose" type="button">×</button>
@@ -8207,6 +8319,65 @@ let currentDetail=null;
   });
 })();
 </script>
+
+<script id="cheolsuAppRecommendCardsScript">
+(function(){
+  const cleanText=(s)=>String(s||'').replace(/★/g,'').replace(/^앱:\s*/,'').trim();
+
+  const menuInfo=(link)=>{
+    const tab=link.dataset.lawAppTab||'';
+    const district=link.dataset.lawAppDistrict||'';
+    let source=null;
+    if(tab){
+      source=document.querySelector(`.homeMenuBtn[data-target-tab="${CSS.escape(tab)}"]`);
+    }else if(district){
+      source=document.querySelector(`.homeMenuBtn[data-embedded-tab="${CSS.escape(district)}"]`);
+    }
+    const title=source?.querySelector('.homeMenuBtnTitle');
+    const desc=source?.querySelector('.homeMenuBtnDesc');
+    return {
+      name:cleanText(title?.textContent||link.textContent),
+      desc:(desc?.textContent||'관련 메뉴에서 세부 내용과 계산·분석 자료를 확인합니다.').trim()
+    };
+  };
+
+  const build=()=>{
+    document.querySelectorAll('#lawReferencePanel .lawRefLinks').forEach(linkRow=>{
+      const appLinks=[...linkRow.querySelectorAll('a.lawRefLink.app')];
+      if(!appLinks.length || linkRow.parentElement?.querySelector(':scope > .lawAppRecommend')) return;
+
+      const wrap=document.createElement('section');
+      wrap.className='lawAppRecommend';
+      wrap.setAttribute('aria-label','사용해보면 좋은 앱 메뉴');
+
+      const heading=document.createElement('div');
+      heading.className='lawAppRecommendTitle';
+      heading.textContent='사용해보면 좋은 앱 메뉴';
+
+      const list=document.createElement('div');
+      list.className='lawAppRecommendList';
+
+      appLinks.forEach(link=>{
+        const info=menuInfo(link);
+        link.classList.add('lawAppMenuCard');
+        link.classList.remove('lawRefLink');
+        link.setAttribute('aria-label',`${info.name} 메뉴로 이동`);
+        link.innerHTML=`<span class="lawAppMenuCardText"><span class="lawAppMenuCardName"></span><span class="lawAppMenuCardDesc"></span></span><span class="lawAppMenuCardArrow" aria-hidden="true">›</span>`;
+        link.querySelector('.lawAppMenuCardName').textContent=info.name;
+        link.querySelector('.lawAppMenuCardDesc').textContent=info.desc;
+        list.appendChild(link);
+      });
+
+      wrap.append(heading,list);
+      linkRow.insertAdjacentElement('afterend',wrap);
+    });
+  };
+
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',build,{once:true});
+  else build();
+})();
+</script>
+
 </body><!-- 2026-10-01: 관련 법령·지침 메뉴 추가 (주요 일정 다음 위치) -->
 </html>
 <style>
