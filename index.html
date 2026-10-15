@@ -5869,8 +5869,8 @@ body:has(#lawReferencePanel.active) .wrap{
 <div class="authField"><label for="signupParcel">소유 토지 또는 주택 지번</label><input id="signupParcel" name="parcelNo" placeholder="예: 신원동 00-0" required=""/></div>
 <div class="authField"><label for="signupPhone">휴대폰번호</label><input autocomplete="tel" id="signupPhone" inputmode="numeric" name="phone" placeholder="숫자만 입력 (예: 01012345678)" required="" type="tel"/></div>
 <div class="authField"><label for="signupUsername">아이디</label><input autocomplete="username" id="signupUsername" maxlength="30" minlength="4" name="username" pattern="[A-Za-z0-9._-]{4,30}" placeholder="영문·숫자 4~30자" required=""/><div class="authHint">영문, 숫자, 마침표(.), 밑줄(_), 하이픈(-)만 사용할 수 있습니다.</div></div>
-<div class="authField"><label for="signupPassword">비밀번호</label><input autocomplete="new-password" id="signupPassword" minlength="4" name="password" placeholder="4자 이상" required="" type="password"/><div class="authHint">4자 이상 입력해 주세요.</div></div>
-<div class="authField"><label for="signupPassword2">비밀번호 확인</label><input autocomplete="new-password" id="signupPassword2" minlength="4" name="password2" placeholder="비밀번호 다시 입력" required="" type="password"/></div>
+<div class="authField"><label for="signupPassword">비밀번호</label><input autocomplete="new-password" id="signupPassword" minlength="8" name="password" placeholder="8자 이상" required="" type="password"/><div class="authHint">8자 이상 입력해 주세요. 기존 회원의 비밀번호는 그대로 사용할 수 있습니다.</div></div>
+<div class="authField"><label for="signupPassword2">비밀번호 확인</label><input autocomplete="new-password" id="signupPassword2" minlength="8" name="password2" placeholder="비밀번호 다시 입력" required="" type="password"/></div>
 <button class="authBtn primary" type="submit">가입 신청</button>
 </form>
 <div class="authLinks signupLoginLink"><span class="authReturnText">이미 가입하셨나요?</span><button class="authLink" data-auth-view="loginView" type="button">로그인</button></div>
@@ -5883,8 +5883,8 @@ body:has(#lawReferencePanel.active) .wrap{
 <div class="authField"><label for="resetName">성명</label><input autocomplete="name" id="resetName" name="fullName" placeholder="성명" required=""/></div>
 <div class="authField"><label for="resetParcel">주택 소유 지번</label><input id="resetParcel" name="parcelNo" placeholder="회원가입 시 입력한 지번" required=""/></div>
 <div class="authField"><label for="resetPhone">연락처</label><input autocomplete="tel" id="resetPhone" inputmode="numeric" name="phone" placeholder="회원가입 시 입력한 연락처" required="" type="tel"/></div>
-<div class="authField"><label for="resetPassword">새 비밀번호</label><input autocomplete="new-password" id="resetPassword" minlength="4" name="newPassword" placeholder="4자 이상" required="" type="password"/></div>
-<div class="authField"><label for="resetPassword2">새 비밀번호 확인</label><input autocomplete="new-password" id="resetPassword2" minlength="4" name="newPassword2" placeholder="새 비밀번호 다시 입력" required="" type="password"/></div>
+<div class="authField"><label for="resetPassword">새 비밀번호</label><input autocomplete="new-password" id="resetPassword" minlength="8" name="newPassword" placeholder="8자 이상" required="" type="password"/></div>
+<div class="authField"><label for="resetPassword2">새 비밀번호 확인</label><input autocomplete="new-password" id="resetPassword2" minlength="8" name="newPassword2" placeholder="새 비밀번호 다시 입력" required="" type="password"/></div>
 <button class="authBtn primary" type="submit">비밀번호 재설정</button>
 </form>
 <div class="authLinks"><button class="authLink" data-auth-view="loginView" type="button">로그인으로 돌아가기</button></div>
@@ -8543,6 +8543,8 @@ body:has(#lawReferencePanel.active) .wrap{
   const clearMessage=(id)=>{const el=document.getElementById(id);if(el){el.className='authMessage';el.textContent='';}};
   const normalizePhone=(v)=>String(v||'').replace(/\D/g,'');
   const normalizeUsername=(v)=>String(v||'').trim().toLowerCase();
+  // 기존 4~7자리 회원 호환 유지: 과거 가입 시 서버에는 아래 변환값이 저장됨.
+  // 신규 가입·비밀번호 재설정은 8자 이상만 허용하지만, 로그인은 기존 짧은 비밀번호도 계속 사용할 수 있음.
   const toAuthPassword=(v)=>{const p=String(v||'');return p.length>=8?p:p+'SJM!';};
   const memberEmail=(username)=>`${normalizeUsername(username)}@members.saejeongi.local`;
   const fnUrl=(name)=>`${AUTH_CONFIG.supabaseUrl}/functions/v1/${name}`;
@@ -9020,7 +9022,7 @@ try{
     if(!/^[a-z0-9._-]{4,30}$/.test(username)){showMessage('signupMessage','아이디는 영문·숫자·마침표·밑줄·하이픈으로 4~30자 입력해 주세요.','error');return;}
     const membershipRole=String(fd.get('membershipRole')||'');
     if(!membershipRole){showMessage('signupMessage','회원 구분을 선택해 주세요.','error');return;}
-    if(rawPassword.length<4){showMessage('signupMessage','비밀번호는 4자 이상 입력해 주세요.','error');return;}
+    if(rawPassword.length<8){showMessage('signupMessage','비밀번호는 8자 이상 입력해 주세요.','error');return;}
     if(rawPassword!==password2){showMessage('signupMessage','비밀번호 확인이 일치하지 않습니다.','error');return;}
     const password=toAuthPassword(rawPassword);
     const btn=signupForm.querySelector('button[type="submit"]'); btn.disabled=true;
@@ -9036,7 +9038,7 @@ try{
     e.preventDefault(); clearMessage('resetMessage');
     if(!hasAuthConfig){showMessage('resetMessage','인증 서버 설정이 필요합니다. Supabase 설정 후 비밀번호 재설정이 작동합니다.','info');return;}
     const fd=new FormData(resetForm); const p1=String(fd.get('newPassword')||''); const p2=String(fd.get('newPassword2')||'');
-    if(p1.length<4){showMessage('resetMessage','새 비밀번호는 4자 이상 입력해 주세요.','error');return;}
+    if(p1.length<8){showMessage('resetMessage','새 비밀번호는 8자 이상 입력해 주세요.','error');return;}
     if(p1!==p2){showMessage('resetMessage','새 비밀번호 확인이 일치하지 않습니다.','error');return;}
     const authPassword=toAuthPassword(p1);
     const btn=resetForm.querySelector('button[type="submit"]');btn.disabled=true;
