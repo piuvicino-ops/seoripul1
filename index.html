@@ -5785,6 +5785,40 @@ body:has(#lawReferencePanel.active) .wrap{
 }
 </style>
 
+
+<style id="memberSignupTopStyles">
+.memberStatusActions{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  flex:0 0 auto;
+}
+.memberSignupTop{
+  border:1px solid #b9ddd5;
+  border-radius:999px;
+  background:#ffffff;
+  color:#0f766e;
+  padding:4px 9px;
+  min-height:24px;
+  font:inherit;
+  font-size:9.4px;
+  line-height:1.1;
+  font-weight:800;
+  cursor:pointer;
+  box-shadow:0 1px 4px rgba(15,118,110,.05);
+}
+.memberSignupTop:active{transform:translateY(1px);}
+.memberSignupTop[hidden]{display:none!important;}
+@media(max-width:560px){
+  .memberStatusActions{gap:5px;}
+  .memberSignupTop{
+    padding:3px 8px;
+    min-height:22px;
+    font-size:8.8px;
+  }
+}
+</style>
+
 </head><body><div aria-hidden="true" class="appSplash" id="appSplash"><img alt="서울서리풀1 씹어먹기" class="appSplashLogo" height="512" src="internal-logo.png?v=20260929v47" width="512"/></div><div aria-hidden="true" class="authShell" hidden="" id="authShell">
 <div class="authWrap">
 <button aria-label="로그인 창 닫기" class="authModalClose" id="authModalClose" type="button">×</button>
@@ -5869,7 +5903,10 @@ body:has(#lawReferencePanel.active) .wrap{
 <main class="wrap" id="appMain">
 <div class="memberStatusRow" id="memberStatusRow">
 <div class="memberStatusName" id="memberBarName">로그인 전</div>
+<div class="memberStatusActions">
 <span class="memberStatusGrade" id="memberBarGrade">비회원</span>
+<button class="memberSignupTop" id="memberSignupTop" type="button">회원가입</button>
+</div>
 </div>
 <div class="memberBar appTopBar" id="memberBar">
 <button aria-label="이전 화면" class="iosHistoryBack" hidden="" id="iosHistoryBack" title="이전" type="button">←</button>
@@ -8207,6 +8244,7 @@ body:has(#lawReferencePanel.active) .wrap{
   const appMain=document.getElementById('appMain');
   const memberBarName=document.getElementById('memberBarName');
   const memberBarGrade=document.getElementById('memberBarGrade');
+  const memberSignupTop=document.getElementById('memberSignupTop');
   const adminMenuGroup=document.getElementById('adminMenuGroup');
   const adminHomeSection=document.getElementById('adminHomeSection');
   const adminMemberList=document.getElementById('adminMemberList');
@@ -8490,6 +8528,10 @@ body:has(#lawReferencePanel.active) .wrap{
   authModalClose?.addEventListener('click',()=>{ pendingProtectedElement=null; closeAuthModal(); });
   authShell?.addEventListener('click',(e)=>{
     if(e.target===authShell){ pendingProtectedElement=null; closeAuthModal(); }
+  });
+  memberSignupTop?.addEventListener('click',()=>{
+    pendingProtectedElement=null;
+    openAuthModal('signupView');
   });
   document.querySelectorAll('[data-auth-view]').forEach(btn=>btn.addEventListener('click',()=>showAuthView(btn.dataset.authView)));
   if(authSetupNotice) authSetupNotice.hidden=hasAuthConfig;
@@ -8780,6 +8822,7 @@ body:has(#lawReferencePanel.active) .wrap{
     const grade=membershipRoleText(profile?.membership_role);
     if(memberBarName) memberBarName.textContent=profile?.full_name?`${profile.full_name}님`:'회원';
     if(memberBarGrade) memberBarGrade.textContent=grade;
+    if(memberSignupTop) memberSignupTop.hidden=true;
     if(memberLogout) memberLogout.textContent='로그아웃';
     setAdminMenuVisibility(profile);
     setResidentScheduleVisibility(profile);
@@ -8817,6 +8860,7 @@ body:has(#lawReferencePanel.active) .wrap{
     appMain.style.display='block';
     if(memberBarName) memberBarName.textContent='로그인 전';
     if(memberBarGrade) memberBarGrade.textContent='비회원';
+    if(memberSignupTop) memberSignupTop.hidden=false;
     if(memberLogout) memberLogout.textContent='로그인';
     closeAuthModal();
     showAuthView('loginView');
@@ -9023,6 +9067,7 @@ try{
   if(authShell){authShell.hidden=true;authShell.style.display='none';authShell.setAttribute('aria-hidden','true');}
   if(memberBarName) memberBarName.textContent='로그인 전';
   if(memberBarGrade) memberBarGrade.textContent='비회원';
+  if(memberSignupTop) memberSignupTop.hidden=false;
   if(memberLogout) memberLogout.textContent='로그인';
   restoreRememberedUsername();
 
